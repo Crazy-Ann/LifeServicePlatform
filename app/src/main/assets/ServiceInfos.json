@@ -1,0 +1,46 @@
+{
+  "ServiceInfos": [
+    {
+      "name": "紧急求助",
+      "action": "emergency_call_for_help",
+      "index": 1,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav01-Pre.png"
+    },
+    {
+      "name": "家电维修",
+      "action": "appliance_maintenance",
+      "index": 2,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav02-Pre.png"
+    },
+    {
+      "name": "生活设施维修",
+      "action": "living_facilities_maintenance",
+      "index": 3,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav03-Pre.png"
+    },
+    {
+      "name": "其他生活事件",
+      "action": "other_life_events",
+      "index": 4,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav04-Pre.png"
+    },
+    {
+      "name": "心理咨询",
+      "action": "psychological_counseling",
+      "index": 5,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav05-Pre.png"
+    },
+    {
+      "name": "寻医问药",
+      "action": "doctor_medicine",
+      "index": 6,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav06-Pre.png"
+    },
+    {
+      "name": "其他",
+      "action": "other",
+      "index": 7,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav07-Pre.png"
+    }
+  ]
+}

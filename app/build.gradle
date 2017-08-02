@@ -1,0 +1,110 @@
+apply plugin: 'com.android.application'
+
+def releaseProperties() {
+    def propertiesFile = file('keystore.properties')
+    if (propertiesFile.canRead()) {
+        def Properties properties = new Properties()
+        properties.load(new FileInputStream(propertiesFile))
+        if (properties != null && properties.containsKey('STORE_FILE') && properties.containsKey('STORE_PASSWORD') &&
+                properties.containsKey('KEY_ALIAS') && properties.containsKey('KEY_PASSWORD')) {
+            android.signingConfigs.release.storeFile = file(properties['STORE_FILE'])
+            android.signingConfigs.release.storePassword = properties['STORE_PASSWORD']
+            android.signingConfigs.release.keyAlias = properties['KEY_ALIAS']
+            android.signingConfigs.release.keyPassword = properties['KEY_PASSWORD']
+        } else {
+            println 'signing.properties found but some entries are missing'
+            android.buildTypes.release.signingConfig = null
+        }
+    } else {
+        println 'signing.properties not found'
+        android.buildTypes.release.signingConfig = null
+    }
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    defaultConfig {
+		applicationId "com.service.customer"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resConfigs "zh"
+        versionCode 1
+        versionName "1.0.0"
+        multiDexEnabled true
+    }
+    signingConfigs {
+        debug {}
+        release {
+            storeFile
+            storePassword
+            keyAlias
+            keyPassword
+        }
+    }
+    buildTypes {
+        debug {
+            ndk {
+                abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            }
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+        }
+        release {
+            ndk {
+                abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            }
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def fileName = "密云区困难家庭生活服务平台(用户端)" + "_v${defaultConfig.versionName}_${new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))}" + '_release.apk'
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
+    }
+    releaseProperties()
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            resources.srcDirs = ['src/main/resources']
+            aidl.srcDirs = ['src/main/aidl']
+            renderscript.srcDirs = ['src/maom']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+        }
+        instrumentTest.setRoot('androidTest')
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+    lintOptions {
+//        textReport true
+//        textOutput 'stdout'
+//        abortOnError true
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile deps.junit
+    compile deps.appcompat_v7
+    compile deps.constraint_layout
+    compile project(':Base')
+}

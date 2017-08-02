@@ -1,0 +1,128 @@
+package com.service.customer.net.entity;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.alibaba.fastjson.JSONObject;
+import com.service.customer.BuildConfig;
+import com.service.customer.base.constant.net.ResponseParameterKey;
+import com.service.customer.base.net.model.BaseEntity;
+
+public final class LoginInfo extends BaseEntity {
+
+    private String accountId;
+    private String accountAvatar;
+    private String phone;
+    private String idCard;
+    private String realName;
+    private String token;
+    private String indexUrl;
+    private String taskUrl;
+
+    public LoginInfo() {}
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public String getAccountAvatar() {
+        return accountAvatar;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public String getIndexUrl() {
+        return indexUrl;
+    }
+
+    public String getTaskUrl() {
+        return taskUrl;
+    }
+
+    public LoginInfo parse(JSONObject object) {
+        if (object != null) {
+            this.indexUrl = object.getString(ResponseParameterKey.INDEX_URL);
+            this.taskUrl = object.getString(ResponseParameterKey.TASK_URL);
+            this.token = object.getString(ResponseParameterKey.TOKEN);
+            if (object.containsKey(ResponseParameterKey.USER_INFO)) {
+                JSONObject userInfo = object.getJSONObject(ResponseParameterKey.USER_INFO);
+                this.accountId = userInfo.getString(ResponseParameterKey.ACCOUNT_ID);
+                this.accountAvatar = userInfo.getString(ResponseParameterKey.ACCOUNT_AVATAR);
+                this.phone = userInfo.getString(ResponseParameterKey.PHONE);
+                this.idCard = userInfo.getString(ResponseParameterKey.ID_CARD);
+                this.realName = userInfo.getString(ResponseParameterKey.REAL_NAME);
+            }
+            return this;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String toString() {
+        if (BuildConfig.DEBUG) {
+            return "LoginInfo{" +
+                    "accountId='" + accountId + '\'' +
+                    ", accountAvatar='" + accountAvatar + '\'' +
+                    ", phone='" + phone + '\'' +
+                    ", idCard='" + idCard + '\'' +
+                    ", realName='" + realName + '\'' +
+                    ", indexUrl='" + indexUrl + '\'' +
+                    ", taskUrl='" + taskUrl + '\'' +
+                    ", token='" + token + '\'' +
+                    '}';
+        } else {
+            return super.toString();
+        }
+    }
+
+    @Override
+    public int describeContents() { return 0; }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeString(this.accountId);
+        dest.writeString(this.accountAvatar);
+        dest.writeString(this.phone);
+        dest.writeString(this.idCard);
+        dest.writeString(this.realName);
+        dest.writeString(this.indexUrl);
+        dest.writeString(this.taskUrl);
+        dest.writeString(this.token);
+    }
+
+    protected LoginInfo(Parcel in) {
+        super(in);
+        this.accountId = in.readString();
+        this.accountAvatar = in.readString();
+        this.phone = in.readString();
+        this.idCard = in.readString();
+        this.realName = in.readString();
+        this.indexUrl = in.readString();
+        this.taskUrl = in.readString();
+        this.token = in.readString();
+    }
+
+    public static final Parcelable.Creator<LoginInfo> CREATOR = new Parcelable.Creator<LoginInfo>() {
+        @Override
+        public LoginInfo createFromParcel(Parcel source) {return new LoginInfo(source);}
+
+        @Override
+        public LoginInfo[] newArray(int size) {return new LoginInfo[size];}
+    };
+}
