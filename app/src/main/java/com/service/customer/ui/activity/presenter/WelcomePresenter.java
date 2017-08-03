@@ -1,7 +1,6 @@
 package com.service.customer.ui.activity.presenter;
 
 import android.content.Context;
-import android.os.Environment;
 import android.text.TextUtils;
 
 import com.service.customer.R;
@@ -95,21 +94,20 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
         LogUtil.getInstance().print("download");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             ConfigInfo configInfo = (ConfigInfo) BaseApplication.getInstance().getConfigInfo();
-            File derectory = Environment.getExternalStoragePublicDirectory(Constant.FILE_NAME);
-            if (configInfo != null && derectory != null) {
-                try {
+            try {
+                File derectory = IOUtil.getInstance().getExternalStoragePublicDirectory(context, Constant.FILE_NAME, null);
+                if (configInfo != null) {
                     String url = configInfo.getDownloadUrl();
-                    IOUtil.getInstance().forceMkdir(derectory);
                     if (!TextUtils.isEmpty(url)) {
                         LogUtil.getInstance().print(derectory);
                         view.showDownloadPromptDialog(url, derectory);
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    view.showPromptDialog(e.getMessage(), Constant.RequestCode.DIALOG_PROMPT_DOWNLOAD_ERROR);
+                } else {
+                    view.showPromptDialog(R.string.dialog_prompt_download_error, Constant.RequestCode.DIALOG_PROMPT_DOWNLOAD_ERROR);
                 }
-            } else {
-                view.showPromptDialog(R.string.dialog_prompt_download_error, Constant.RequestCode.DIALOG_PROMPT_DOWNLOAD_ERROR);
+            } catch (IOException e) {
+                e.printStackTrace();
+                view.showPromptDialog(e.getMessage(), Constant.RequestCode.DIALOG_PROMPT_DOWNLOAD_ERROR);
             }
         } else {
             view.showNetWorkPromptDialog();

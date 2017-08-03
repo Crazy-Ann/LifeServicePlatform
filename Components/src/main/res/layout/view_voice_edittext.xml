@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/etContent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_168"
+        android:background="@null"
+        android:gravity="top|start"
+        android:hint="@string/service_submit_prompt"
+        android:maxLength="500"
+        android:padding="@dimen/dp_6"
+        android:textColor="@color/color_a5a5a5"
+        android:textSize="@dimen/sp_12"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_8">
+
+        <Button
+            android:id="@+id/btnVoice"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_24"
+            android:layout_centerInParent="true"
+            android:background="@drawable/frame_fillet_dde0e7"
+            android:gravity="center"
+            android:text="Voice"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="@dimen/sp_14"/>
+
+        <TextView
+            android:id="@+id/tvTextCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:textColor="@color/color_b0b0b0"
+            android:textSize="@dimen/sp_8"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -197,6 +197,11 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
     }
 
     @Override
+    public void onNeutralButtonClicked(int requestCode) {
+
+    }
+
+    @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
         welcomePresenter.getConfig();
     }
@@ -259,7 +264,7 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
     }
 
     @Override
-    public void setPresenter(@NonNull WelcomeContract.Presenter presenter) {
+    public void setLoginPresenter(@NonNull WelcomeContract.Presenter loginPresenter) {
 
     }
 }

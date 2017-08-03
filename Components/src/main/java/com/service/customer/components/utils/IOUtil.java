@@ -43,7 +43,7 @@ public class IOUtil {
     private File getFilePath(Context ctx) {
         File path;
         if (isSDCardExsist()) {
-//            Cache = getExternalPath(ctx, Regex.LOG.getRegext());
+//            Cache = getExternalStoragePublicDirectory(ctx, Regex.LOG.getRegext());
             path = ctx.getExternalFilesDir(Regex.LOG.getRegext());
 
         } else {
@@ -123,20 +123,23 @@ public class IOUtil {
         }
     }
 
-    public void forceMkdir(File directory) throws IOException {
-        if (directory.exists()) {
-            LogUtil.getInstance().print("文件夹存在:" + directory.getAbsolutePath());
-            if (!directory.isDirectory()) {
-                throw new IOException("File " + directory + " exists and is not a directory. Unable to create directory.");
-            }
-        } else {
-            LogUtil.getInstance().print("文件夹不存在，创建:" + directory.getAbsolutePath());
-            if (!directory.mkdirs()) {
+    public File forceMkdir(File directory) throws IOException {
+        if (directory != null) {
+            if (directory.exists()) {
+                LogUtil.getInstance().print("文件夹存在:" + directory.getAbsolutePath());
                 if (!directory.isDirectory()) {
-                    throw new IOException("Unable to create directory " + directory);
+                    throw new IOException("File " + directory + " exists and is not a directory. Unable to create directory.");
+                }
+            } else {
+                LogUtil.getInstance().print("文件夹不存在，创建:" + directory.getAbsolutePath());
+                if (!directory.mkdirs()) {
+                    if (!directory.isDirectory()) {
+                        throw new IOException("Unable to create directory " + directory);
+                    }
                 }
             }
         }
+        return directory;
     }
 
     public void forceMkdir(String directoryPath) throws IOException {
@@ -258,18 +261,6 @@ public class IOUtil {
         } else {
             return false;
         }
-    }
-
-    private boolean isSDCardExsist() {
-        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-    }
-
-    private File getExternalPath(Context ctx, String dirName) {
-        return new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                                + "/android/data/"
-                                + ctx.getPackageName()
-                                + File.separator
-                                + dirName + File.separator);
     }
 
     public String readByte(Context ctx) {
@@ -429,5 +420,26 @@ public class IOUtil {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    private boolean isSDCardExsist() {
+        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+    }
+
+    public File getExternalStoragePublicDirectory(Context ctx, String directoryName, String fileName) throws IOException {
+        if (isSDCardExsist()) {
+            return new File(IOUtil.getInstance().forceMkdir(Environment.getExternalStoragePublicDirectory(directoryName)).getAbsolutePath() + fileName);
+        } else {
+            return new File(ctx.getExternalFilesDir(directoryName).getAbsolutePath() + fileName);
+        }
+    }
+
+    public File getExternalStorageDirectory(Context ctx, String dirName) {
+        return new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                                + "/android/data/"
+                                + ctx.getPackageName()
+                                + File.separator
+                                + dirName + File.separator);
     }
 }

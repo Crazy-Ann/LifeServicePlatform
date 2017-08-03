@@ -1,20 +1,15 @@
 <resources>
     <string name="app_name">密云区特殊困难家庭生活服务平台</string>
     <string name="account">账号</string>
-    <string name="hy_token">汇元宝令</string>
     <string name="remember_account">记住帐号密码</string>
     <string name="password">密码</string>
-    <string name="invitation_code">邀请码</string>
-    <string name="invitation_code_prompt">请输入邀请码(选填)</string>
-    <string name="image_verification_code">图片验证码</string>
-    <string name="sms_verification_code">短信验证码</string>
-    <string name="get_sms_verification_code">获取短信验证码</string>
     <string name="login">登录</string>
-    <string name="net_work_error_prompt">网络不可用，请先设置网络！</string>
+    <string name="logout">退出登录</string>
+    <string name="net_work_error_prompt">网络不可用，请先设置网络!</string>
     <string name="permission_error_prompt">我们需要的一些权限被您拒绝或者系统发生错误申请失败，请您到设置页面手动授权，否则功能无法正常使用！
     </string>
     <string name="quit_prompt">是否退出当前应用?</string>
-    <string name="logout">是否退出当前帐号?</string>
+    <string name="logout_prompt1">是否退出当前帐号?</string>
     <string name="setting">设置</string>
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
@@ -29,29 +24,24 @@
     <string name="install_prompt">是否安装新版本?</string>
     <string name="install_failed_prompt">安装失败</string>
     <string name="install">安装</string>
-    <string name="refresh_login_prompt">正在刷新登陆，请稍后…</string>
-    <string name="dialog_prompt_refresh_login_error">刷新登陆信息获取异常</string>
-    <string name="get_base_account_info">正在获取账号基础数据</string>
-    <string name="dialog_prompt_get_base_account_info_error">账号基础信息获取异常</string>
-    <string name="get_full_account_info">正在获取账号全部数据</string>
-    <string name="dialog_prompt_get_full_account_info_error">账号全部信息获取异常</string>
     <string name="submit_picture">正在上传图片</string>
     <string name="dialog_prompt_submit_picture_error">上传图片异常</string>
-    <string name="logout_prompt">正在退出登录,请稍后…</string>
+    <string name="logout_prompt2">正在退出登录,请稍后…</string>
     <string name="dialog_prompt_logout_error">退出登录异常</string>
     <string name="account_prompt">请输入账号信息</string>
     <string name="password_prompt">请输入密码</string>
     <string name="password_login_prompt">请输入登录密码</string>
-    <string name="verification_code_prompt">请输入验证码</string>
-    <string name="get_verification_code_prompt">正在获取验证码，请稍后…</string>
-    <string name="dialog_prompt_get_verification_coden_error">验证码信息获取异常</string>
-    <string name="login_prompt">正在修改密码，请稍后…</string>
-    <string name="dialog_prompt_login_error">登陆信息获取异常</string>
+    <string name="login_prompt">正在登录，请稍后…</string>
+    <string name="dialog_prompt_login_error">登录信息获取异常</string>
+    <string name="modify_password">修改密码</string>
     <string name="modify_password_prompt">正在修改密码，请稍后…</string>
     <string name="dialog_prompt_modify_password_error">修改密码异常</string>
+    <string name="modify_real_name">修改用户昵称</string>
     <string name="modify_real_name_prompt">正在修改用户昵称，请稍后…</string>
     <string name="dialog_prompt_modify_real_name_error">修改用户昵称异常</string>
-    <string name="save_head_image_prompt">正在修改用户头像，请稍后…</string>
+    <string name="select_image_prompt">请选择图片</string>
+    <string name="save_head_image_prompt1">点击修改</string>
+    <string name="save_head_image_prompt2">正在修改用户头像，请稍后…</string>
     <string name="dialog_prompt_save_head_image_error">修改用户头像异常</string>
     <string name="bind_push_prompt">正在綁定推送相关信息，请稍后…</string>
     <string name="dialog_prompt_bind_push_error">綁定推送相关信息获取异常</string>
@@ -62,31 +52,11 @@
     <string name="need_verification_code_prompt">正在获取信息，请稍后…</string>
     <string name="dialog_prompt_need_verification_code_error">获取验证码标识异常</string>
     <string name="get_qrcode_list_prompt">正在获取信息，请稍后…</string>
-    <string name="dialog_prompt_get_qrcode_list_error">获取支持的被扫二维码类型异常</string>
     <string name="request_data_error">网络交互异常</string>
     <string name="check_pattern_prompt">正在验证手势密码，请稍后…</string>
     <string name="dialog_prompt_check_pattern_error">验证手势密码异常</string>
     <string name="check_profile_emp">正在验证手势密码，请稍后…</string>
     <string name="dialog_prompt_profile_emp_error">验证手势密码异常</string>
-    <string name="check_pay">正在获取信息，请稍后…</string>
-    <string name="dialog_prompt_pay_error">获取数据异常</string>
-    <string name="receivables">正在获取信息，请稍后…</string>
-    <string name="dialog_prompt_receivables_error">获取数据异常</string>
-    <string name="store_manager">正在获取信息，请稍后…</string>
-    <string name="dialog_prompt_store_manager_error">获取数据异常</string>
-    <string name="pos_device">正在获取信息，请稍后…</string>
-    <string name="dialog_prompt_pos_device_error">获取数据异常</string>
-    <string name="dialog_prompt_pos_device_list_error">未获取到设备列表信息</string>
-    <string name="dialog_prompt_store_manager_list_error">未获取到门店信息</string>
-    <string name="update_agent_prompt">正在建立推广关系，请稍后…</string>
-    <string name="dialog_prompt_update_agent_error">建立推广关系异常</string>
-    <string name="dialog_prompt_calculator_error">数据格式错误</string>
-    <string name="get_model_page_prompt">正在获取信息，请稍后…</string>
-    <string name="dialog_prompt_get_model_page_error">版本信息获取异常</string>
-    <string name="get_union_app_list_prompt">正在获取信息，请稍后…</string>
-    <string name="dialog_prompt_get_union_app_list_error">未获取到支持的银行列表信息</string>
-    <string name="get_print_prompt">正在获取信息，请稍后…</string>
-    <string name="dialog_prompt_get_print_error">获取打印信息异常</string>
     <string name="register_new_user">注册新用户</string>
     <string name="phone_number">手机号</string>
     <string name="phone_number_prompt">请输入手机号</string>
@@ -99,170 +69,6 @@
     <string name="notification_announcement_list">通知公告列表</string>
     <string name="task_management">任务管理</string>
     <string name="mine">我的</string>
-    <string name="wechat">微信</string>
-    <string name="wechat_payment">微信支付</string>
-    <string name="ali">支付宝</string>
-    <string name="unknow">未知</string>
-    <string name="ali_payment">支付宝支付</string>
-    <string name="union_related_app">银联相关的app</string>
-    <string name="union_payment">银联支付</string>
-    <string name="payment_amount">¥%s</string>
-    <string name="payment_prompt">请消费者打开\"%s-扫一扫\"扫码支付</string>
-    <string name="support_app_prompt">查看支持的银行App</string>
-
-
-    <!-- 登录和注册 -->
-    <string name="register_verification_tv_tittle">快速注册</string>
-    <string name="register_verification_tv_right">登录</string>
-    <string name="register_verification_tv_next">下一步</string>
-    <string name="register_verification_tv_phone">手机号</string>
-    <string name="register_verification_et_phone">请输入手机号</string>
-    <string name="register_verification_tv_imgcode">验证码</string>
-    <string name="register_verification_tv_smscode">验证码</string>
-    <string name="register_verification_tv_invite">邀请码</string>
-    <string name="register_verification_tv_get_smscode">获取</string>
-    <string name="register_verification_tv_end_1">点击“下一步”即为同意</string>
-    <string name="register_verification_tv_end_2">《汇收银服务协议》</string>
-    <string name="register_submit_tv_tittle">设置密码</string>
-    <string name="register_submit_tv_next">提交</string>
-    <string name="register_submit_tv_login_pwd">登录密码</string>
-    <string name="register_submit_et_hint">6-16位数字字母组合</string>
-    <string name="register_submit_invite_hint">推广人ID</string>
-    <string name="register_send_again">重新发送</string>
-    <string name="register_surplus">剩余</string>
-    <string name="register_second">秒</string>
-
-
-    <!-- 资质认证 -->
-    <string name="qualifications_start_tv_tittle">资质认证</string>
-    <string name="qualifications_start_person_tv_1">个人认证</string>
-    <string name="qualifications_start_person_tv_2">每日交易限额 5000元</string>
-    <string name="qualifications_start_person_tv_3">填写您身份证的真实姓名、身份证号、本人手持身份证照和门店照片</string>
-    <string name="qualifications_start_person_btn_4">立即认证</string>
-    <string name="qualifications_start_enterprise_tv_1">企业认证</string>
-    <string name="qualifications_start_enterprise_tv_2">每日交易无限额</string>
-    <string name="qualifications_start_enterprise_tv_3">
-        填写企业法人身份证的真实姓名、身份证号、营业执照号、组织机构代码证、法人手持身份证照片；门店收入可提现至公司银行帐户
-    </string>
-    <string name="qualifications_start_enterprise_btn_4">立即认证</string>
-    <string name="qualifications_start_enterprise_btn_next">以后再说</string>
-
-    <!-- 个人认证 -->
-    <string name="qualifications_person_tv_tittle">个人认证</string>
-    <string name="qualifications_person_tv_1">身份证照片</string>
-    <string name="qualifications_person_tv_2">上传正面</string>
-    <string name="qualifications_person_tv_3">上传反面</string>
-    <string name="qualifications_person_tv_4">上传手持</string>
-    <string name="qualifications_person_tv_5">营业执照</string>
-    <string name="qualifications_person_tv_6">上传执照</string>
-    <string name="qualifications_person_tv_7">上传店内照</string>
-    <string name="qualifications_person_btn_next">确认并提交</string>
-    <string name="qualifications_person_tv_8">预计在1-3个工作日内完成人工审核</string>
-
-    <!-- 企业认证 -->
-    <string name="qualifications_enterprise_tv_tittle">企业认证</string>
-    <string name="qualifications_enterprise_tv_1">企业资料</string>
-    <string name="qualifications_enterprise_tv_2">营业执照</string>
-    <string name="qualifications_enterprise_tv_3">税务登记证</string>
-    <string name="qualifications_enterprise_tv_4">组织机构证</string>
-    <string name="qualifications_enterprise_tv_5">开户许可证</string>
-    <string name="qualifications_enterprise_tv_6">身份证照片</string>
-    <string name="qualifications_enterprise_tv_7">上传正面</string>
-    <string name="qualifications_enterprise_tv_8">上传反面</string>
-    <string name="qualifications_enterprise_tv_9">上传手持</string>
-    <string name="qualifications_enterprise_btn_next">确认并提交</string>
-    <string name="qualifications_enterprise_tv_10">预计在1-3个工作日内完成人工审核</string>
-
-    <!-- 认证结果 -->
-    <string name="qualifications_result_tv_tittle">资质认证</string>
-    <string name="qualifications_result_waiting_tv_1">审核中</string>
-    <string name="qualifications_result_waiting_tv_2">我们将在1-3个工作日内完成审核，请您耐心等待</string>
-    <string name="qualifications_result_success_tv_1">已认证</string>
-    <string name="qualifications_result_success_tv_2">您的资质已认证，可享受每日交易无限制条件</string>
-
-    <!-- 首页fragment -->
-    <string name="fragment_home_tv_tittle">汇收银</string>
-    <string name="collection">收款</string>
-    <string name="turnover">流水</string>
-    <string name="report_form">报表</string>
-    <string name="collection_code">收款码</string>
-    <string name="store">门店</string>
-    <string name="cashier">收银员</string>
-    <string name="today_data">今日数据</string>
-    <string name="transaction_amount">交易金额</string>
-    <string name="transaction_total">共</string>
-
-    <!-- 我的fragment -->
-    <string name="fragment_me_tv">我的</string>
-    <string name="fragment_me_account_tv_1">帐号：</string>
-    <string name="fragment_me_account_tv_2">ID：</string>
-    <string name="fragment_me_account_tv_3">已认证</string>
-    <string name="fragment_me_count_tv_1">收银员（人）</string>
-    <string name="fragment_me_count_tv_2">门店数量</string>
-    <string name="fragment_me_count_tv_3">收款码数量</string>
-    <string name="fragment_me_event_tv_1">店铺签约信息</string>
-    <string name="fragment_me_event_tv_2">收款码</string>
-    <string name="fragment_me_event_tv_3">门店管理</string>
-    <string name="fragment_me_event_tv_4">收银员管理</string>
-    <string name="fragment_me_event_tv_5">资质认证</string>
-    <string name="fragment_me_event_tv_6">推荐给好友</string>
-    <string name="fragment_me_event_tv_7">设置</string>
-    <string name="fragment_me_status_real">已实名</string>
-    <string name="fragment_me_status_not">已实名</string>
-    <string name="fragment_me_share_1">微信好友</string>
-    <string name="fragment_me_share_2">微信朋友圈</string>
-    <string name="fragment_me_share_3">QQ好友</string>
-    <string name="fragment_me_share_4">QQ空间</string>
-    <string name="fragment_me_status_real_toast">"当前用户已认证"</string>
-
-    <!-- 我的设置界面 -->
-    <string name="activity_me_setting_tv_tittle">设置</string>
-    <string name="activity_me_setting_event_tv1">重置登录密码</string>
-    <string name="activity_me_setting_event_tv2">修改交易密码</string>
-    <string name="activity_me_setting_event_tv3">交易语音提示</string>
-    <string name="activity_me_setting_event_tv4">收款单消息通知</string>
-    <string name="activity_me_setting_event_tv5">退款通知主账号审核</string>
-    <string name="activity_me_setting_event_tv6">手势密码</string>
-    <string name="activity_me_setting_event_tv7">指纹登录</string>
-    <string name="activity_me_setting_event_tv8">关于我们</string>
-    <string name="activity_me_setting_event_tv9">退出登录</string>
-    <string name="activity_me_setting_event_tv10">打印小票</string>
-
-    <!-- 我的设置关于界面 -->
-    <string name="activity_me_about_tv_tittle">关于我们</string>
-    <string name="activity_me_about_btn1">检查更新</string>
-    <string name="activity_me_about_tv2">当前版本：</string>
-    <string name="activity_me_about_tv3">汇元网 版权所有</string>
-    <string name="activity_me_about_tv4">Copyright © 2008-2017 Huiyuan. All Rights Reserved</string>
-
-    <!-- 计算器界面 -->
-    <string name="activity_calculator_tv_tittle"></string>
-    <string name="activity_calculator_btn_0">0</string>
-    <string name="activity_calculator_btn_1">1</string>
-    <string name="activity_calculator_btn_2">2</string>
-    <string name="activity_calculator_btn_3">3</string>
-    <string name="activity_calculator_btn_4">4</string>
-    <string name="activity_calculator_btn_5">5</string>
-    <string name="activity_calculator_btn_6">6</string>
-    <string name="activity_calculator_btn_7">7</string>
-    <string name="activity_calculator_btn_8">8</string>
-    <string name="activity_calculator_btn_9">9</string>
-    <string name="activity_calculator_btn_00">00</string>
-    <string name="activity_calculator_btn_point">.</string>
-    <string name="activity_calculator_btn_plus">+</string>
-    <string name="activity_calculator_btn_result">=</string>
-    <string name="activity_calculator_btn_AC">AC</string>
-    <string name="activity_calculator_btn_back"></string>
-    <string name="activity_calculator_event_1">扫码收款</string>
-    <string name="activity_calculator_event_5">二维码收款</string>
-    <string name="activity_calculator_event_2">微信收款</string>
-    <string name="activity_calculator_event_3">支付宝收款</string>
-    <string name="activity_calculator_event_4">银联收款</string>
-    <string name="error_support_toast">当前商户不支持二维码收款</string>
-    <string name="error_money_low_toast">金额不能为0</string>
-    <string name="error_money_more_toast">金额需少于11位</string>
-    <string name="activity_calculator_add_union">银联刷卡</string>
-    <string name="activity_calculator_add_info">返回</string>
 
     <!-- 手势密码 -->
     <string name="gesture_password_tv_tittle">设置手势</string>
@@ -282,50 +88,9 @@
     <string name="gesture_password_prompt8">解锁失败</string>
     <string name="gesture_password_prompt9">连续5次解锁失败,请重新登录</string>
 
-    <!--扫码页面-->
-    <string name="collection_prompt1">扫描顾客的 微信&amp;支付宝 付款码完成收款</string>
-    <string name="collection_prompt2">微信&amp;支付宝收款码</string>
-    <string name="collection_prompt3">请输入付款码</string>
-    <string name="collection_prompt4">手动输入收款码</string>
-    <string name="collection_payment_code">0123456789</string>
-    <string name="collection_unknow_code_toast">无法识别二维码</string>
-    <string name="collection_yuan">￥</string>
-
-    <!--支持的银行-->
-    <string name="support_app_bank_tv_tittle">支持的银行APP</string>
-    <!-- JS交互部分上传照片-->
-    <string name="photograph">拍照</string>
-    <string name="album">从相册选择</string>
-    <string name="save_img_prompt">图片已保存至：相册</string>
-    <string name="wap_print">"如需打印票据，请在设置中打开票据打印选项。"</string>
-
-
     <!--图片获取相关-->
     <string name="get_image_error">图片获取失败</string>
-    <string name="from_camera">拍照</string>
-    <string name="from_picture">相册</string>
-
-    <!--结果页面-->
-    <string name="result_pay_success">收款成功</string>
-    <string name="result_pay_fail">收款失败</string>
-    <string name="result_pay_waiting">收款处理中</string>
-    <string name="result_pay_should_money">应收金额：</string>
-    <string name="result_pay_reality_money">实收金额</string>
-    <string name="result_pay_time">交易时间</string>
-    <string name="result_pay_type">支付方式</string>
-    <string name="result_bill_no">交易单号</string>
-    <string name="result_bill_Name">交易备注</string>
-    <string name="result_pay_btn_next">继续收款</string>
-    <string name="result_pay_btn_check">查看流水</string>
-
-    <string name="result_refund_success">退款成功</string>
-    <string name="result_refund_fail">退款失败</string>
-    <string name="result_refund_refuse">退款拒绝</string>
-    <string name="result_refund_waiting">退款处理中</string>
-    <string name="result_refund_should_money">申请退款金额：</string>
-    <string name="result_refund_reality_money">实退金额</string>
-    <string name="result_refund_time">发起时间</string>
-    <string name="result_refund_btn_progress">退款进度</string>
-    <string name="result_refund_refuse_reason">拒绝原因</string>
+    <string name="photograph">拍照</string>
+    <string name="album">相册</string>
 
 </resources>

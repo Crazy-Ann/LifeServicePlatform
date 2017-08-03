@@ -11,18 +11,18 @@ import com.service.customer.base.constant.Temp;
 
 public abstract class BaseDialogBuilder<T extends BaseDialogBuilder<T>> {
 
-    private String mTag = Constant.View.CUSTOM_DIALOG;
-    private int mRequestCode = Constant.RequestCode.DIALOG;
-    protected final FragmentManager mFragmentManager;
+    private String tag = Constant.View.CUSTOM_DIALOG;
+    private int requestCode = Constant.RequestCode.DIALOG;
+    protected final FragmentManager fragmentManager;
     protected final Class<? extends BaseDialogFragment> mClass;
-    private Fragment mTargetFragment;
+    private Fragment targetFragment;
     private boolean isCancelable = true;
     private boolean isCancelableOnTouchOutside = true;
     private boolean isUseDarkTheme = false;
     private boolean isUseLightTheme = false;
 
     public BaseDialogBuilder(FragmentManager fragmentManager, Class<? extends BaseDialogFragment> clazz) {
-        mFragmentManager = fragmentManager;
+        this.fragmentManager = fragmentManager;
         mClass = clazz;
     }
 
@@ -44,18 +44,18 @@ public abstract class BaseDialogBuilder<T extends BaseDialogBuilder<T>> {
     }
 
     public T setTargetFragment(Fragment fragment, int requestCode) {
-        mTargetFragment = fragment;
-        mRequestCode = requestCode;
+        targetFragment = fragment;
+        this.requestCode = requestCode;
         return self();
     }
 
     public T setRequestCode(int requestCode) {
-        mRequestCode = requestCode;
+        this.requestCode = requestCode;
         return self();
     }
 
     public T setTag(String tag) {
-        mTag = tag;
+        this.tag = tag;
         return self();
     }
 
@@ -75,10 +75,10 @@ public abstract class BaseDialogBuilder<T extends BaseDialogBuilder<T>> {
         bundle.putBoolean(Temp.CANCELABLE_ON_TOUCH_OUTSIDE.getContent(), isCancelableOnTouchOutside);
         bundle.putBoolean(Temp.USE_DARK_THEME.getContent(), isUseDarkTheme);
         bundle.putBoolean(Temp.USE_LIGHT_THEME.getContent(), isUseLightTheme);
-        if (mTargetFragment != null) {
-            fragment.setTargetFragment(mTargetFragment, mRequestCode);
+        if (targetFragment != null) {
+            fragment.setTargetFragment(targetFragment, requestCode);
         } else {
-            bundle.putInt(Temp.REQUEST_CODE.getContent(), mRequestCode);
+            bundle.putInt(Temp.REQUEST_CODE.getContent(), requestCode);
         }
         fragment.setCancelable(isCancelable);
         return fragment;
@@ -86,7 +86,7 @@ public abstract class BaseDialogBuilder<T extends BaseDialogBuilder<T>> {
 
     public DialogFragment show(Context ctx) {
         BaseDialogFragment fragment = create(ctx);
-        fragment.show(mFragmentManager, mTag);
+        fragment.show(fragmentManager, tag);
         return fragment;
     }
 
@@ -96,7 +96,7 @@ public abstract class BaseDialogBuilder<T extends BaseDialogBuilder<T>> {
 
     public DialogFragment showAllowingStateLoss(Context ctx) {
         BaseDialogFragment fragment = create(ctx);
-        fragment.showAllowingStateLoss(mFragmentManager, mTag);
+        fragment.showAllowingStateLoss(fragmentManager, tag);
         return fragment;
     }
 }

@@ -6,7 +6,7 @@ public class RequestParameterKey {
     public final static String LOGIN = "login";
     public final static String MODIFY_PASSWORD = "ModifyPassword";
     public final static String MODIFY_NAME = "modifyname";
-    public final static String SAVE_HEAD_IMAGE = "SaveHeadImage";
+    public final static String SAVE_HEAD_IMAGE = "headimage";
 
     public static final String TYPE = "type";
     public static final String TOKEN = "token";
@@ -20,4 +20,6 @@ public class RequestParameterKey {
     public static final String ACCOUNT = "phone";
     public static final String PASSWORD = "password";
     public static final String REAL_NAME = "realname";
+    public static final String FORM_DATA = "form_data";
+    public static final String FILE_DATA = "file_data";
 }

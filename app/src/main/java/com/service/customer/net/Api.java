@@ -22,6 +22,7 @@ import com.service.customer.net.reponse.ModifyPasswordResponse;
 import com.service.customer.net.reponse.ModifyRealNameResponse;
 import com.service.customer.net.reponse.SaveHeadImageResponse;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class Api {
@@ -141,14 +142,14 @@ public class Api {
                     @Override
                     public void onStart() {
                         super.onStart();
-                        LogUtil.getInstance().print("登陆开始");
+                        LogUtil.getInstance().print("登录开始");
                         view.showLoadingPromptDialog(R.string.login_prompt, Constant.RequestCode.DIALOG_PROGRESS_LOGIN);
                     }
 
                     @Override
                     public void onResponseSuccess(JSONObject object) {
                         super.onResponseSuccess(object);
-                        LogUtil.getInstance().print("登陆成功:" + loginInfo.toString());
+                        LogUtil.getInstance().print("登录成功:" + loginInfo.toString());
                         if (loginInfo != null) {
                             apiListener.success(loginInfo);
                         } else {
@@ -159,7 +160,7 @@ public class Api {
                     @Override
                     public void onResponseFailed(String code, String message) {
                         super.onResponseFailed(code, message);
-                        LogUtil.getInstance().print("登陆失败,code:" + code + ",message:" + message);
+                        LogUtil.getInstance().print("登录失败,code:" + code + ",message:" + message);
                         view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_LOGIN_ERROR);
                         apiListener.failed(null, code, message);
                     }
@@ -167,21 +168,21 @@ public class Api {
                     @Override
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
-                        LogUtil.getInstance().print("登陆失败,code:" + code + ",message:" + message);
+                        LogUtil.getInstance().print("登录失败,code:" + code + ",message:" + message);
                         view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), Constant.RequestCode.DIALOG_PROMPT_LOGIN_ERROR);
                     }
 
                     @Override
                     public void onEnd() {
                         super.onEnd();
-                        LogUtil.getInstance().print("登陆结束");
+                        LogUtil.getInstance().print("登录结束");
                         view.hideLoadingPromptDialog();
                     }
 
                     @Override
                     public void onFailed(int code, String message) {
                         super.onFailed(code, message);
-                        LogUtil.getInstance().print("登陆失败,code:" + code + ",message:" + message);
+                        LogUtil.getInstance().print("登录失败,code:" + code + ",message:" + message);
                         view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_LOGIN_ERROR);
                     }
                 });
@@ -316,7 +317,7 @@ public class Api {
         }
     }
 
-    public void saveHeadImage(final Context context, final BaseView view, String url, String realName, String token, final ApiListener apiListener) {
+    public void saveHeadImage(final Context context, final BaseView view, String url, File file, String token, final ApiListener apiListener) {
         LogUtil.getInstance().print("saveHeadImage");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
@@ -329,7 +330,7 @@ public class Api {
                     public void onStart() {
                         super.onStart();
                         LogUtil.getInstance().print("修改头像开始");
-                        view.showLoadingPromptDialog(R.string.save_head_image_prompt, Constant.RequestCode.DIALOG_PROGRESS_MODIFY_REAL_NAME);
+                        view.showLoadingPromptDialog(R.string.save_head_image_prompt2, Constant.RequestCode.DIALOG_PROGRESS_MODIFY_REAL_NAME);
                     }
 
                     @Override

@@ -2,7 +2,6 @@ package com.service.customer.base.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.service.customer.base.R;
+import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.base.toolbar.listener.OnRightIconEventListener;
 import com.service.customer.base.toolbar.listener.OnRightTextEventListener;
@@ -42,45 +42,54 @@ public abstract class BaseFragment extends Fragment {
     protected ImageView ivRightIconEvent;
     protected ImageView ivTitleRightIcon;
 
-    // 只有中间tittle，tittle是否可以点击需要设置
-    public void initializeToolbar(int toolbarColorId, int titleColorId, boolean isTitleClickable, String title, OnTitleEventListener onTitleEventListener, boolean hasTitleRightIcon, int titleRightIcon) {
+    /**
+     * 只有中间tittle，tittle是否可以点击需要设置
+     */
+    protected void initializeToolbar(int toolbarColorId, int titleColorId, boolean isTitleClickable, String title, OnTitleEventListener onTitleEventListener) {
         initializeToolbar(toolbarColorId, false, Constant.View.DEFAULT_RESOURCE, null,
-                titleColorId, isTitleClickable, title, onTitleEventListener, Constant.View.DEFAULT_RESOURCE, null, hasTitleRightIcon, titleRightIcon);
+                          titleColorId, isTitleClickable, title, onTitleEventListener, Constant.View.DEFAULT_RESOURCE, null);
     }
 
-    // 有左侧icon，tittle不可点击
+    /**
+     * 有左侧icon，tittle不可点击
+     */
+
     protected void initializeToolbar(int toolbarColorId, boolean hasLeftIconEvent, int leftIconId, OnLeftIconEventListener onLeftIconEventListener, int titleColorId, String title) {
         initializeToolbar(toolbarColorId, hasLeftIconEvent, leftIconId, onLeftIconEventListener,
-                true, titleColorId, false, title, null,
-                false, Constant.View.DEFAULT_RESOURCE, null, null,
-                false, Constant.View.DEFAULT_RESOURCE, null, false, Constant.View.DEFAULT_RESOURCE);
+                          true, titleColorId, false, title, null,
+                          false, Constant.View.DEFAULT_RESOURCE, null, null,
+                          false, Constant.View.DEFAULT_RESOURCE, null);
     }
 
-    // 有左侧icon，右侧文字的tittle，tittle是否可以点击需要设置
+    /**
+     * 有左侧icon，右侧文字的tittle，tittle是否可以点击需要设置
+     */
     protected void initializeToolbar(int toolbarColorId, boolean hasLeftIconEvent, int leftIconId, OnLeftIconEventListener onLeftIconEventListener
             , int titleColorId, boolean isTitleClickable, String title, OnTitleEventListener onTitleEventListener
             , int rightTextColorId, String rightText, OnRightTextEventListener onRightTextEventListener) {
         initializeToolbar(toolbarColorId, hasLeftIconEvent, leftIconId, onLeftIconEventListener,
-                true, titleColorId, isTitleClickable, title, onTitleEventListener,
-                true, rightTextColorId, rightText, onRightTextEventListener,
-                false, Constant.View.DEFAULT_RESOURCE, null, false, Constant.View.DEFAULT_RESOURCE);
+                          true, titleColorId, isTitleClickable, title, onTitleEventListener,
+                          true, rightTextColorId, rightText, onRightTextEventListener,
+                          false, Constant.View.DEFAULT_RESOURCE, null);
     }
 
-    // 有左侧icon，右侧icon的tittle，tittle是否可以点击需要设置
+    /**
+     * 有左侧icon，右侧icon的tittle，tittle是否可以点击需要设置
+     */
     protected void initializeToolbar(int toolbarColorId, boolean hasLeftIconEvent, int leftIconId, OnLeftIconEventListener onLeftIconEventListener
             , int titleColorId, boolean isTitleClickable, String title, OnTitleEventListener onTitleEventListener
-            , int rightIconId, final OnRightIconEventListener onRightIconEventListener, boolean hasTitleRightIcon, int titleRightIcon) {
+            , int rightIconId, final OnRightIconEventListener onRightIconEventListener) {
         initializeToolbar(toolbarColorId, hasLeftIconEvent, leftIconId, onLeftIconEventListener,
-                true, titleColorId, isTitleClickable, title, onTitleEventListener,
-                false, Constant.View.DEFAULT_RESOURCE, null, null,
-                true, rightIconId, onRightIconEventListener, hasTitleRightIcon, titleRightIcon);
+                          true, titleColorId, isTitleClickable, title, onTitleEventListener,
+                          false, Constant.View.DEFAULT_RESOURCE, null, null,
+                          true, rightIconId, onRightIconEventListener);
     }
 
     @SuppressLint("NewApi")
     private void initializeToolbar(int toolbarColorId, boolean hasLeftIconEvent, int leftIconId, final OnLeftIconEventListener onLeftIconEventListener
             , boolean isShowTitle, int titleColorId, boolean isTitleClickable, String title, final OnTitleEventListener onTitleEventListener
             , boolean hasRightTextEvent, int rightTextColorId, String rightText, final OnRightTextEventListener onRightTextEventListener
-            , boolean hasRightIconEvent, int rightIconId, final OnRightIconEventListener onRightIconEventListener, boolean hasTitleRightIcon, int titleRightIcon) {
+            , boolean hasRightIconEvent, int rightIconId, final OnRightIconEventListener onRightIconEventListener) {
         if (inToolbar != null) {
             if (toolbarColorId != Constant.View.DEFAULT_RESOURCE) {
                 inToolbar.setBackgroundColor(getResources().getColor(toolbarColorId));
@@ -120,7 +129,7 @@ public abstract class BaseFragment extends Fragment {
                 }
                 tvTitle.setText(title);
                 if (titleColorId != Constant.View.DEFAULT_RESOURCE) {
-                    tvTitle.setTextColor(getActivity().getResources().getColor(titleColorId));
+                    tvTitle.setTextColor(getResources().getColor(titleColorId));
                 }
                 ViewUtil.getInstance().setViewVisible(tvTitle);
             } else {
@@ -141,7 +150,7 @@ public abstract class BaseFragment extends Fragment {
                 ViewUtil.getInstance().setViewVisible(tvRightTextEvent);
                 tvRightTextEvent.setText(rightText);
                 if (rightTextColorId != Constant.View.DEFAULT_RESOURCE) {
-                    tvRightTextEvent.setTextColor(getActivity().getResources().getColor(rightTextColorId));
+                    tvRightTextEvent.setTextColor(getResources().getColor(rightTextColorId));
                 }
             } else {
                 if (tvRightTextEvent != null) {
@@ -165,18 +174,6 @@ public abstract class BaseFragment extends Fragment {
             } else {
                 if (ivRightIconEvent != null) {
                     ViewUtil.getInstance().setViewInvisible(ivRightIconEvent);
-                }
-            }
-
-            if (hasTitleRightIcon) {
-                if (titleRightIcon != Constant.View.DEFAULT_RESOURCE) {
-                    ivTitleRightIcon = ViewUtil.getInstance().findView(inToolbar, R.id.ivTitleRightIcon);
-                    GlideUtil.getInstance().with(getActivity(), titleRightIcon, null, null, DiskCacheStrategy.NONE, ivTitleRightIcon);
-                    ViewUtil.getInstance().setViewVisible(ivTitleRightIcon);
-                }
-            } else {
-                if (ivTitleRightIcon != null) {
-                    ViewUtil.getInstance().setViewInvisible(ivTitleRightIcon);
                 }
             }
         }
@@ -294,29 +291,37 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract boolean onBackPressed();
 
-    protected void startActivity(Context context, Class<?> cls) {
-        startActivity(context, cls, null);
+    protected void startActivity(Class<?> cls) {
+        startActivity(cls, null);
     }
 
     protected void startActivity(String act) {
         startActivity(act, null);
     }
 
-    protected void startActivity(String act, Bundle mBundle) {
+    protected void startActivity(Class<?> cls, int flag) {
+        Intent intent = new Intent();
+        intent.setClass(BaseApplication.getInstance(), cls);
+        intent.setFlags(flag);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+    }
+
+    protected void startActivity(String act, Bundle bundle) {
         Intent intent = new Intent();
         intent.setAction(act);
-        if (mBundle != null) {
-            intent.putExtras(mBundle);
+        if (bundle != null) {
+            intent.putExtras(bundle);
         }
         getActivity().startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivity(Context context, Class<?> cls, Bundle mBundle) {
+    protected void startActivity(Class<?> cls, Bundle bundle) {
         Intent intent = new Intent();
-        intent.setClass(context, cls);
-        if (mBundle != null) {
-            intent.putExtras(mBundle);
+        intent.setClass(BaseApplication.getInstance(), cls);
+        if (bundle != null) {
+            intent.putExtras(bundle);
         }
         getActivity().startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
@@ -330,16 +335,16 @@ public abstract class BaseFragment extends Fragment {
         startActivityForResult(act, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, int requestCode, Bundle mBundle) {
-        startActivityForResult(act, null, null, requestCode, mBundle);
+    protected void startActivityForResult(String act, int requestCode, Bundle bundle) {
+        startActivityForResult(act, null, null, requestCode, bundle);
     }
 
     protected void startActivityForResult(String act, Uri data, int requestCode) {
         startActivityForResult(act, data, null, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, String type, int requestCode, Bundle mBundle) {
-        startActivityForResult(act, null, type, requestCode, mBundle);
+    protected void startActivityForResult(String act, String type, int requestCode, Bundle bundle) {
+        startActivityForResult(act, null, type, requestCode, bundle);
     }
 
     protected void startActivityForResultWithParcelable(String act, HashMap<String, Parcelable> map, int requestCode) {
@@ -377,25 +382,30 @@ public abstract class BaseFragment extends Fragment {
         getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResult(String act, Uri data, String type, int requestCode, Bundle mBundle) {
+    protected void startActivityForResult(String act, Uri data, String type, int requestCode, Bundle bundle) {
         Intent intent = new Intent();
         intent.setAction(act);
         intent.setDataAndType(data, type);
-        if (mBundle != null) {
-            intent.putExtras(mBundle);
+        if (bundle != null) {
+            intent.putExtras(bundle);
         }
         startActivityForResult(intent, requestCode);
         getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResult(Class<?> cls, int requestCode, Bundle mBundle) {
+    protected void startActivityForResult(Class<?> cls, int requestCode, Bundle bundle) {
         Intent intent = new Intent();
         intent.setClass(getActivity(), cls);
-        if (mBundle != null) {
-            intent.putExtras(mBundle);
+        if (bundle != null) {
+            intent.putExtras(bundle);
         }
         startActivityForResult(intent, requestCode);
         getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
+    public void onFinish(String message) {
+        getActivity().finish();
+        getActivity().overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
+        LogUtil.getInstance().print("onFinish is called: " + message);
+    }
 }

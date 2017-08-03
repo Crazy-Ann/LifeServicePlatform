@@ -22,10 +22,6 @@ public class BaseRequest {
         // cannot be instantiated
     }
 
-    public RequestParameter generateRequestParameters(String type, HashMap<String, String> bizContent, String token, boolean isJson) {
-        return formatParameters(generateRequestParameters(type, bizContent, token), isJson);
-    }
-
     protected HashMap<String, String> generateRequestParameters(String type, HashMap<String, String> bizContent, String token) {
         HashMap<String, String> parameters = new HashMap<>();
         if (!TextUtils.isEmpty(type)) {
@@ -46,7 +42,7 @@ public class BaseRequest {
         return parameters;
     }
 
-    private RequestParameter formatParameters(HashMap<String, String> parameters, boolean isJson) {
+    protected RequestParameter formatParameters(HashMap<String, String> parameters, boolean isJson) {
         RequestParameter parameter = new RequestParameter();
         parameter.setJsonType(isJson);
 //        String requestData = SecurityUtil.getInstance().encryptAES(jsonObject.toString(), BuildConfig.DECRYPT_KEY);

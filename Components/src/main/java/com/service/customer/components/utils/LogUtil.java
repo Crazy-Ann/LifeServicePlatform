@@ -9,22 +9,22 @@ import com.service.customer.components.BuildConfig;
  */
 public class LogUtil {
 
-    private static LogUtil mInstance;
+    private static LogUtil logUtil;
 
     private LogUtil() {
         // cannot be instantiated
     }
 
     public static synchronized LogUtil getInstance() {
-        if (mInstance == null) {
-            mInstance = new LogUtil();
+        if (logUtil == null) {
+            logUtil = new LogUtil();
         }
-        return mInstance;
+        return logUtil;
     }
 
     public static void releaseInstance() {
-        if (mInstance != null) {
-            mInstance = null;
+        if (logUtil != null) {
+            logUtil = null;
         }
     }
 

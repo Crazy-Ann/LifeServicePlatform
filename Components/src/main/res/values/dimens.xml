@@ -4,10 +4,12 @@
     <dimen name="dp_8">8dp</dimen>
     <dimen name="dp_16">16dp</dimen>
     <dimen name="dp_24">24dp</dimen>
+    <dimen name="dp_48">48dp</dimen>
     <dimen name="dp_56">56dp</dimen>
     <dimen name="dp_96">96dp</dimen>
     <dimen name="dp_168">168dp</dimen>
 
+    <dimen name="sp_8">8sp</dimen>
     <dimen name="sp_12">12sp</dimen>
     <dimen name="sp_14">14sp</dimen>
 

@@ -11,6 +11,7 @@ import com.service.customer.base.net.model.BaseEntity;
 public final class LoginInfo extends BaseEntity {
 
     private String accountId;
+    private String memberType;
     private String accountAvatar;
     private String phone;
     private String idCard;
@@ -23,6 +24,10 @@ public final class LoginInfo extends BaseEntity {
 
     public String getAccountId() {
         return accountId;
+    }
+
+    public String getMemberType() {
+        return memberType;
     }
 
     public String getAccountAvatar() {
@@ -61,9 +66,13 @@ public final class LoginInfo extends BaseEntity {
             if (object.containsKey(ResponseParameterKey.USER_INFO)) {
                 JSONObject userInfo = object.getJSONObject(ResponseParameterKey.USER_INFO);
                 this.accountId = userInfo.getString(ResponseParameterKey.ACCOUNT_ID);
-                this.accountAvatar = userInfo.getString(ResponseParameterKey.ACCOUNT_AVATAR);
-                this.phone = userInfo.getString(ResponseParameterKey.PHONE);
-                this.idCard = userInfo.getString(ResponseParameterKey.ID_CARD);
+                this.memberType = userInfo.getString(ResponseParameterKey.MEMBER_TYPE);
+//                this.accountAvatar = userInfo.getString(ResponseParameterKey.ACCOUNT_AVATAR);
+//                this.phone = userInfo.getString(ResponseParameterKey.PHONE);
+//                this.idCard = userInfo.getString(ResponseParameterKey.ID_CARD);
+                this.accountAvatar = "http://admin.jujiamao.com/img/profile_small.jpg";
+                this.phone = "13811111111";
+                this.idCard = "1101111111111111";
                 this.realName = userInfo.getString(ResponseParameterKey.REAL_NAME);
             }
             return this;
@@ -77,6 +86,7 @@ public final class LoginInfo extends BaseEntity {
         if (BuildConfig.DEBUG) {
             return "LoginInfo{" +
                     "accountId='" + accountId + '\'' +
+                    "memberType='" + memberType + '\'' +
                     ", accountAvatar='" + accountAvatar + '\'' +
                     ", phone='" + phone + '\'' +
                     ", idCard='" + idCard + '\'' +
@@ -97,6 +107,7 @@ public final class LoginInfo extends BaseEntity {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(this.accountId);
+        dest.writeString(this.memberType);
         dest.writeString(this.accountAvatar);
         dest.writeString(this.phone);
         dest.writeString(this.idCard);
@@ -109,6 +120,7 @@ public final class LoginInfo extends BaseEntity {
     protected LoginInfo(Parcel in) {
         super(in);
         this.accountId = in.readString();
+        this.memberType = in.readString();
         this.accountAvatar = in.readString();
         this.phone = in.readString();
         this.idCard = in.readString();

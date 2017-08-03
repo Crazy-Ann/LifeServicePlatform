@@ -18,7 +18,8 @@ public final class Constant {
             , Manifest.permission.ACCESS_COARSE_LOCATION
             , Manifest.permission.CAMERA
             , Manifest.permission.READ_SMS
-            , Manifest.permission.CALL_PHONE};
+            , Manifest.permission.CALL_PHONE
+            , Manifest.permission.READ_CONTACTS};
 
     public final static class RequestCode {
         public static final int DIALOG_PROMPT_SET_PERMISSION = 0x4999;
@@ -44,7 +45,10 @@ public final class Constant {
         public static final int DIALOG_PROMPT_MODIFY_REAL_NAME_ERROR = 0x5019;
         public static final int DIALOG_PROGRESS_SAVE_HEAD_IMAGE = 0x5020;
         public static final int DIALOG_PROMPT_SAVE_HEAD_IMAGE_ERROR = 0x5021;
-        public static final int INSTALL_APK = 0x5099;
+        public static final int DIALOG_PROMPT_SELECT_IMAGE = 0x5022;
+        public static final int INSTALL_APK = 0x5097;
+        public static final int REQUEST_CODE_PHOTOGRAPH = 0x5098;
+        public static final int REQUEST_CODE_ALBUM = 0x5099;
     }
 
     public final static class Profile {
@@ -62,11 +66,11 @@ public final class Constant {
     }
 
     public class Cache {
-        public static final String ROOT = "/mergepay";
+        public static final String ROOT = "/LifeServicePlatform";
         public static final String CACHE_ROOT = ROOT + "/cache";
         public static final String PAGE_DATA_CACHE_PATH = CACHE_ROOT + "/page";
         public static final String PAGE_IMAGE_CACHE_PATH = PAGE_DATA_CACHE_PATH + "/image";
-        public static final String SERVICE_DATA_CACHE_PATH = CACHE_ROOT + "/iWoyouService";
+        public static final String SERVICE_DATA_CACHE_PATH = CACHE_ROOT + "/service";
         public static final String SERVICE_IMAGE_CACHE_PATH = SERVICE_DATA_CACHE_PATH + "/icon";
         public static final String TAB_DATA_CACHE_PATH = CACHE_ROOT + "/tab";
         public static final String TAB_IMAGE_CACHE_PATH = TAB_DATA_CACHE_PATH + "/icon";

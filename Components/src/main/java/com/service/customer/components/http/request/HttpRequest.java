@@ -50,7 +50,7 @@ public final class HttpRequest {
                 task.execute();
             }
         } else {
-            ToastUtil.getInstance().showToast(ctx, ctx.getString(R.string.http_error_prompt1), Toast.LENGTH_SHORT);
+            ToastUtil.getInstance().showToast(ctx, ctx.getString(R.string.http_error_prompt), Toast.LENGTH_SHORT);
         }
     }
 

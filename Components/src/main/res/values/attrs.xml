@@ -43,42 +43,4 @@
         <attr name="tl_drawDecorationAfterTab" format="boolean"/>
     </declare-styleable>
 
-    <declare-styleable name="PanelLayout">
-        <attr name="panel_height" format="dimension"/>
-        <attr name="shadow_height" format="dimension"/>
-        <attr name="parallax_offset" format="dimension"/>
-        <attr name="fade_color" format="color"/>
-        <attr name="fling_velocity" format="integer"/>
-        <attr name="drag_view" format="reference"/>
-        <attr name="scrollable_view" format="reference"/>
-        <attr name="overlay" format="boolean"/>
-        <attr name="clip_panel" format="boolean"/>
-        <attr name="anchor_point" format="float"/>
-        <attr name="initial_state" format="enum">
-            <enum name="expanded" value="0"/>
-            <enum name="collapsed" value="1"/>
-            <enum name="anchored" value="2"/>
-            <enum name="hidden" value="3"/>
-        </attr>
-        <attr name="scroll_interpolator" format="reference"/>
-    </declare-styleable>
-
-    <declare-styleable name="BottomNavigationView">
-        <attr name="menu" format="reference"/>
-        <attr name="switchMode" format="enum">
-            <enum name="scale" value="0"/>
-            <enum name="shift" value="1"/>
-            <enum name="still" value="2"/>
-        </attr>
-        <attr name="barElevation" format="dimension"/>
-        <attr name="itemBackground" format="reference"/>
-        <attr name="selectedColor" format="color"/>
-        <attr name="unSelectedColor" format="color"/>
-
-        <attr name="fragmentContainerId" format="reference"/>
-        <attr name="viewpagerId" format="reference"/>
-        <attr name="isSlide" format="boolean"/>
-
-    </declare-styleable>
-
 </resources>

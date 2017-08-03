@@ -13,15 +13,12 @@ import com.service.customer.constant.Constant;
 import com.service.customer.ui.dialog.ProgressDialog;
 import com.service.customer.ui.dialog.PromptDialog;
 
-import java.util.List;
-
 public abstract class FragmentViewImplement<T> extends BaseFragment implements BaseView<T> {
 
     private DialogFragment dialogFragment;
     private BasePresenterImplement basePresenterImplement;
 
-    @Override
-    public void setPresenter(@NonNull T presenter) { }
+    public void setLoginPresenter(@NonNull T loginPresenter) { }
 
     public BasePresenterImplement getBasePresenterImplement() {
         return basePresenterImplement;
@@ -97,22 +94,6 @@ public abstract class FragmentViewImplement<T> extends BaseFragment implements B
 
     @Override
     protected void setSavedInstanceState(Bundle savedInstanceState) {
-    }
-
-    @Override
-    public void onNegativeButtonClicked(int requestCode) {
-    }
-
-    @Override
-    public void onPositiveButtonClicked(int requestCode) {
-    }
-
-    @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
     }
 
     @Override

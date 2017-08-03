@@ -81,7 +81,6 @@ public final class Constant {
         };
     }
 
-    // LOCK
     public static class Lock {
         public static final int STATE_UNSELECTED = 0;
         public static final int STATE_SELECTED = 1;
@@ -142,9 +141,23 @@ public final class Constant {
         public static final String TTS_ROLE = "xiaoyan";
         public static final String TTS_SPEED = "40";
         public static final String TTS_VOLUME = "100";
-        public static final String APPID = "=59198637";
-    }
+        public static final String APP_ID = "appid=5979998e";
 
-    public static final String PRINT_SERVICE_PAKCAGE_NAME = "woyou.aidlservice.jiuiv5";
-    public static final String PRINT_SERVICE_CLASS_NAME = "woyou.aidlservice.jiuiv5.IWoyouService";
+        public static final String TTS_PITCH = "50";
+        public static final String STREAM_TYPE = "50";
+        public static final String KEY_REQUEST_FOCUS = "true";
+        public static final String AUDIO_FORMAT = "wav";
+        public static final String TTS_AUDIO_PATH = "/msc/tts.wav";
+
+        public static final String JSON = "json";
+        public static final String LANGUAGE = "zh_cn";
+        public static final String LANGUAGE_TYPE = "mandarin";
+        public static final String START_TIME_LINE = "5000";
+        public static final String END_TIME_LINE = "1000";
+        public static final String PUNCTUATION = "0";
+
+        public static final String WS = "ws";
+        public static final String CW = "cw";
+        public static final String W = "w";
+    }
 }

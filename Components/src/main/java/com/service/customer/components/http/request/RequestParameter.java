@@ -243,7 +243,7 @@ public class RequestParameter {
     public void addFormDataParameter(String key, File file) {
         if (isFileAvalable(file)) {
             if (file.getName().toLowerCase().lastIndexOf(Regex.PNG.getRegext()) > 0) {
-                addFormDataParameter(key, file, Regex.IMAGE_PNG_TYPE.getRegext());
+                addFormDataParameter(key, file, Regex.IMAGE_PNG_TYPE1.getRegext());
                 return;
             } else if (file.getName().toLowerCase().lastIndexOf(Regex.JPG.getRegext()) > 0 || file.getName().toLowerCase().lastIndexOf(Regex.JPEG.getRegext()) > 0) {
                 addFormDataParameter(key, file, Regex.IMAGE_JPEG_TYPE.getRegext());

@@ -1,6 +1,9 @@
 package com.service.customer.net;
 
 import com.service.customer.base.net.BaseRequest;
+import com.service.customer.components.http.request.RequestParameter;
+
+import java.util.HashMap;
 
 public class Request extends BaseRequest {
 
@@ -23,16 +26,16 @@ public class Request extends BaseRequest {
         }
     }
 
-//    public RequestParameter generateRequestParameters(String method, String bizContent,  File file) {
+    public RequestParameter generateRequestParameters(String type, HashMap<String, String> bizContent, String token, boolean isJson) {
+        return formatParameters(generateRequestParameters(type, bizContent, token), isJson);
+    }
+
+//    public RequestParameter generateRequestParameters(String type, String token, File file) {
 //        RequestParameter parameter = new RequestParameter();
 //        parameter.setRequestBody(new MultipartBody.Builder()
 //                                         .setType(MultipartBody.FORM)
-//                                         .addPart(Headers.of("Content-Disposition", "form-data; name=\"" + ParameterKey.Credentials.JSON_DATA + "\""),
-//                                                  RequestBody.create(null, SecurityUtil.encryptAES(
-//                                                          generateRequestParameters(method, bizContent, mchUid, DeviceUtil.getInstance().getDeviceId(BaseApplication.getInstance()), DeviceUtil.getInstance().getDeviceInfo(BaseApplication.getInstance(), false, BuildConfig.VERSION_CODE), String.valueOf(BuildConfig.VERSION_CODE), new SimpleDateFormat(Regex.DATE.getRegext(), Locale.getDefault()).format(new Date(System.currentTimeMillis()))).toString()
-//                                                          , BaseApplication.getInstance().getEncryptKey(), isEncrypt)))
-//                                         .addPart(Headers.of("Content-Disposition", "form-data; name=\"" + ParameterKey.Credentials.ZIP_DATA + "\""),
-//                                                  RequestBody.create(MediaType.parse("image/png"), file))
+//                                         .addPart(Headers.of("Content-Disposition", "form-data; name=\"" + RequestParameterKey.FORM_DATA + "\""), generateRequestParameters())
+//                                         .addPart(Headers.of("Content-Disposition", "form-data; name=\"" + RequestParameterKey.FILE_DATA + "\""), RequestBody.create(MediaType.parse(Regex.IMAGE_PNG_TYPE2.getRegext()), file))
 //                                         .build());
 //        return parameter;
 //    }

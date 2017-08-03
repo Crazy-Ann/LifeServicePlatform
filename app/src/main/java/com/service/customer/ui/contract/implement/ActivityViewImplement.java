@@ -27,8 +27,7 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
     private DialogFragment dialogFragment;
     private BasePresenterImplement basePresenterImplement;
 
-    @Override
-    public void setPresenter(@NonNull T presenter) { }
+    public void setLoginPresenter(@NonNull T loginPresenter) { }
 
     public BasePresenterImplement getBasePresenterImplement() {
         return basePresenterImplement;

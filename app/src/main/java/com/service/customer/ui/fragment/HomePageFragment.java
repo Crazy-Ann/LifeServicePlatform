@@ -1,5 +1,8 @@
 package com.service.customer.ui.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -11,18 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.service.customer.R;
+import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.handler.FragmentHandler;
 import com.service.customer.base.sticky.adapter.FixedStickyViewAdapter;
-import com.service.customer.components.constant.Constant;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.MessageUtil;
 import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.components.widget.sticky.LinearLayoutDividerItemDecoration;
+import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.NotificationAnnouncementInfo;
 import com.service.customer.net.entity.NotificationAnnouncementInfos;
 import com.service.customer.net.entity.ServiceInfo;
 import com.service.customer.net.entity.ServiceInfos;
+import com.service.customer.ui.activity.ServiceSubmitActivity;
 import com.service.customer.ui.adapter.NotificationAnnouncementAdapter;
 import com.service.customer.ui.adapter.ServiceAdapter;
 import com.service.customer.ui.binder.NotificationAnnouncementBinder;
@@ -106,7 +111,7 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_1f90f0, R.color.color_ffffff, false, getString(R.string.home_page), null, false, Constant.View.DEFAULT_RESOURCE);
+        initializeToolbar(R.color.color_1f90f0, R.color.color_ffffff, false, getString(R.string.home_page), null);
         homePageHandler = new HomePageHandler(this);
         homePagePresenter = new HomePagePresenter(getActivity(), this);
         homePagePresenter.initialize();
@@ -144,6 +149,9 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
             public void onItemClick(int position) {
                 switch (serviceInfos.get(position).getAction()) {
                     case com.service.customer.constant.Constant.ServiceAction.EMERGENCY_CALL_FOR_HELP:
+                        Bundle bundle = new Bundle();
+                        bundle.putString(Temp.TITLE.getContent(), serviceInfos.get(position).getName());
+                        startActivity(ServiceSubmitActivity.class);
                         break;
                     case com.service.customer.constant.Constant.ServiceAction.APPLIANCE_MAINTENANCE:
                         break;
@@ -175,13 +183,54 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
         return false;
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            switch (requestCode) {
+                case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
+                case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        homePagePresenter.checkPermission(BaseApplication.getInstance());
+                    }
+                    break;
+                default:
+                    break;
+        }
+    }
+
+    @Override
+    public void onNeutralButtonClicked(int requestCode) {
+
+    }
+
+    @Override
+    public void onPositiveButtonClicked(int requestCode) {
+
+    }
+
+    @Override
+    public void onNegativeButtonClicked(int requestCode) {
+
+    }
+
+    @Override
+    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+
+    }
+
+    @Override
+    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+
+    }
+
     @Override
     public boolean isActive() {
         return false;
     }
 
     @Override
-    public void setPresenter(@NonNull HomePageContract.Presenter presenter) {
+    public void setLoginPresenter(@NonNull HomePageContract.Presenter loginPresenter) {
 
     }
 }

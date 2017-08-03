@@ -9,6 +9,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.bumptech.glide.Glide;
 import com.google.common.collect.Lists;
+import com.iflytek.cloud.SpeechUtility;
 import com.service.customer.base.net.model.BaseEntity;
 import com.service.customer.components.constant.Constant;
 import com.service.customer.components.http.Configuration;
@@ -27,6 +28,7 @@ import com.service.customer.components.utils.SecurityUtil;
 import com.service.customer.components.utils.SharedPreferenceUtil;
 import com.service.customer.components.utils.SnackBarUtil;
 import com.service.customer.components.utils.StrictModeUtil;
+import com.service.customer.components.utils.TTSUtil;
 import com.service.customer.components.utils.ToastUtil;
 import com.service.customer.components.utils.TypefaceUtil;
 import com.service.customer.components.utils.ViewUtil;
@@ -79,6 +81,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
         NetworkUtil.releaseInstance();
         TypefaceUtil.releaseInstance();
         ViewUtil.releaseInstance();
+        TTSUtil.getInstance(null).destroy();
         ApplicationUtil.releaseInstance();
         application = null;
     }
@@ -95,6 +98,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
         LogUtil.getInstance().print(this.getClass().getSimpleName() + " onCreate() invoked!!");
         application = this;
         registerActivityLifecycleCallbacks(this);
+        SpeechUtility.createUtility(this, Constant.TTS.APP_ID);
         CustomHttpClient.getInstance().initialize(new Configuration.Builder()
                                                           .setParameters(Lists.<Parameter>newArrayList())
                                                           .setHeaders(new Headers.Builder().build())

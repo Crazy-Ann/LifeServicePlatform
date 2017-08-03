@@ -39,7 +39,7 @@ import java.util.List;
 
 public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter> implements LoginContract.View, View.OnClickListener {
 
-    private LoginPresenter presenter;
+    private LoginPresenter loginPresenter;
     private EditText etAccount;
     private ImageButton ibAccountEmpty;
     private EditText etPassword;
@@ -72,10 +72,10 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        presenter = new LoginPresenter(this, this);
-        presenter.initialize();
-        presenter.clearLoginInfo();
-        setBasePresenterImplement(presenter);
+        loginPresenter = new LoginPresenter(this, this);
+        loginPresenter.initialize();
+        loginPresenter.clearLoginInfo();
+        setBasePresenterImplement(loginPresenter);
         getSavedInstanceState(savedInstanceState);
 
         validator = new EditTextValidator();
@@ -87,8 +87,12 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
                           com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                           com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);
 
-        etAccount.setText(SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, Regex.NONE.getRegext(), true));
-        etPassword.setText(SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, Regex.NONE.getRegext(), true));
+        LogUtil.getInstance().print("name:" + SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, null, true));
+        LogUtil.getInstance().print("password:" + SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, null, true));
+        LogUtil.getInstance().print("url1:" + SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.INDEX_URL, null, true));
+        LogUtil.getInstance().print("url2:" + SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.TASK_URL, null, true));
+        etAccount.setText(SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, null, true));
+        etPassword.setText(SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, null, true));
     }
 
     @Override
@@ -121,14 +125,29 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
             case R.id.btnLogin:
                 if (validator.validate(this)) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        presenter.checkPermission(this);
+                        loginPresenter.checkPermission(this);
                     } else {
-                        presenter.login(etAccount.getText().toString(), etPassword.getText().toString());
+                        loginPresenter.login(etAccount.getText().toString(), etPassword.getText().toString());
                     }
                 }
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            switch (requestCode) {
+                case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
+                case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        loginPresenter.checkPermission(this);
+                    }
+                    break;
+                default:
+                    break;
         }
     }
 
@@ -192,8 +211,13 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
     }
 
     @Override
+    public void onNeutralButtonClicked(int requestCode) {
+
+    }
+
+    @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        presenter.login(etAccount.getText().toString(), etPassword.getText().toString());
+        loginPresenter.login(etAccount.getText().toString(), etPassword.getText().toString());
     }
 
     @Override
@@ -217,8 +241,7 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
         onFinish("startMainActivity");
     }
 
-    @Override
-    public void setPresenter(@NonNull LoginContract.Presenter presenter) {
+    public void setLoginPresenter(@NonNull LoginContract.Presenter loginPresenter) {
 
     }
 }
