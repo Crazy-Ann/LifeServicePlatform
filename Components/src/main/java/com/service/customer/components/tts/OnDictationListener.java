@@ -1,4 +1,4 @@
-package com.service.customer.components.widget.edittext.listener;
+package com.service.customer.components.tts;
 
 public interface OnDictationListener {
 

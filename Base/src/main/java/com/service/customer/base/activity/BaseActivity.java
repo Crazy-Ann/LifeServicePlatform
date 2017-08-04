@@ -41,8 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 只有中间tittle，tittle是否可以点击需要设置
      */
     protected void initializeToolbar(int toolbarColorId, int titleColorId, boolean isTitleClickable, String title, OnTitleEventListener onTitleEventListener) {
-        initializeToolbar(toolbarColorId, false, Constant.View.DEFAULT_RESOURCE, null,
-                          titleColorId, isTitleClickable, title, onTitleEventListener, Constant.View.DEFAULT_RESOURCE, null);
+        initializeToolbar(toolbarColorId, false, Constant.View.DEFAULT_RESOURCE, null, titleColorId, isTitleClickable, title, onTitleEventListener, Constant.View.DEFAULT_RESOURCE, null);
     }
 
     /**

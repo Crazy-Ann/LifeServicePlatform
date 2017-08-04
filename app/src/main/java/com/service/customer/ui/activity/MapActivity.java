@@ -6,37 +6,34 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.Button;
 
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.MapView;
 import com.service.customer.R;
-import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
-import com.service.customer.components.tts.OnDictationListener;
 import com.service.customer.components.utils.BundleUtil;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
-import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
-import com.service.customer.ui.contract.ServiceSubmitContract;
+import com.service.customer.ui.contract.MapContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
-import com.service.customer.ui.presenter.ServiceSubmitPresenter;
-import com.service.customer.ui.widget.edittext.VoiceEdittext;
+import com.service.customer.ui.presenter.MapPresenter;
 
 import java.util.List;
 
-public class ServiceSubmitActivity extends ActivityViewImplement<ServiceSubmitContract.Presenter> implements ServiceSubmitContract.View, View.OnClickListener, OnDictationListener, OnLeftIconEventListener {
+public class MapActivity extends ActivityViewImplement<MapContract.Presenter> implements MapContract.View, View.OnClickListener, OnLeftIconEventListener {
 
-    private ServiceSubmitPresenter serviceSubmitPresenter;
-    private VoiceEdittext vetContent;
-    private Button btnSubmit;
+    private MapPresenter mapPresenter;
+    private MapView mvSearch;
+    private AMap aMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_submit);
+        setContentView(R.layout.activity_map);
         findViewById();
         initialize(savedInstanceState);
         setListener();
@@ -45,25 +42,25 @@ public class ServiceSubmitActivity extends ActivityViewImplement<ServiceSubmitCo
     @Override
     protected void findViewById() {
         inToolbar = ViewUtil.getInstance().findView(this, R.id.inToolbar);
-        vetContent = ViewUtil.getInstance().findView(this, R.id.vetContent);
-        btnSubmit = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.btnSubmit, this);
     }
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
         initializeToolbar(R.color.color_1f90f0, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
-        TTSUtil.getInstance(this).initializeSpeechRecognizer();
-        vetContent.setTextCount(0);
-        serviceSubmitPresenter = new ServiceSubmitPresenter(this, this);
-        serviceSubmitPresenter.initialize();
-
-        setBasePresenterImplement(serviceSubmitPresenter);
+        mapPresenter = new MapPresenter(this, this);
+        mapPresenter.initialize();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mapPresenter.checkPermission(this);
+        } else {
+            //todo
+        }
+        setBasePresenterImplement(mapPresenter);
         getSavedInstanceState(savedInstanceState);
     }
 
     @Override
     protected void setListener() {
-        TTSUtil.getInstance(this).setOnDictationListener(this);
+
     }
 
     @Override
@@ -71,46 +68,23 @@ public class ServiceSubmitActivity extends ActivityViewImplement<ServiceSubmitCo
         if (InputUtil.getInstance().isDoubleClick()) {
             return;
         }
-        switch (view.getId()) {
-            case R.id.btnSubmit:
-                //todo submit
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
-            case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
+            case Constant.RequestCode.NET_WORK_SETTING:
+            case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    serviceSubmitPresenter.checkPermission(BaseApplication.getInstance());
+                    mapPresenter.checkPermission(this);
+                } else {
+                    //todo
                 }
                 break;
             default:
                 break;
         }
-    }
-
-
-    @Override
-    public void onDictation(String content) {
-        LogUtil.getInstance().print("content:" + content);
-        vetContent.setText(content);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        TTSUtil.getInstance(this).stopListening();
-    }
-
-    @Override
-    public void onNeutralButtonClicked(int requestCode) {
-
     }
 
     @Override
@@ -137,12 +111,11 @@ public class ServiceSubmitActivity extends ActivityViewImplement<ServiceSubmitCo
         }
     }
 
-
     @Override
     public void onNegativeButtonClicked(int requestCode) {
         switch (requestCode) {
             case Constant.RequestCode.DIALOG_PROMPT_SET_NET_WORK:
-                LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_NET_WORK_ERROR");
+                LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_SET_NET_WORK");
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_SET_PERMISSION:
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_SET_PERMISSION");
@@ -154,8 +127,13 @@ public class ServiceSubmitActivity extends ActivityViewImplement<ServiceSubmitCo
     }
 
     @Override
+    public void onNeutralButtonClicked(int requestCode) {
+
+    }
+
+    @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        serviceSubmitPresenter.submit(null);
+        //todo
     }
 
     @Override
@@ -173,3 +151,4 @@ public class ServiceSubmitActivity extends ActivityViewImplement<ServiceSubmitCo
         onFinish("OnLeftIconEvent");
     }
 }
+

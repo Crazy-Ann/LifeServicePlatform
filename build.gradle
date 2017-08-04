@@ -59,7 +59,7 @@ ext.deps = [
         eventbus             : 'org.greenrobot:eventbus:3.0.0'
 //        lifecycle            : "android.arch.lifecycle:runtime:1.0.0-alpha3",
 //        lifecycle_extensions : "android.arch.lifecycle:extensions:1.0.0-alpha3",
-//        lifecycle_compiler   : "android.arch.lifecycle:compiler:1.0.0-alpha3"
+//        lifecycle_compiler   : "android.arch.lifecycle:compiler:1.0.0-alpha3"Z
 //        room                 : "android.arch.persistence.room:runtime:1.0.0-alpha3",
 //        room_compiler        : "android.arch.persistence.room:compiler:1.0.0-alpha3",
 //        room_testing         : "android.arch.persistence.room:testing:1.0.0-alpha3"

@@ -1,4 +1,4 @@
-package com.service.customer.components.widget.edittext;
+package com.service.customer.ui.widget.edittext;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -14,9 +14,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.service.customer.components.R;
+import com.service.customer.R;
 import com.service.customer.components.utils.InputUtil;
-import com.service.customer.components.utils.TTSUtil;
+import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.ViewUtil;
 
 import java.lang.reflect.Field;

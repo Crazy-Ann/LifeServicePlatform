@@ -1,4 +1,4 @@
-package com.service.customer.ui.fragment.presenter;
+package com.service.customer.ui.presenter;
 
 import android.content.Context;
 

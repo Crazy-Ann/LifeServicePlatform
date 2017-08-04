@@ -14,17 +14,19 @@ import android.view.WindowManager;
 import com.service.customer.R;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.ApplicationUtil;
+import com.service.customer.components.utils.IOUtil;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
-import com.service.customer.ui.activity.presenter.WelcomePresenter;
+import com.service.customer.ui.presenter.WelcomePresenter;
 import com.service.customer.ui.contract.WelcomeContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.dialog.DownloadDialog;
 import com.service.customer.ui.dialog.PromptDialog;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Presenter> implements WelcomeContract.View, View.OnClickListener {
@@ -181,8 +183,15 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_VERSION_UPDATE:
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_VERSION_UPDATE");
+                break;
             case Constant.RequestCode.DIALOG_PROMPT_DOWNLOAD:
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_DOWNLOAD");
+                try {
+                    IOUtil.getInstance().deleteFile(IOUtil.getInstance().getExternalStoragePublicDirectory(this, Constant.FILE_NAME, null));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
             case Constant.RequestCode.DIALOG_PROMPT_INSTALL:
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_INSTALL");
                 if (welcomePresenter.isForceUpdate()) {
@@ -261,10 +270,5 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 .setCancelableOnTouchOutside(false)
                 .setRequestCode(Constant.RequestCode.DIALOG_PROMPT_INSTALL)
                 .showAllowingStateLoss(this);
-    }
-
-    @Override
-    public void setLoginPresenter(@NonNull WelcomeContract.Presenter loginPresenter) {
-
     }
 }

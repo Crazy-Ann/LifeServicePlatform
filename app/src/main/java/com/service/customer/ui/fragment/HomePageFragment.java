@@ -1,6 +1,5 @@
 package com.service.customer.ui.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +26,7 @@ import com.service.customer.net.entity.NotificationAnnouncementInfo;
 import com.service.customer.net.entity.NotificationAnnouncementInfos;
 import com.service.customer.net.entity.ServiceInfo;
 import com.service.customer.net.entity.ServiceInfos;
+import com.service.customer.ui.activity.MapActivity;
 import com.service.customer.ui.activity.ServiceSubmitActivity;
 import com.service.customer.ui.adapter.NotificationAnnouncementAdapter;
 import com.service.customer.ui.adapter.ServiceAdapter;
@@ -34,7 +34,7 @@ import com.service.customer.ui.binder.NotificationAnnouncementBinder;
 import com.service.customer.ui.binder.ServiceBinder;
 import com.service.customer.ui.contract.HomePageContract;
 import com.service.customer.ui.contract.implement.FragmentViewImplement;
-import com.service.customer.ui.fragment.presenter.HomePagePresenter;
+import com.service.customer.ui.presenter.HomePagePresenter;
 
 import java.util.List;
 
@@ -111,7 +111,7 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_1f90f0, R.color.color_ffffff, false, getString(R.string.home_page), null);
+        initializeToolbar(R.color.color_1f90f0, android.R.color.white, false, getString(R.string.home_page), null);
         homePageHandler = new HomePageHandler(this);
         homePagePresenter = new HomePagePresenter(getActivity(), this);
         homePagePresenter.initialize();
@@ -147,11 +147,12 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
         serviceAdapter.setOnItemClickListener(new FixedStickyViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                Bundle bundle;
                 switch (serviceInfos.get(position).getAction()) {
                     case com.service.customer.constant.Constant.ServiceAction.EMERGENCY_CALL_FOR_HELP:
-                        Bundle bundle = new Bundle();
+                        bundle = new Bundle();
                         bundle.putString(Temp.TITLE.getContent(), serviceInfos.get(position).getName());
-                        startActivity(ServiceSubmitActivity.class);
+                        startActivity(ServiceSubmitActivity.class, bundle);
                         break;
                     case com.service.customer.constant.Constant.ServiceAction.APPLIANCE_MAINTENANCE:
                         break;
@@ -164,6 +165,19 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
                     case com.service.customer.constant.Constant.ServiceAction.DOCTOR_MEDICINE:
                         break;
                     case com.service.customer.constant.Constant.ServiceAction.OTHER:
+                        break;
+                    case com.service.customer.constant.Constant.ServiceAction.POLICIES_REGULATIONS:
+                        break;
+                    case com.service.customer.constant.Constant.ServiceAction.QUERY_ANALYSIS:
+                        break;
+                    case com.service.customer.constant.Constant.ServiceAction.INFORMATION_MANAGEMENT:
+                        break;
+                    case com.service.customer.constant.Constant.ServiceAction.EVENT_QUERY:
+                        break;
+                    case com.service.customer.constant.Constant.ServiceAction.MAP_QUERY:
+                        bundle = new Bundle();
+                        bundle.putString(Temp.TITLE.getContent(), serviceInfos.get(position).getName());
+                        startActivity(MapActivity.class, bundle);
                         break;
                     default:
                         break;
@@ -187,15 +201,15 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            switch (requestCode) {
-                case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
-                case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        homePagePresenter.checkPermission(BaseApplication.getInstance());
-                    }
-                    break;
-                default:
-                    break;
+        switch (requestCode) {
+            case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
+            case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    homePagePresenter.checkPermission(BaseApplication.getInstance());
+                }
+                break;
+            default:
+                break;
         }
     }
 

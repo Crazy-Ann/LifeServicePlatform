@@ -41,6 +41,36 @@
       "action": "other",
       "index": 7,
       "icon_url": "https://merch.heemoney.com/Images/h5/nav07-Pre.png"
+    },
+    {
+      "name": "政策法规",
+      "action": "policies_regulations",
+      "index": 8,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav08-Pre.png"
+    },
+    {
+      "name": "查询分析",
+      "action": "query_analysis",
+      "index": 9,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav09-Pre.png"
+    },
+    {
+      "name": "信息管理",
+      "action": "information_management",
+      "index": 10,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav10-Pre.png"
+    },
+    {
+      "name": "事件查询",
+      "action": "event_query",
+      "index": 11,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav11-Pre.png"
+    },
+    {
+      "name": "地图查询",
+      "action": "map_query",
+      "index": 12,
+      "icon_url": "https://merch.heemoney.com/Images/h5/nav12-Pre.png"
     }
   ]
 }

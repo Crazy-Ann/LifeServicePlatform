@@ -17,7 +17,7 @@ import com.service.customer.components.utils.FragmentUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
-import com.service.customer.ui.activity.presenter.MainPresenter;
+import com.service.customer.ui.presenter.MainPresenter;
 import com.service.customer.ui.contract.MainContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;

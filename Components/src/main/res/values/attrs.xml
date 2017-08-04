@@ -42,5 +42,4 @@
         </attr>
         <attr name="tl_drawDecorationAfterTab" format="boolean"/>
     </declare-styleable>
-
 </resources>

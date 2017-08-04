@@ -33,7 +33,7 @@ public class TaskManagementFragment extends FragmentViewImplement {
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_1f90f0, R.color.color_ffffff, false, getString(R.string.task_management), null);
+        initializeToolbar(R.color.color_1f90f0, android.R.color.white, false, getString(R.string.task_management), null);
     }
 
     @Override

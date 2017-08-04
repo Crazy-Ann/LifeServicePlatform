@@ -11,10 +11,40 @@
         android:id="@+id/inToolbar"
         layout="@layout/view_toolbar"/>
 
-    <com.service.customer.components.widget.edittext.VoiceEdittext
-        android:layout_margin="@dimen/dp_8"
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
+        android:background="@android:color/white"/>
+
+    <com.service.customer.ui.widget.edittext.VoiceEdittext
         android:id="@+id/vetContent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_8"/>
+
+    <ImageView
+        android:id="@+id/ivDescreption"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:layout_margin="@dimen/dp_8"
+        android:contentDescription="@null"
+        android:src="@mipmap/ic_launcher"/>
+
+    <include layout="@layout/view_line"/>
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@drawable/selector_button"
+        android:gravity="center"
+        android:text="@string/submit"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_16"/>
 
 </LinearLayout>

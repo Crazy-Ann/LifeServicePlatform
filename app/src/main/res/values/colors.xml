@@ -27,13 +27,10 @@
     <color name="color_4adafd">#4adafd</color>
     <color name="color_3f3f3f">#3f3f3f</color>
     <color name="color_a4a4a4">#a4a4a4</color>
-
-    <!-- app主色调 -->
-    <color name="color_00c2cf">#00c2cf</color>
-
-    <!-- 页面底色 -->
-    <color name="color_ffffff">#FFFFFF</color>
-    <color name="color_f8f8f8">#F8F8F8</color>
+    <color name="color_a5a5a5">#a5a5a5</color>
+    <color name="color_dde0e7">#dde0e7</color>
+    <color name="color_b0b0b0">#b0b0b0</color>
+    <color name="color_ececec">#ececec</color>
 
     <!-- 字体颜色  -->
     <color name="color_505050">#505050</color>

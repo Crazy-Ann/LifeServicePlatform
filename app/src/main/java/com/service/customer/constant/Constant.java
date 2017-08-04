@@ -84,6 +84,12 @@ public final class Constant {
         public static final String PSYCHOLOGICAL_COUNSELING = "psychological_counseling";
         public static final String DOCTOR_MEDICINE = "doctor_medicine";
         public static final String OTHER = "other";
+
+        public static final String POLICIES_REGULATIONS = "policies_regulations";
+        public static final String QUERY_ANALYSIS = "query_analysis";
+        public static final String INFORMATION_MANAGEMENT = "information_management";
+        public static final String EVENT_QUERY = "event_query";
+        public static final String MAP_QUERY = "map_query";
     }
 
 

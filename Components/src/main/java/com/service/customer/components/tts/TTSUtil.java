@@ -1,4 +1,4 @@
-package com.service.customer.components.utils;
+package com.service.customer.components.tts;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,7 +17,8 @@ import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.service.customer.components.R;
 import com.service.customer.components.constant.Constant;
-import com.service.customer.components.widget.edittext.listener.OnDictationListener;
+import com.service.customer.components.utils.LogUtil;
+import com.service.customer.components.utils.ToastUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;

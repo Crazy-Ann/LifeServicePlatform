@@ -28,7 +28,7 @@ import com.service.customer.components.utils.SecurityUtil;
 import com.service.customer.components.utils.SharedPreferenceUtil;
 import com.service.customer.components.utils.SnackBarUtil;
 import com.service.customer.components.utils.StrictModeUtil;
-import com.service.customer.components.utils.TTSUtil;
+import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.ToastUtil;
 import com.service.customer.components.utils.TypefaceUtil;
 import com.service.customer.components.utils.ViewUtil;
@@ -96,6 +96,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
     public void onCreate() {
         super.onCreate();
         LogUtil.getInstance().print(this.getClass().getSimpleName() + " onCreate() invoked!!");
+        LogUtil.getInstance().print("SHA1:" + SecurityUtil.getInstance().getSha1(this));
         application = this;
         registerActivityLifecycleCallbacks(this);
         SpeechUtility.createUtility(this, Constant.TTS.APP_ID);

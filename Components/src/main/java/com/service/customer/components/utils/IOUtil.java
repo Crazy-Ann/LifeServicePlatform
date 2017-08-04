@@ -427,11 +427,11 @@ public class IOUtil {
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
 
-    public File getExternalStoragePublicDirectory(Context ctx, String directoryName, String fileName) throws IOException {
+    public File getExternalStoragePublicDirectory(Context context, String directoryName, String fileName) throws IOException {
         if (isSDCardExsist()) {
             return new File(IOUtil.getInstance().forceMkdir(Environment.getExternalStoragePublicDirectory(directoryName)).getAbsolutePath() + fileName);
         } else {
-            return new File(ctx.getExternalFilesDir(directoryName).getAbsolutePath() + fileName);
+            return new File(context.getExternalFilesDir(directoryName).getAbsolutePath() + fileName);
         }
     }
 

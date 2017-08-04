@@ -1,6 +1,5 @@
 package com.service.customer.ui.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -34,7 +33,7 @@ import com.service.customer.ui.activity.LoginActivity;
 import com.service.customer.ui.contract.MineContract;
 import com.service.customer.ui.contract.implement.FragmentViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
-import com.service.customer.ui.fragment.presenter.MinePresenter;
+import com.service.customer.ui.presenter.MinePresenter;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,7 +71,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_1f90f0, R.color.color_ffffff, false, getString(R.string.mine), null);
+        initializeToolbar(R.color.color_1f90f0, android.R.color.white, false, getString(R.string.mine), null);
         minePresenter = new MinePresenter(getActivity(), this);
         minePresenter.initialize();
         setBasePresenterImplement(minePresenter);

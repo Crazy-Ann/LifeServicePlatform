@@ -29,7 +29,7 @@ import com.service.customer.components.validation.Validation;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.entity.validation.AccountValidation;
 import com.service.customer.net.entity.validation.PasswordValidation;
-import com.service.customer.ui.activity.presenter.LoginPresenter;
+import com.service.customer.ui.presenter.LoginPresenter;
 import com.service.customer.ui.contract.LoginContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
@@ -139,15 +139,15 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            switch (requestCode) {
-                case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
-                case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        loginPresenter.checkPermission(this);
-                    }
-                    break;
-                default:
-                    break;
+        switch (requestCode) {
+            case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
+            case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    loginPresenter.checkPermission(this);
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -239,9 +239,5 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
     public void startMainActivity() {
         startActivity(MainActivity.class);
         onFinish("startMainActivity");
-    }
-
-    public void setLoginPresenter(@NonNull LoginContract.Presenter loginPresenter) {
-
     }
 }

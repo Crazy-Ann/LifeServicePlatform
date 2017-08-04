@@ -69,6 +69,8 @@
     <string name="notification_announcement_list">通知公告列表</string>
     <string name="task_management">任务管理</string>
     <string name="mine">我的</string>
+    <string name="submit">提交</string>
+    <string name="location_prompt">请输入位置</string>
 
     <!-- 手势密码 -->
     <string name="gesture_password_tv_tittle">设置手势</string>
