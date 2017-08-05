@@ -74,8 +74,8 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
         if (configInfo != null) {
             BaseApplication.getInstance().setConfigInfo(configInfo);
             serviceUrl = configInfo.getServerUrl();
-            if (ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getClientVersion()) {
-                if (ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getLowestClientVersion()) {
+            if (ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getVersion()) {
+                if (ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getLowestVersion()) {
                     isForceUpdate = true;
                 } else {
                     isForceUpdate = false;

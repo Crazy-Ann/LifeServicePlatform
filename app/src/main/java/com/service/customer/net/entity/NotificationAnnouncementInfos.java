@@ -25,8 +25,8 @@ public final class NotificationAnnouncementInfos extends CacheableImplement impl
 
     public NotificationAnnouncementInfos parse(JSONObject object) {
         if (object != null) {
-            if (object.containsKey(ResponseParameterKey.Notification_Announcement_Infos)) {
-                JSONArray array = object.getJSONArray(ResponseParameterKey.Notification_Announcement_Infos);
+            if (object.containsKey(ResponseParameterKey.NOTIFICATION_ANNOUNCEMENT_INFOS)) {
+                JSONArray array = object.getJSONArray(ResponseParameterKey.NOTIFICATION_ANNOUNCEMENT_INFOS);
                 this.NotificationAnnouncementInfos = new ArrayList<>();
                 for (int i = 0; i < array.size(); i++) {
                     this.NotificationAnnouncementInfos.add(new NotificationAnnouncementInfo().parse(array.getJSONObject(i)));

@@ -4,18 +4,17 @@ import android.os.Parcel;
 
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.BuildConfig;
+import com.service.customer.base.constant.net.ResponseParameterKey;
 import com.service.customer.base.net.model.BaseEntity;
 
 
 public class ConfigInfo extends BaseEntity {
 
     private String serverUrl;
-    private int clientVersion;
-    private String versionName;
+    private int    version;
     private String downloadUrl;
-    private int lowestClientVersion;
+    private int    lowestVersion;
     private String updateMessage;
-    private String key;
 
     public ConfigInfo() {
     }
@@ -24,38 +23,33 @@ public class ConfigInfo extends BaseEntity {
         return serverUrl;
     }
 
-    public int getClientVersion() {
-        return clientVersion;
-    }
-
-    public String getVersionName() {
-        return versionName;
+    public int getVersion() {
+        return version;
     }
 
     public String getDownloadUrl() {
         return downloadUrl;
     }
 
-    public int getLowestClientVersion() {
-        return lowestClientVersion;
+    public int getLowestVersion() {
+        return lowestVersion;
     }
 
     public String getUpdateMessage() {
         return updateMessage;
     }
 
-    public String getKey() {
-        return key;
-    }
-
     public ConfigInfo parse(JSONObject object) {
         if (object != null) {
-//            this.clientVersion = object.getIntValue(ParameterKey.Version.CLIENT_VER);
-//            this.lowestClientVersion = object.getIntValue(ParameterKey.Version.LOWEST_CLIENT_VER);
-//            this.versionName = object.getString(ParameterKey.Version.VER_NAME);
-//            this.updateMessage = object.getString(ParameterKey.Version.UPDATA_MSG);
-//            this.downloadUrl = object.getString(ParameterKey.Version.DOWNLOAD_URL);
-//            this.key = object.getString(ParameterKey.Version.KEY);
+            this.version = object.getIntValue(ResponseParameterKey.VERSION);
+            this.lowestVersion = object.getIntValue(ResponseParameterKey.LOWEST_VERSION);
+            this.updateMessage = object.getString(ResponseParameterKey.UPDATE_MESSAGE);
+            this.downloadUrl = object.getString(ResponseParameterKey.DOWNLOAD_URL);
+            //todo
+//            this.key = object.getString(ResponseParameterKey.KEY);
+            if (object.containsKey(ResponseParameterKey.INTERFACE_URL)) {
+//                JSONObject interfaceUrl = object.getJSONObject(ResponseParameterKey.USER_INFO);
+            }
             return this;
         } else {
             return null;
@@ -66,13 +60,11 @@ public class ConfigInfo extends BaseEntity {
     public String toString() {
         if (BuildConfig.DEBUG) {
             return "ConfigInfo{" +
-                    "clientVersion:" + clientVersion + '\'' +
+                    "version:" + version + '\'' +
                     ", serverUrl:" + serverUrl + '\'' +
-                    ", lowestClientVersion:" + lowestClientVersion + '\'' +
-                    ", versionName:" + versionName + '\'' +
+                    ", lowestVersion:" + lowestVersion + '\'' +
                     ", updateMessage:" + updateMessage + '\'' +
                     ", downloadUrl:" + downloadUrl + '\'' +
-                    ", key:" + key + '\'' +
                     '}';
         } else {
             return super.toString();
@@ -88,23 +80,19 @@ public class ConfigInfo extends BaseEntity {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(this.serverUrl);
-        dest.writeInt(this.clientVersion);
-        dest.writeString(this.versionName);
+        dest.writeInt(this.version);
         dest.writeString(this.downloadUrl);
-        dest.writeInt(this.lowestClientVersion);
+        dest.writeInt(this.lowestVersion);
         dest.writeString(this.updateMessage);
-        dest.writeString(this.key);
     }
 
     protected ConfigInfo(Parcel in) {
         super(in);
         this.serverUrl = in.readString();
-        this.clientVersion = in.readInt();
-        this.versionName = in.readString();
+        this.version = in.readInt();
         this.downloadUrl = in.readString();
-        this.lowestClientVersion = in.readInt();
+        this.lowestVersion = in.readInt();
         this.updateMessage = in.readString();
-        this.key = in.readString();
     }
 
     public static final Creator<ConfigInfo> CREATOR = new Creator<ConfigInfo>() {

@@ -67,13 +67,15 @@ public final class LoginInfo extends BaseEntity {
                 JSONObject userInfo = object.getJSONObject(ResponseParameterKey.USER_INFO);
                 this.accountId = userInfo.getString(ResponseParameterKey.ACCOUNT_ID);
                 this.memberType = userInfo.getString(ResponseParameterKey.MEMBER_TYPE);
-//                this.accountAvatar = userInfo.getString(ResponseParameterKey.ACCOUNT_AVATAR);
-//                this.phone = userInfo.getString(ResponseParameterKey.PHONE);
-//                this.idCard = userInfo.getString(ResponseParameterKey.ID_CARD);
+                this.accountAvatar = userInfo.getString(ResponseParameterKey.ACCOUNT_AVATAR);
+                this.phone = userInfo.getString(ResponseParameterKey.PHONE);
+                this.idCard = userInfo.getString(ResponseParameterKey.ID_CARD);
+                this.realName = userInfo.getString(ResponseParameterKey.REAL_NAME);
+                
+                //todo 
                 this.accountAvatar = "http://admin.jujiamao.com/img/profile_small.jpg";
                 this.phone = "13811111111";
                 this.idCard = "1101111111111111";
-                this.realName = userInfo.getString(ResponseParameterKey.REAL_NAME);
             }
             return this;
         } else {

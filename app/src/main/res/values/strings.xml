@@ -71,6 +71,7 @@
     <string name="mine">我的</string>
     <string name="submit">提交</string>
     <string name="location_prompt">请输入位置</string>
+    <string name="get_evnet_infos">正在事件信息,请稍后…</string>
 
     <!-- 手势密码 -->
     <string name="gesture_password_tv_tittle">设置手势</string>
