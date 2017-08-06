@@ -26,8 +26,8 @@ import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
-import com.service.customer.net.entity.EventInfo;
-import com.service.customer.net.entity.EventInfos;
+import com.service.customer.net.entity.TaskInfo;
+import com.service.customer.net.entity.TaskInfos;
 import com.service.customer.ui.contract.MapContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.presenter.MapPresenter;
@@ -52,7 +52,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
             switch (msg.what) {
                 case com.service.customer.constant.Constant.Message.GET_EVENT_INFOS_SUCCESS:
                     hideLoadingPromptDialog();
-                    setEventMarker((EventInfos) msg.obj);
+                    setEventMarker((TaskInfos) msg.obj);
                     break;
                 case com.service.customer.constant.Constant.Message.GET_EVNET_INFOS_FAILED:
                     hideLoadingPromptDialog();
@@ -98,9 +98,9 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
         ThreadPoolUtil.execute(new Runnable() {
             @Override
             public void run() {
-                EventInfos eventInfos = mapPresenter.generateEventInfos();
-                if (eventInfos != null) {
-                    mapHandler.sendMessage(MessageUtil.getMessage(com.service.customer.constant.Constant.Message.GET_EVENT_INFOS_SUCCESS, eventInfos));
+                TaskInfos taskInfos = mapPresenter.generateEventInfos();
+                if (taskInfos != null) {
+                    mapHandler.sendMessage(MessageUtil.getMessage(com.service.customer.constant.Constant.Message.GET_EVENT_INFOS_SUCCESS, taskInfos));
                 } else {
                     mapHandler.sendMessage(MessageUtil.getMessage(com.service.customer.constant.Constant.Message.GET_EVNET_INFOS_FAILED));
                 }
@@ -221,26 +221,26 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     }
 
     @Override
-    public void setEventMarker(EventInfos eventInfos) {
-        if (eventInfos != null) {
-            for (EventInfo eventInfo : eventInfos.getEventInfos()) {
+    public void setEventMarker(TaskInfos taskInfos) {
+        if (taskInfos != null) {
+            for (TaskInfo taskInfo : taskInfos.getTaskInfos()) {
                 aMap.addMarker(new MarkerOptions()
-                                       .position(new LatLng(eventInfo.getLongitude(), eventInfo.getLatitude()))
+                                       .position(new LatLng(taskInfo.getLongitude(), taskInfo.getLatitude()))
                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-                                       .draggable(false)).setObject(eventInfo);
+                                       .draggable(false)).setObject(taskInfo);
             }
         }
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        EventInfo eventInfo = (EventInfo) marker.getObject();
-        LogUtil.getInstance().print("url:" + eventInfo.getAccountAvatar());
-        LogUtil.getInstance().print("name:" + eventInfo.getRealName());
-        LogUtil.getInstance().print("title:" + eventInfo.getTitle());
-        LogUtil.getInstance().print("descreption:" + eventInfo.getDescreption());
-        LogUtil.getInstance().print("longitude:" + eventInfo.getLongitude());
-        LogUtil.getInstance().print("latitude:" + eventInfo.getLatitude());
+        TaskInfo taskInfo = (TaskInfo) marker.getObject();
+        LogUtil.getInstance().print("url:" + taskInfo.getAccountAvatar());
+        LogUtil.getInstance().print("name:" + taskInfo.getRealName());
+        LogUtil.getInstance().print("title:" + taskInfo.getTitle());
+        LogUtil.getInstance().print("descreption:" + taskInfo.getDescreption());
+        LogUtil.getInstance().print("longitude:" + taskInfo.getLongitude());
+        LogUtil.getInstance().print("latitude:" + taskInfo.getLatitude());
         return true;
     }
 

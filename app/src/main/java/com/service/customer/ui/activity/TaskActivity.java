@@ -20,23 +20,23 @@ import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
-import com.service.customer.ui.contract.ServiceSubmitContract;
+import com.service.customer.ui.contract.TaskContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
-import com.service.customer.ui.presenter.ServiceSubmitPresenter;
+import com.service.customer.ui.presenter.TaskPresenter;
 import com.service.customer.ui.widget.edittext.VoiceEdittext;
 
 import java.util.List;
 
-public class ServiceSubmitActivity extends ActivityViewImplement<ServiceSubmitContract.Presenter> implements ServiceSubmitContract.View, View.OnClickListener, OnDictationListener, OnLeftIconEventListener {
+public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> implements TaskContract.View, View.OnClickListener, OnDictationListener, OnLeftIconEventListener {
 
-    private ServiceSubmitPresenter serviceSubmitPresenter;
+    private TaskPresenter taskPresenter;
     private VoiceEdittext vetContent;
-    private Button btnSubmit;
+    private Button        btnSubmit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_submit);
+        setContentView(R.layout.activity_task);
         findViewById();
         initialize(savedInstanceState);
         setListener();
@@ -54,10 +54,10 @@ public class ServiceSubmitActivity extends ActivityViewImplement<ServiceSubmitCo
         initializeToolbar(R.color.color_1f90f0, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
         TTSUtil.getInstance(this).initializeSpeechRecognizer();
         vetContent.setTextCount(0);
-        serviceSubmitPresenter = new ServiceSubmitPresenter(this, this);
-        serviceSubmitPresenter.initialize();
+        taskPresenter = new TaskPresenter(this, this);
+        taskPresenter.initialize();
 
-        setBasePresenterImplement(serviceSubmitPresenter);
+        setBasePresenterImplement(taskPresenter);
         getSavedInstanceState(savedInstanceState);
     }
 
@@ -87,7 +87,7 @@ public class ServiceSubmitActivity extends ActivityViewImplement<ServiceSubmitCo
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    serviceSubmitPresenter.checkPermission(BaseApplication.getInstance());
+                    taskPresenter.checkPermission(BaseApplication.getInstance());
                 }
                 break;
             default:
@@ -155,7 +155,7 @@ public class ServiceSubmitActivity extends ActivityViewImplement<ServiceSubmitCo
 
     @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        serviceSubmitPresenter.submit(null);
+        taskPresenter.submit(null);
     }
 
     @Override

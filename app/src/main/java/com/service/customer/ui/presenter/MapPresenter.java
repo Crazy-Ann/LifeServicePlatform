@@ -9,7 +9,7 @@ import com.amap.api.maps.model.LatLng;
 import com.service.customer.R;
 import com.service.customer.components.utils.IOUtil;
 import com.service.customer.constant.Constant;
-import com.service.customer.net.entity.EventInfos;
+import com.service.customer.net.entity.TaskInfos;
 import com.service.customer.ui.contract.MapContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
@@ -40,10 +40,10 @@ public class MapPresenter extends BasePresenterImplement implements MapContract.
     }
 
     @Override
-    public EventInfos generateEventInfos() {
+    public TaskInfos generateEventInfos() {
         view.showLoadingPromptDialog(R.string.get_evnet_infos, Constant.RequestCode.DIALOG_PROMPT_GET_EVENT_INFOS);
         try {
-            return new EventInfos().parse(JSONObject.parseObject(IOUtil.getInstance().readString(context.getAssets().open("EventInfos.json"))));
+            return new TaskInfos().parse(JSONObject.parseObject(IOUtil.getInstance().readString(context.getAssets().open("TaskInfos.json"))));
         } catch (IOException e) {
             e.printStackTrace();
             return null;

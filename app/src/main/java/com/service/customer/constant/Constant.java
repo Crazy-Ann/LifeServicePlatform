@@ -50,6 +50,8 @@ public final class Constant {
         public static final int DIALOG_PROMPT_SAVE_HEAD_IMAGE_ERROR                 = 0x5021;
         public static final int DIALOG_PROMPT_SELECT_IMAGE                          = 0x5022;
         public static final int DIALOG_PROMPT_GET_EVENT_INFOS                       = 0x5023;
+        public static final int DIALOG_PROGRESS_SAVE_TASK_INFO                      = 0x5024;
+        public static final int DIALOG_PROMPT_SAVE_TASK_INFO_ERROR                  = 0x5025;
         public static final int INSTALL_APK                                         = 0x5097;
         public static final int REQUEST_CODE_PHOTOGRAPH                             = 0x5098;
         public static final int REQUEST_CODE_ALBUM                                  = 0x5099;

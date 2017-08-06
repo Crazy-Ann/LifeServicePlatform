@@ -67,7 +67,7 @@ android {
                 variant.outputs.each { output ->
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        def fileName = "密云区困难家庭生活服务平台(用户端)" + "_v${defaultConfig.versionName}_${new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))}" + '_release.apk'
+                        def fileName = "密云区困难家庭生活服务平台" + "_v${defaultConfig.versionName}_${new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))}" + '_release.apk'
                         output.outputFile = new File(outputFile.parent, fileName)
                     }
                 }

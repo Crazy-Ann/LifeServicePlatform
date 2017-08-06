@@ -2,15 +2,18 @@ package com.service.customer.ui.presenter;
 
 import android.content.Context;
 
-import com.service.customer.ui.contract.ServiceSubmitContract;
+import com.service.customer.ui.contract.TaskContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
+import java.io.File;
+import java.util.List;
 
-public class ServiceSubmitPresenter extends BasePresenterImplement implements ServiceSubmitContract.Presenter {
 
-    private ServiceSubmitContract.View view;
+public class TaskPresenter extends BasePresenterImplement implements TaskContract.Presenter {
 
-    public ServiceSubmitPresenter(Context context, ServiceSubmitContract.View view) {
+    private TaskContract.View view;
+
+    public TaskPresenter(Context context, TaskContract.View view) {
         super(context, view);
         this.context = context;
         this.view = view;
@@ -22,7 +25,7 @@ public class ServiceSubmitPresenter extends BasePresenterImplement implements Se
     }
 
     @Override
-    public void submit(String data) {
+    public void submit(String data, List<File> file) {
 
     }
 }

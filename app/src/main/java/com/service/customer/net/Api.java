@@ -24,11 +24,12 @@ import com.service.customer.net.reponse.SaveHeadImageResponse;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 public class Api {
 
     private static Api api;
-    private int retryCount;
+    private        int retryCount;
 
     private Api() {
         // cannot be instantiated
@@ -317,12 +318,13 @@ public class Api {
         }
     }
 
-    public void saveHeadImage(final Context context, final BaseView view, String url, File file, String token, final ApiListener apiListener) {
+    //todo upload image
+    public void saveHeadImage(final Context context, final BaseView view, String url, String token, File file, final ApiListener apiListener) {
         LogUtil.getInstance().print("saveHeadImage");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.TOKEN, token);
-            RequestParameter parameter = Request.getInstance().generateRequestParameters(RequestParameterKey.MODIFY_NAME, parameters, null, false);
+            RequestParameter parameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SAVE_HEAD_IMAGE, parameters, null, false);
             if (parameter != null) {
                 HttpRequest.getInstance().doPost(context, url, parameter, new SaveHeadImageResponse() {
 
@@ -330,7 +332,7 @@ public class Api {
                     public void onStart() {
                         super.onStart();
                         LogUtil.getInstance().print("修改头像开始");
-                        view.showLoadingPromptDialog(R.string.save_head_image_prompt2, Constant.RequestCode.DIALOG_PROGRESS_MODIFY_REAL_NAME);
+                        view.showLoadingPromptDialog(R.string.save_head_image_prompt2, Constant.RequestCode.DIALOG_PROGRESS_SAVE_HEAD_IMAGE);
                     }
 
                     @Override
@@ -340,7 +342,7 @@ public class Api {
                         if (headImageInfo != null) {
                             apiListener.success(headImageInfo);
                         } else {
-                            view.showPromptDialog(R.string.dialog_prompt_save_head_image_error, Constant.RequestCode.DIALOG_PROGRESS_SAVE_HEAD_IMAGE);
+                            view.showPromptDialog(R.string.dialog_prompt_save_head_image_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_HEAD_IMAGE_ERROR);
                         }
                     }
 
@@ -375,6 +377,76 @@ public class Api {
                 });
             } else {
                 view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_HEAD_IMAGE_ERROR);
+            }
+        } else {
+            view.showNetWorkPromptDialog();
+        }
+    }
+
+    //todo upload image
+    public void saveTaskInfo(final Context context, final BaseView view, String url, String token, String taskType, double longitude, double latitude, String address, String taskNote, List<File> files, final ApiListener apiListener) {
+        LogUtil.getInstance().print("saveHeadImage");
+        if (NetworkUtil.getInstance().isInternetConnecting(context)) {
+            HashMap<String, String> parameters = new HashMap<>();
+            parameters.put(RequestParameterKey.TOKEN, token);
+            parameters.put(RequestParameterKey.TASK_TYPE, taskType);
+            parameters.put(RequestParameterKey.LONGITUDE, String.valueOf(longitude));
+            parameters.put(RequestParameterKey.LATITUDE, String.valueOf(latitude));
+            parameters.put(RequestParameterKey.ADDRESS, address);
+            parameters.put(RequestParameterKey.TASK_NOTE, taskNote);
+            RequestParameter parameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, null, false);
+            if (parameter != null) {
+                HttpRequest.getInstance().doPost(context, url, parameter, new SaveHeadImageResponse() {
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        LogUtil.getInstance().print("提交任务开始");
+                        view.showLoadingPromptDialog(R.string.save_task_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SAVE_TASK_INFO);
+                    }
+
+                    @Override
+                    public void onResponseSuccess(JSONObject object) {
+                        super.onResponseSuccess(object);
+                        LogUtil.getInstance().print("提交任务成功:" + object.toString());
+                        if (headImageInfo != null) {
+                            apiListener.success(headImageInfo);
+                        } else {
+                            view.showPromptDialog(R.string.dialog_prompt_save_task_info_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                        }
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message) {
+                        super.onResponseFailed(code, message);
+                        LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                        apiListener.failed(null, code, message);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message, JSONObject object) {
+                        super.onResponseFailed(code, message, object);
+                        LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                    }
+
+                    @Override
+                    public void onEnd() {
+                        super.onEnd();
+                        LogUtil.getInstance().print("提交任务结束");
+                        view.hideLoadingPromptDialog();
+                    }
+
+                    @Override
+                    public void onFailed(int code, String message) {
+                        super.onFailed(code, message);
+                        LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                    }
+                });
+            } else {
+                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
             }
         } else {
             view.showNetWorkPromptDialog();

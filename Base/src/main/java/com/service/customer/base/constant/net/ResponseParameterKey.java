@@ -16,7 +16,7 @@ public class ResponseParameterKey {
     public static final String TITLE                           = "title";
     public static final String DESCREPTION                     = "descreption";
     public static final String URL                             = "url";
-    public static final String EVENT_INFOS                     = "EventInfos";
+    public static final String TASK_INFOS                      = "TaskInfos";
     public static final String LONGITUDE                       = "longitude";
     public static final String LATITUDE                        = "latitude";
 

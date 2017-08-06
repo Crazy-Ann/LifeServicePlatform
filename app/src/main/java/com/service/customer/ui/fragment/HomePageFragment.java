@@ -27,7 +27,7 @@ import com.service.customer.net.entity.NotificationAnnouncementInfos;
 import com.service.customer.net.entity.ServiceInfo;
 import com.service.customer.net.entity.ServiceInfos;
 import com.service.customer.ui.activity.MapActivity;
-import com.service.customer.ui.activity.ServiceSubmitActivity;
+import com.service.customer.ui.activity.TaskActivity;
 import com.service.customer.ui.adapter.NotificationAnnouncementAdapter;
 import com.service.customer.ui.adapter.ServiceAdapter;
 import com.service.customer.ui.binder.NotificationAnnouncementBinder;
@@ -152,7 +152,7 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
                     case com.service.customer.constant.Constant.ServiceAction.EMERGENCY_CALL_FOR_HELP:
                         bundle = new Bundle();
                         bundle.putString(Temp.TITLE.getContent(), serviceInfos.get(position).getName());
-                        startActivity(ServiceSubmitActivity.class, bundle);
+                        startActivity(TaskActivity.class, bundle);
                         break;
                     case com.service.customer.constant.Constant.ServiceAction.APPLIANCE_MAINTENANCE:
                         break;

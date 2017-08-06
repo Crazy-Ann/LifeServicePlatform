@@ -11,27 +11,25 @@ import com.service.customer.components.cache.listener.implement.CacheableImpleme
 import com.service.customer.components.widget.sticky.listener.OnGroupListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
-public final class EventInfos extends CacheableImplement implements Parcelable, OnGroupListener {
+public final class TaskInfos extends CacheableImplement implements Parcelable, OnGroupListener {
 
-    private ArrayList<EventInfo> eventInfos;
+    private ArrayList<TaskInfo> taskInfos;
 
-    public ArrayList<EventInfo> getEventInfos() {
-        return eventInfos;
+    public ArrayList<TaskInfo> getTaskInfos() {
+        return taskInfos;
     }
 
-    public EventInfos() {
+    public TaskInfos() {
     }
 
-    public EventInfos parse(JSONObject object) {
+    public TaskInfos parse(JSONObject object) {
         if (object != null) {
-            if (object.containsKey(ResponseParameterKey.EVENT_INFOS)) {
-                JSONArray array = object.getJSONArray(ResponseParameterKey.EVENT_INFOS);
-                this.eventInfos = new ArrayList<>();
+            if (object.containsKey(ResponseParameterKey.TASK_INFOS)) {
+                JSONArray array = object.getJSONArray(ResponseParameterKey.TASK_INFOS);
+                this.taskInfos = new ArrayList<>();
                 for (int i = 0; i < array.size(); i++) {
-                    this.eventInfos.add(new EventInfo().parse(array.getJSONObject(i)));
+                    this.taskInfos.add(new TaskInfo().parse(array.getJSONObject(i)));
                 }
             } else {
                 return null;
@@ -45,8 +43,8 @@ public final class EventInfos extends CacheableImplement implements Parcelable, 
     @Override
     public String toString() {
         if (BuildConfig.DEBUG) {
-            return "EventInfos{" +
-                    ", eventInfos='" + eventInfos + '\'' +
+            return "TaskInfos{" +
+                    ", taskInfos='" + taskInfos + '\'' +
                     '}';
         } else {
             return super.toString();
@@ -70,22 +68,22 @@ public final class EventInfos extends CacheableImplement implements Parcelable, 
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeTypedList(this.eventInfos);
+        dest.writeTypedList(this.taskInfos);
     }
 
-    protected EventInfos(Parcel in) {
-        this.eventInfos = in.createTypedArrayList(EventInfo.CREATOR);
+    protected TaskInfos(Parcel in) {
+        this.taskInfos = in.createTypedArrayList(TaskInfo.CREATOR);
     }
 
-    public static final Creator<EventInfos> CREATOR = new Creator<EventInfos>() {
+    public static final Creator<TaskInfos> CREATOR = new Creator<TaskInfos>() {
         @Override
-        public EventInfos createFromParcel(Parcel source) {
-            return new EventInfos(source);
+        public TaskInfos createFromParcel(Parcel source) {
+            return new TaskInfos(source);
         }
 
         @Override
-        public EventInfos[] newArray(int size) {
-            return new EventInfos[size];
+        public TaskInfos[] newArray(int size) {
+            return new TaskInfos[size];
         }
     };
 }

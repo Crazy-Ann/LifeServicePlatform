@@ -3,10 +3,7 @@ package com.service.customer.ui.contract;
 import com.amap.api.maps.model.LatLng;
 import com.service.customer.base.presenter.BasePresenter;
 import com.service.customer.base.view.BaseView;
-import com.service.customer.net.entity.EventInfo;
-import com.service.customer.net.entity.EventInfos;
-
-import java.util.List;
+import com.service.customer.net.entity.TaskInfos;
 
 public interface MapContract {
 
@@ -14,14 +11,14 @@ public interface MapContract {
 
         boolean isActive();
 
-        void setEventMarker(EventInfos eventInfos);
+        void setEventMarker(TaskInfos taskInfos);
     }
 
     interface Presenter extends BasePresenter {
 
         void setMapOption(LatLng lating, float zoom, float bearing, float tilt);
 
-        EventInfos generateEventInfos();
+        TaskInfos generateEventInfos();
 
     }
 }

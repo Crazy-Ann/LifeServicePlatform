@@ -8,7 +8,7 @@ import com.service.customer.base.constant.net.ResponseParameterKey;
 import com.service.customer.base.net.model.BaseEntity;
 
 
-public class EventInfo extends BaseEntity {
+public class TaskInfo extends BaseEntity {
 
     private String accountAvatar;
     private String realName;
@@ -41,11 +41,11 @@ public class EventInfo extends BaseEntity {
         return descreption;
     }
 
-    public EventInfo() {
+    public TaskInfo() {
     }
 
 
-    public EventInfo parse(JSONObject object) {
+    public TaskInfo parse(JSONObject object) {
         if (object != null) {
             this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR);
             this.realName = object.getString(ResponseParameterKey.REAL_NAME);
@@ -62,7 +62,7 @@ public class EventInfo extends BaseEntity {
     @Override
     public String toString() {
         if (BuildConfig.DEBUG) {
-            return "EventInfo{" +
+            return "TaskInfo{" +
                     "accountAvatar:" + accountAvatar + '\'' +
                     ", realName:" + realName + '\'' +
                     ", title:" + title + '\'' +
@@ -91,7 +91,7 @@ public class EventInfo extends BaseEntity {
         dest.writeDouble(this.longitude);
     }
 
-    protected EventInfo(Parcel in) {
+    protected TaskInfo(Parcel in) {
         super(in);
         this.accountAvatar = in.readString();
         this.realName = in.readString();
@@ -101,15 +101,15 @@ public class EventInfo extends BaseEntity {
         this.longitude = in.readDouble();
     }
 
-    public static final Creator<EventInfo> CREATOR = new Creator<EventInfo>() {
+    public static final Creator<TaskInfo> CREATOR = new Creator<TaskInfo>() {
         @Override
-        public EventInfo createFromParcel(Parcel source) {
-            return new EventInfo(source);
+        public TaskInfo createFromParcel(Parcel source) {
+            return new TaskInfo(source);
         }
 
         @Override
-        public EventInfo[] newArray(int size) {
-            return new EventInfo[size];
+        public TaskInfo[] newArray(int size) {
+            return new TaskInfo[size];
         }
     };
 }

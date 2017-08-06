@@ -3,7 +3,10 @@ package com.service.customer.ui.contract;
 import com.service.customer.base.presenter.BasePresenter;
 import com.service.customer.base.view.BaseView;
 
-public interface ServiceSubmitContract {
+import java.io.File;
+import java.util.List;
+
+public interface TaskContract {
 
     interface View extends BaseView<Presenter> {
 
@@ -12,6 +15,6 @@ public interface ServiceSubmitContract {
 
     interface Presenter extends BasePresenter {
 
-        void submit(String data);
+        void submit(String data, List<File> file);
     }
 }
