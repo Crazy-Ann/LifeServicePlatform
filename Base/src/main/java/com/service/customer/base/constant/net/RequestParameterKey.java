@@ -22,7 +22,7 @@ public class RequestParameterKey {
     public static final String PASSWORD  = "password";
     public static final String REAL_NAME = "realname";
     public static final String FORM_DATA = "form_data";
-    public static final String FILE_DATA = "file_data";
+    public static final String FILE_DATA = "uploadimg";
 
     public static final String LONGITUDE = "longitude";
     public static final String LATITUDE  = "latitude";
