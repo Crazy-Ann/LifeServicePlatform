@@ -57,7 +57,5 @@ dependencies {
     compile deps.okio
     compile deps.fastjson
     compile deps.JsBridge
-    compile deps.zxing
     compile deps.zip4j
-    compile deps.transitionseverywhere
 }

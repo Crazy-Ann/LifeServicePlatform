@@ -75,6 +75,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     @Override
     protected void findViewById() {
         inToolbar = ViewUtil.getInstance().findView(this, R.id.inToolbar);
+        mapView = ViewUtil.getInstance().findView(this, R.id.mapView);
     }
 
     @Override

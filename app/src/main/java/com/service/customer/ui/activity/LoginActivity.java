@@ -74,7 +74,7 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
     protected void initialize(Bundle savedInstanceState) {
         loginPresenter = new LoginPresenter(this, this);
         loginPresenter.initialize();
-        loginPresenter.clearLoginInfo();
+
         setBasePresenterImplement(loginPresenter);
         getSavedInstanceState(savedInstanceState);
 

@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
+import com.service.customer.R;
 import com.service.customer.components.utils.IOUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.entity.EventInfos;

@@ -53,7 +53,7 @@ public class LoginPresenter extends BasePresenterImplement implements LoginContr
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-                        LoginInfo loginInfo = (LoginInfo)baseEntity; 
+                        LoginInfo loginInfo = (LoginInfo) baseEntity;
                         BaseApplication.getInstance().setLoginInfo(loginInfo);
                         try {
                             SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.INDEX_URL, loginInfo.getIndexUrl(), true);
@@ -75,7 +75,7 @@ public class LoginPresenter extends BasePresenterImplement implements LoginContr
 
                     @Override
                     public void failed(BaseEntity entity, String errorCode, String errorMessage) {
-
+                        clearLoginInfo();
                     }
                 }
         );
