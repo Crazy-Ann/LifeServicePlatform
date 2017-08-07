@@ -67,7 +67,7 @@ public class VoiceEdittext extends LinearLayout implements View.OnClickListener,
             etContent.setText(stringBuilder.toString());
         }
         etContent.setSelection(stringBuilder.length());
-        stringBuilder.delete(0,stringBuilder.length());
+        stringBuilder.delete(0, stringBuilder.length());
     }
 
     public String getText() {

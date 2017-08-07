@@ -8,7 +8,7 @@ import com.service.customer.components.widget.sticky.listener.OrientationProvide
 /**
  * OrientationProvider for RecyclerViews who use a LinearLayoutManager
  */
-public class LinearLayoutOrientationProvider implements OrientationProvider {
+public class LinearLayoutOrientationItemDecoration implements OrientationProvider {
 
     @Override
     public int getOrientation(RecyclerView recyclerView) {

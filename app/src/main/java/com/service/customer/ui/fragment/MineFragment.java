@@ -132,7 +132,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                         .setPrompt(getString(R.string.select_image_prompt))
                         .setPositiveButtonText(getActivity(), R.string.album)
                         .setNegativeButtonText(getActivity(), R.string.photograph)
-                        .setTargetFragment(this, com.service.customer.constant.Constant.RequestCode.DIALOG_PROMPT_SELECT_IMAGE)
+                        .setTargetFragment(this, Constant.RequestCode.DIALOG_PROMPT_SELECT_IMAGE)
                         .setCancelableOnTouchOutside(true)
                         .setCancelable(true)
                         .showAllowingStateLoss(getActivity());
@@ -158,18 +158,18 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
-            case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
+            case Constant.RequestCode.NET_WORK_SETTING:
+            case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     minePresenter.checkPermission(getActivity());
                 }
                 break;
-            case com.service.customer.constant.Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:
+            case Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:
                 ThreadPoolUtil.execute(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), com.service.customer.constant.Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
+                            File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
                             if (file != null) {
                                 mineHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, file));
                             } else {
@@ -182,7 +182,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                     }
                 });
                 break;
-            case com.service.customer.constant.Constant.RequestCode.REQUEST_CODE_ALBUM:
+            case Constant.RequestCode.REQUEST_CODE_ALBUM:
                 if (data != null) {
                     final Uri uri = data.getData();
                     showLoadingPromptDialog(R.string.get_image_prompt, Constant.RequestCode.DIALOG_PROGRESS_GET_IMAGE);
@@ -190,8 +190,8 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                         @Override
                         public void run() {
                             try {
-                                File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), com.service.customer.constant.Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
-                                Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), uri, 0.25f);
+                                File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
+                                Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), uri, 0.5f);
                                 if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
                                     mineHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, file));
                                 } else {
@@ -218,9 +218,9 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     @Override
     public void onPositiveButtonClicked(int requestCode) {
         switch (requestCode) {
-            case com.service.customer.constant.Constant.RequestCode.DIALOG_PROMPT_SELECT_IMAGE:
+            case Constant.RequestCode.DIALOG_PROMPT_SELECT_IMAGE:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SELECT_IMAGE");
-                startActivityForResult(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Regex.IMAGE_PATH.getRegext(), com.service.customer.constant.Constant.RequestCode.REQUEST_CODE_ALBUM, null);
+                startActivityForResult(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Regex.IMAGE_PATH.getRegext(), Constant.RequestCode.REQUEST_CODE_ALBUM, null);
                 break;
             default:
                 break;
@@ -230,14 +230,14 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     @Override
     public void onNegativeButtonClicked(int requestCode) {
         switch (requestCode) {
-            case com.service.customer.constant.Constant.RequestCode.DIALOG_PROMPT_SELECT_IMAGE:
+            case Constant.RequestCode.DIALOG_PROMPT_SELECT_IMAGE:
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_SELECT_IMAGE");
                 LogUtil.getInstance().print("onNeutralButtonClicked_DIALOG_PROMPT_SELECT_IMAGE");
                 try {
                     HashMap<String, Parcelable> map = new HashMap<>();
-                    File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), com.service.customer.constant.Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
+                    File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
                     map.put(MediaStore.EXTRA_OUTPUT, Uri.parse(file.getAbsolutePath()));
-                    startActivityForResultWithParcelable(MediaStore.ACTION_IMAGE_CAPTURE, map, com.service.customer.constant.Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH);
+                    startActivityForResultWithParcelable(MediaStore.ACTION_IMAGE_CAPTURE, map, Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

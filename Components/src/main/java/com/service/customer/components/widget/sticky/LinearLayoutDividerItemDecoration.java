@@ -13,7 +13,7 @@ public class LinearLayoutDividerItemDecoration extends RecyclerView.ItemDecorati
     private int size;
     private Paint paint;
 
-    public LinearLayoutDividerItemDecoration(int color, int size, int orientation) {
+    public  LinearLayoutDividerItemDecoration(int color, int size, int orientation) {
         if (orientation != LinearLayoutManager.VERTICAL && orientation != LinearLayoutManager.HORIZONTAL) {
             throw new IllegalArgumentException("orientation error");
         }

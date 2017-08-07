@@ -50,6 +50,7 @@
     <string name="dialog_prompt_save_head_image_error">修改用户头像异常</string>
     <string name="save_task_info_prompt">正在提交任务，请稍后…</string>
     <string name="dialog_prompt_save_task_info_error">提交任务异常</string>
+    <string name="get_task_image_prompt">最多只能上传三张</string>
     <string name="bind_push_prompt">正在綁定推送相关信息，请稍后…</string>
     <string name="dialog_prompt_bind_push_error">綁定推送相关信息获取异常</string>
     <string name="get_url_prompt">正在获取信息，请稍后…</string>

@@ -30,7 +30,7 @@ public class StickyRecyclerHeadersDecoration extends RecyclerView.ItemDecoration
 
     // TODO: Consider passing in orientation to simplify orientation accounting within calculation
     public StickyRecyclerHeadersDecoration(StickyRecyclerHeadersAdapter adapter) {
-        this(adapter, new LinearLayoutOrientationProvider(), new DimensionCalculator());
+        this(adapter, new LinearLayoutOrientationItemDecoration(), new DimensionCalculator());
     }
 
     private StickyRecyclerHeadersDecoration(StickyRecyclerHeadersAdapter adapter, OrientationProvider orientationProvider, DimensionCalculator dimensionCalculator) {

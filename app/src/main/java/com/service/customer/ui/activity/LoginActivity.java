@@ -48,7 +48,7 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
     private Button btnLogin;
     private CheckBox cbRememberLoginInfo;
     private boolean isPasswordHidden;
-    private EditTextValidator validator;
+    private EditTextValidator editTextValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +78,14 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
         setBasePresenterImplement(loginPresenter);
         getSavedInstanceState(savedInstanceState);
 
-        validator = new EditTextValidator();
-        validator.add(new Validation(null, etAccount, true, ibAccountEmpty, new AccountValidation()));
-        validator.add(new Validation(null, etPassword, true, ibPasswordEmpty, new PasswordValidation()));
-        validator.execute(this, btnLogin,
-                          com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
-                          com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
-                          com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
-                          com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);
+        editTextValidator = new EditTextValidator();
+        editTextValidator.add(new Validation(null, etAccount, true, ibAccountEmpty, new AccountValidation()));
+        editTextValidator.add(new Validation(null, etPassword, true, ibPasswordEmpty, new PasswordValidation()));
+        editTextValidator.execute(this, btnLogin,
+                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
+                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
+                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
+                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);
 
         LogUtil.getInstance().print("name:" + SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, null, true));
         LogUtil.getInstance().print("password:" + SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, null, true));
@@ -123,7 +123,7 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
                 etPassword.setText(null);
                 break;
             case R.id.btnLogin:
-                if (validator.validate(this)) {
+                if (editTextValidator.validate(this)) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         loginPresenter.checkPermission(this);
                     } else {

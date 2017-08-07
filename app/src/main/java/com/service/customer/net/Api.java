@@ -369,11 +369,11 @@ public class Api {
         }
     }
 
-    public void saveTaskInfo(final Context context, final BaseView view, String url, String token, String taskType, double longitude, double latitude, String address, String taskNote, FileWrapper fileWrapper, final ApiListener apiListener) {
+    public void saveTaskInfo(final Context context, final BaseView view, String url, String token, int taskType, double longitude, double latitude, String address, String taskNote, FileWrapper fileWrapper, final ApiListener apiListener) {
         LogUtil.getInstance().print("saveTaskInfo");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
-            parameters.put(RequestParameterKey.TASK_TYPE, taskType);
+            parameters.put(RequestParameterKey.TASK_TYPE, String.valueOf(taskType));
             parameters.put(RequestParameterKey.LONGITUDE, String.valueOf(longitude));
             parameters.put(RequestParameterKey.LATITUDE, String.valueOf(latitude));
             parameters.put(RequestParameterKey.ADDRESS, address);

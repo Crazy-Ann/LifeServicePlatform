@@ -4,7 +4,6 @@ import com.service.customer.base.presenter.BasePresenter;
 import com.service.customer.base.view.BaseView;
 
 import java.io.File;
-import java.util.List;
 
 public interface TaskContract {
 
@@ -19,6 +18,6 @@ public interface TaskContract {
 
         void location();
 
-        void submit(String data, List<File> file);
+        void saveTaskInfo(double longitude, double latitude, String address, String descreption, File file);
     }
 }

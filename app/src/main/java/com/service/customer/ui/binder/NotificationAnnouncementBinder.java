@@ -21,10 +21,10 @@ public class NotificationAnnouncementBinder extends BaseViewBinder {
 
     @Override
     public void bind(RecyclerView.ViewHolder viewHolder, Object o, int position, boolean checkable) {
-        NotificationAnnouncementHolder holder = (NotificationAnnouncementHolder) viewHolder;
-        NotificationAnnouncementInfo info = (NotificationAnnouncementInfo) o;
-        holder.tvTtile.setText(info.getTitle());
-        holder.tvDescreption.setText(info.getDescreption());
+        NotificationAnnouncementHolder notificationAnnouncementHolder = (NotificationAnnouncementHolder) viewHolder;
+        NotificationAnnouncementInfo notificationAnnouncementInfo = (NotificationAnnouncementInfo) o;
+        notificationAnnouncementHolder.tvTtile.setText(notificationAnnouncementInfo.getTitle());
+        notificationAnnouncementHolder.tvDescreption.setText(notificationAnnouncementInfo.getDescreption());
     }
 
     @Override

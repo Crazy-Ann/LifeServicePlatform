@@ -23,17 +23,17 @@
         android:paddingStart="@dimen/dp_5"/>
 
     <com.service.customer.ui.widget.edittext.VoiceEdittext
-        android:id="@+id/vetContent"
+        android:id="@+id/vetDescreption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp_8"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvDescreption"
-        android:layout_width="@dimen/dp_60"
-        android:layout_height="@dimen/dp_60"
+        android:id="@+id/rvTaskImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp_8"
-        android:contentDescription="@null"/>
+        android:fadeScrollbars="false"/>
 
     <include layout="@layout/view_line"/>
 

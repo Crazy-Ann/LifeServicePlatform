@@ -23,10 +23,10 @@ public class ServiceBinder extends BaseViewBinder {
 
     @Override
     public void bind(RecyclerView.ViewHolder viewHolder, Object o, int position, boolean checkable) {
-        ServiceHolder holder = (ServiceHolder) viewHolder;
-        ServiceInfo info = (ServiceInfo) o;
-        GlideUtil.getInstance().with(context, info.getIconUrl(), context.getResources().getDrawable(R.mipmap.icon_default), context.getResources().getDrawable(R.mipmap.icon_default), DiskCacheStrategy.NONE, holder.ivService);
-        holder.tvName.setText(info.getName());
+        ServiceHolder serviceHolder = (ServiceHolder) viewHolder;
+        ServiceInfo serviceInfo = (ServiceInfo) o;
+        GlideUtil.getInstance().with(context, serviceInfo.getIconUrl(), context.getResources().getDrawable(R.mipmap.icon_default), context.getResources().getDrawable(R.mipmap.icon_default), DiskCacheStrategy.NONE, serviceHolder.ivService);
+        serviceHolder.tvName.setText(serviceInfo.getName());
     }
 
     @Override
