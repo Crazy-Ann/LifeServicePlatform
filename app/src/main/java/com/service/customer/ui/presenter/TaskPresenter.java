@@ -37,7 +37,6 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
     @Override
     public void initialize() {
         super.initialize();
-        view.showLoadingPromptDialog(R.string.location_prompt, Constant.RequestCode.DIALOG_PROGRESS_LOCATION);
         aMapLocationClient = new AMapLocationClient(BaseApplication.getInstance());
         aMapLocationClientOption = new AMapLocationClientOption();
         aMapLocationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
@@ -56,6 +55,7 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
 
     @Override
     public void location() {
+        view.showLoadingPromptDialog(R.string.location_prompt, Constant.RequestCode.DIALOG_PROGRESS_LOCATION);
         aMapLocationClient.startLocation();
     }
 
