@@ -9,14 +9,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.service.customer.R;
-import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.tts.OnDictationListener;
+import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.BundleUtil;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
-import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
@@ -87,7 +86,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    taskPresenter.checkPermission(BaseApplication.getInstance());
+                    taskPresenter.checkPermission(this);
                 }
                 break;
             default:
@@ -155,7 +154,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
 
     @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        taskPresenter.submit(null);
+//        taskPresenter.submit(null);
     }
 
     @Override

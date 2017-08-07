@@ -110,7 +110,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                 break;
             case R.id.btnLogout:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    minePresenter.checkPermission(BaseApplication.getInstance());
+                    minePresenter.checkPermission(getActivity());
                 } else {
                     minePresenter.logout();
                 }
@@ -132,7 +132,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                 case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
                 case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        minePresenter.checkPermission(BaseApplication.getInstance());
+                        minePresenter.checkPermission(getActivity());
                     }
                     break;
                 case com.service.customer.constant.Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:

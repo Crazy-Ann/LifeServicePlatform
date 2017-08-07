@@ -15,6 +15,7 @@ import com.service.customer.components.permission.target.AppActivityTarget;
 import com.service.customer.components.permission.target.AppFragmentTarget;
 import com.service.customer.components.permission.target.ContextTarget;
 import com.service.customer.components.permission.target.SupportFragmentTarget;
+import com.service.customer.components.utils.LogUtil;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class Permission {
             return true;
         } else {
             for (String permission : permissions) {
-//                LogUtil.getInstance().print("permission:" + permission);
+                LogUtil.getInstance().print("permission:" + permission);
                 String option = AppOpsManagerCompat.permissionToOp(permission);
 //                LogUtil.getInstance().print("option:" + option);
                 if (!TextUtils.isEmpty(option)) {

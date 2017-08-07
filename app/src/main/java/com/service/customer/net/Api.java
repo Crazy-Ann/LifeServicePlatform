@@ -29,7 +29,6 @@ import java.util.List;
 public class Api {
 
     private static Api api;
-    private        int retryCount;
 
     private Api() {
         // cannot be instantiated
@@ -47,9 +46,9 @@ public class Api {
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.VERSION, String.valueOf(BuildConfig.VERSION_CODE));
-            RequestParameter parameter = Request.getInstance().generateRequestParameters(RequestParameterKey.CONFIG, null, null, false);
-            if (parameter != null) {
-                HttpRequest.getInstance().doPost(context, BuildConfig.SERVICE_URL, parameter, new ConfigResponse() {
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.CONFIG, parameters, null, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, BuildConfig.SERVICE_URL, requestParameter, new ConfigResponse() {
 
                     @Override
                     public void onStart() {
@@ -63,16 +62,7 @@ public class Api {
                         super.onResponseSuccess(object);
                         LogUtil.getInstance().print("获取配置信息成功:" + configInfo.toString());
                         if (configInfo != null) {
-//                            if (TextUtils.isEmpty(configInfo.getKey())) {
-//                                if (retryCount < Constant.RETRY_TIME) {
-//                                    getConfig(context, view, apiListener);
-//                                } else {
-//                                    view.showPromptDialog(R.string.dialog_prompt_get_version_error, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR);
-//                                }
-//                                retryCount++;
-//                            } else {
-//                                apiListener.success(configInfo);
-//                            }
+                            apiListener.success(configInfo);
                         } else {
                             view.showPromptDialog(R.string.dialog_prompt_get_version_error, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR);
                         }
@@ -136,9 +126,9 @@ public class Api {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.ACCOUNT, account);
             parameters.put(RequestParameterKey.PASSWORD, password);
-            RequestParameter parameter = Request.getInstance().generateRequestParameters(RequestParameterKey.LOGIN, parameters, null, false);
-            if (parameter != null) {
-                HttpRequest.getInstance().doPost(context, url, parameter, new LoginResponse() {
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.LOGIN, parameters, null, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new LoginResponse() {
 
                     @Override
                     public void onStart() {
@@ -202,9 +192,9 @@ public class Api {
             parameters.put(RequestParameterKey.ACCOUNT, account);
             parameters.put(RequestParameterKey.PASSWORD, password);
             parameters.put(RequestParameterKey.TOKEN, token);
-            RequestParameter parameter = Request.getInstance().generateRequestParameters(RequestParameterKey.MODIFY_PASSWORD, parameters, null, false);
-            if (parameter != null) {
-                HttpRequest.getInstance().doPost(context, url, parameter, new ModifyPasswordResponse() {
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.MODIFY_PASSWORD, parameters, null, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new ModifyPasswordResponse() {
 
                     @Override
                     public void onStart() {
@@ -263,9 +253,9 @@ public class Api {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.REAL_NAME, realName);
             parameters.put(RequestParameterKey.TOKEN, token);
-            RequestParameter parameter = Request.getInstance().generateRequestParameters(RequestParameterKey.MODIFY_NAME, parameters, null, false);
-            if (parameter != null) {
-                HttpRequest.getInstance().doPost(context, url, parameter, new ModifyRealNameResponse() {
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.MODIFY_NAME, parameters, null, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new ModifyRealNameResponse() {
 
                     @Override
                     public void onStart() {
@@ -324,9 +314,9 @@ public class Api {
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.TOKEN, token);
-            RequestParameter parameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SAVE_HEAD_IMAGE, parameters, null, false);
-            if (parameter != null) {
-                HttpRequest.getInstance().doPost(context, url, parameter, new SaveHeadImageResponse() {
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SAVE_HEAD_IMAGE, parameters, null, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveHeadImageResponse() {
 
                     @Override
                     public void onStart() {
@@ -394,9 +384,9 @@ public class Api {
             parameters.put(RequestParameterKey.LATITUDE, String.valueOf(latitude));
             parameters.put(RequestParameterKey.ADDRESS, address);
             parameters.put(RequestParameterKey.TASK_NOTE, taskNote);
-            RequestParameter parameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, null, false);
-            if (parameter != null) {
-                HttpRequest.getInstance().doPost(context, url, parameter, new SaveHeadImageResponse() {
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, null, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveHeadImageResponse() {
 
                     @Override
                     public void onStart() {

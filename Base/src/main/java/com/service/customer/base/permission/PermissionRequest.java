@@ -142,9 +142,10 @@ class PermissionRequest implements Request<RationaleRequest>, RationaleRequest, 
 
     private void callbackFailed(List<String> deniedPermissions) {
         if (callback != null) {
-            if (callback instanceof PermissionCallback)
+            if (callback instanceof PermissionCallback) {
+                LogUtil.getInstance().print("deniedPermissions:" + deniedPermissions.toString());
                 ((PermissionCallback) callback).onFailed(requestCode, deniedPermissions);
-            else {
+            } else {
                 callbackAnnotation(callback, requestCode, PermissioDenied.class, deniedPermissions);
             }
         }

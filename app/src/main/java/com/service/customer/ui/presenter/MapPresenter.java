@@ -3,7 +3,8 @@ package com.service.customer.ui.presenter;
 import android.content.Context;
 
 import com.alibaba.fastjson.JSONObject;
-import com.amap.api.maps.AMapOptions;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.service.customer.R;
@@ -19,6 +20,11 @@ import java.io.IOException;
 public class MapPresenter extends BasePresenterImplement implements MapContract.Presenter {
 
     private MapContract.View view;
+    private AMap aMap;
+
+    public AMap getAMap() {
+        return aMap;
+    }
 
     public MapPresenter(Context context, MapContract.View view) {
         super(context, view);
@@ -29,14 +35,17 @@ public class MapPresenter extends BasePresenterImplement implements MapContract.
     @Override
     public void initialize() {
         super.initialize();
+        aMap = view.getMapView().getMap();
     }
 
     @Override
-    public void setMapOption(LatLng latLng, float zoom, float bearing, float tilt) {
-        AMapOptions aOptions = new AMapOptions();
-        aOptions.zoomGesturesEnabled(true);
-        aOptions.scrollGesturesEnabled(false);
-        aOptions.camera(new CameraPosition.Builder().target(latLng).zoom(zoom).bearing(bearing).tilt(tilt).build());
+    public void setMapCamera(LatLng latLng, float zoom, float tilt, float bearing) {
+        aMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, zoom, tilt, bearing)));
+//        AMapOptions aMapOptions = new AMapOptions();
+//        aMapOptions.zoomGesturesEnabled(true);
+//        aMapOptions.scrollGesturesEnabled(false);
+//        aMapOptions.tiltGesturesEnabled(false);
+//        aMapOptions.camera(new CameraPosition.Builder().target(latLng).zoom(zoom).bearing(bearing).tilt(tilt).build());
     }
 
     @Override

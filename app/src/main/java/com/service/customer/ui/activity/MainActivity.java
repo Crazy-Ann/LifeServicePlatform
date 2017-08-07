@@ -83,7 +83,7 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    mainPresenter.checkPermission(BaseApplication.getInstance());
+                    mainPresenter.checkPermission(this);
                 }
                 break;
             default:

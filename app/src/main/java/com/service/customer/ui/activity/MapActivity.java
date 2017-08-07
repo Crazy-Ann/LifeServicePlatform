@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
@@ -14,11 +17,14 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.service.customer.R;
 import com.service.customer.base.handler.ActivityHandler;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.utils.AnimationUtil;
 import com.service.customer.components.utils.BundleUtil;
+import com.service.customer.components.utils.GlideUtil;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.MessageUtil;
@@ -37,9 +43,13 @@ import java.util.List;
 public class MapActivity extends ActivityViewImplement<MapContract.Presenter> implements MapContract.View, View.OnClickListener, OnLeftIconEventListener, AMap.OnMarkerClickListener {
 
     private MapPresenter mapPresenter;
-    private MapView      mapView;
-    private AMap         aMap;
-    private MapHandler   mapHandler;
+    private MapView mapView;
+    private LinearLayout llTaskInfo;
+    private ImageView ivHeadImage;
+    private TextView tvRealName;
+    private ImageView ivClose;
+    private TextView tvDescreption;
+    private MapHandler mapHandler;
 
     private class MapHandler extends ActivityHandler<MapActivity> {
 
@@ -76,13 +86,17 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     protected void findViewById() {
         inToolbar = ViewUtil.getInstance().findView(this, R.id.inToolbar);
         mapView = ViewUtil.getInstance().findView(this, R.id.mapView);
+        llTaskInfo = ViewUtil.getInstance().findView(this, R.id.llTaskInfo);
+        ivHeadImage = ViewUtil.getInstance().findView(this, R.id.ivHeadImage);
+        tvRealName = ViewUtil.getInstance().findView(this, R.id.tvRealName);
+        ivClose = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.ivClose, this);
+        tvDescreption = ViewUtil.getInstance().findView(this, R.id.tvDescreption);
     }
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
         initializeToolbar(R.color.color_1f90f0, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
         mapView.onCreate(savedInstanceState);
-        aMap = mapView.getMap();
         mapHandler = new MapHandler(this);
         mapPresenter = new MapPresenter(this, this);
         mapPresenter.initialize();
@@ -94,7 +108,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
         setBasePresenterImplement(mapPresenter);
         getSavedInstanceState(savedInstanceState);
 
-        mapPresenter.setMapOption(Constant.Map.MIYUN_DISTRICT, Constant.Map.ZOOM, Constant.Map.BEARING, Constant.Map.TILT);
+        mapPresenter.setMapCamera(Constant.Map.MIYUN_DISTRICT, Constant.Map.ZOOM, Constant.Map.BEARING, Constant.Map.TILT);
         ThreadPoolUtil.execute(new Runnable() {
             @Override
             public void run() {
@@ -110,7 +124,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
 
     @Override
     protected void setListener() {
-        aMap.setOnMarkerClickListener(this);
+        mapPresenter.getAMap().setOnMarkerClickListener(this);
     }
 
     @Override
@@ -141,6 +155,13 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     public void onClick(View view) {
         if (InputUtil.getInstance().isDoubleClick()) {
             return;
+        }
+        switch (view.getId()) {
+            case R.id.ivClose:
+                AnimationUtil.getInstance().fadeOutByAlphaAnimation(llTaskInfo, 100, 100);
+                break;
+            default:
+                break;
         }
     }
 
@@ -221,13 +242,18 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     }
 
     @Override
+    public MapView getMapView() {
+        return mapView;
+    }
+
+    @Override
     public void setEventMarker(TaskInfos taskInfos) {
         if (taskInfos != null) {
             for (TaskInfo taskInfo : taskInfos.getTaskInfos()) {
-                aMap.addMarker(new MarkerOptions()
-                                       .position(new LatLng(taskInfo.getLongitude(), taskInfo.getLatitude()))
-                                       .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-                                       .draggable(false)).setObject(taskInfo);
+                mapPresenter.getAMap().addMarker(new MarkerOptions()
+                                                         .position(new LatLng(taskInfo.getLatitude(), taskInfo.getLongitude()))
+                                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                                                         .draggable(false)).setObject(taskInfo);
             }
         }
     }
@@ -235,12 +261,10 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     @Override
     public boolean onMarkerClick(Marker marker) {
         TaskInfo taskInfo = (TaskInfo) marker.getObject();
-        LogUtil.getInstance().print("url:" + taskInfo.getAccountAvatar());
-        LogUtil.getInstance().print("name:" + taskInfo.getRealName());
-        LogUtil.getInstance().print("title:" + taskInfo.getTitle());
-        LogUtil.getInstance().print("descreption:" + taskInfo.getDescreption());
-        LogUtil.getInstance().print("longitude:" + taskInfo.getLongitude());
-        LogUtil.getInstance().print("latitude:" + taskInfo.getLatitude());
+        AnimationUtil.getInstance().fadeInByAlphaAnimation(llTaskInfo, 100, 100);
+        GlideUtil.getInstance().with(this, taskInfo.getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
+        tvRealName.setText(taskInfo.getRealName());
+        tvDescreption.setText(taskInfo.getDescreption());
         return true;
     }
 
