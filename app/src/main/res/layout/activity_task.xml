@@ -14,9 +14,13 @@
     <TextView
         android:id="@+id/tvLocation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_48"
         android:layout_marginTop="@dimen/dp_8"
-        android:background="@android:color/white"/>
+        android:background="@android:color/white"
+        android:clickable="false"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:paddingStart="@dimen/dp_5"/>
 
     <com.service.customer.ui.widget.edittext.VoiceEdittext
         android:id="@+id/vetContent"
@@ -24,13 +28,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp_8"/>
 
-    <ImageView
-        android:id="@+id/ivDescreption"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvDescreption"
         android:layout_width="@dimen/dp_60"
         android:layout_height="@dimen/dp_60"
         android:layout_margin="@dimen/dp_8"
-        android:contentDescription="@null"
-        android:src="@mipmap/ic_launcher"/>
+        android:contentDescription="@null"/>
 
     <include layout="@layout/view_line"/>
 

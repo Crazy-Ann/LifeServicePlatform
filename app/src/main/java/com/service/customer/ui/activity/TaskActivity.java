@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
 import com.service.customer.R;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
@@ -21,16 +25,19 @@ import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.ui.contract.TaskContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
+import com.service.customer.ui.dialog.PromptDialog;
 import com.service.customer.ui.presenter.TaskPresenter;
 import com.service.customer.ui.widget.edittext.VoiceEdittext;
 
 import java.util.List;
 
-public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> implements TaskContract.View, View.OnClickListener, OnDictationListener, OnLeftIconEventListener {
+public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> implements TaskContract.View, View.OnClickListener, OnDictationListener, OnLeftIconEventListener, AMapLocationListener {
 
     private TaskPresenter taskPresenter;
+    private TextView tvLocation;
     private VoiceEdittext vetContent;
-    private Button        btnSubmit;
+    private RecyclerView rvDescreption;
+    private Button btnSubmit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
     @Override
     protected void findViewById() {
         inToolbar = ViewUtil.getInstance().findView(this, R.id.inToolbar);
+        tvLocation = ViewUtil.getInstance().findView(this, R.id.tvLocation);
         vetContent = ViewUtil.getInstance().findView(this, R.id.vetContent);
         btnSubmit = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.btnSubmit, this);
     }
@@ -52,9 +60,16 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
     protected void initialize(Bundle savedInstanceState) {
         initializeToolbar(R.color.color_1f90f0, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
         TTSUtil.getInstance(this).initializeSpeechRecognizer();
+
         vetContent.setTextCount(0);
         taskPresenter = new TaskPresenter(this, this);
         taskPresenter.initialize();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            taskPresenter.checkPermission(this);
+        } else {
+            taskPresenter.location();
+        }
 
         setBasePresenterImplement(taskPresenter);
         getSavedInstanceState(savedInstanceState);
@@ -63,6 +78,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
     @Override
     protected void setListener() {
         TTSUtil.getInstance(this).setOnDictationListener(this);
+        taskPresenter.getAMapLocationClient().setLocationListener(this);
     }
 
     @Override
@@ -72,7 +88,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
         }
         switch (view.getId()) {
             case R.id.btnSubmit:
-                //todo submit
+//                taskPresenter.submit(null);
                 break;
             default:
                 break;
@@ -87,6 +103,8 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     taskPresenter.checkPermission(this);
+                } else {
+                    taskPresenter.location();
                 }
                 break;
             default:
@@ -131,6 +149,10 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SET_PERMISSION");
                 startPermissionSettingActivity();
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_LOCATION_ERROR");
+                taskPresenter.location();
+                break;
             default:
                 break;
         }
@@ -147,6 +169,9 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_SET_PERMISSION");
                 refusePermissionSetting();
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR:
+                LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_LOCATION_ERROR");
+                break;
             default:
                 break;
         }
@@ -154,7 +179,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
 
     @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-//        taskPresenter.submit(null);
+        taskPresenter.location();
     }
 
     @Override
@@ -168,7 +193,37 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
     }
 
     @Override
+    public void showLocationPromptDialog(int resoutId, int requestCode) {
+        PromptDialog.createBuilder(getSupportFragmentManager())
+                .setTitle(getString(R.string.dialog_prompt))
+                .setPrompt(getString(resoutId))
+                .setPositiveButtonText(this, R.string.try_again)
+                .setNegativeButtonText(this, R.string.cancel)
+                .setCancelable(true)
+                .setCancelableOnTouchOutside(true)
+                .setRequestCode(requestCode)
+                .show(this);
+    }
+
+    @Override
     public void OnLeftIconEvent() {
         onFinish("OnLeftIconEvent");
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        hideLoadingPromptDialog();
+        switch (aMapLocation.getErrorCode()) {
+            case AMapLocation.LOCATION_SUCCESS:
+                LogUtil.getInstance().print("经    度:" + aMapLocation.getLongitude());
+                LogUtil.getInstance().print("纬    度:" + aMapLocation.getLatitude());
+                LogUtil.getInstance().print("精    度:" + aMapLocation.getAccuracy());
+                LogUtil.getInstance().print("地    址:" + aMapLocation.getAddress());
+                tvLocation.setText(aMapLocation.getAddress());
+                break;
+            default:
+                showLocationPromptDialog(R.string.dialog_prompt_location_error, Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
+                break;
+        }
     }
 }

@@ -54,6 +54,8 @@ public final class Constant {
         public static final int DIALOG_PROMPT_GET_EVENT_INFOS = 0x5025;
         public static final int DIALOG_PROGRESS_SAVE_TASK_INFO = 0x5026;
         public static final int DIALOG_PROMPT_SAVE_TASK_INFO_ERROR = 0x5027;
+        public static final int DIALOG_PROGRESS_LOCATION = 0x5028;
+        public static final int DIALOG_PROMPT_LOCATION_ERROR = 0x5029;
         public static final int INSTALL_APK = 0x5097;
         public static final int REQUEST_CODE_PHOTOGRAPH = 0x5098;
         public static final int REQUEST_CODE_ALBUM = 0x5099;
@@ -117,5 +119,7 @@ public final class Constant {
         public static final float ZOOM = 15;
         public static final float TILT = 0;
         public static final float BEARING = 0;
+        public static final long LOCATION_INTERVAL = 2000;
+        public static final long LOCATION_TIME_OUT = 30000;
     }
 }
