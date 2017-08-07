@@ -10,18 +10,18 @@ import com.service.customer.base.net.model.BaseEntity;
 
 public class HeadImageInfo extends BaseEntity {
 
-    private String accountavatar;
+    private String accountAvatar;
 
     public HeadImageInfo() {
     }
 
-    public String getAccountavatar() {
-        return accountavatar;
+    public String getAccountAvatar() {
+        return accountAvatar;
     }
 
     public HeadImageInfo parse(JSONObject object) {
         if (object != null) {
-            this.accountavatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR);
+            this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR);
             return this;
         } else {
             return null;
@@ -32,7 +32,7 @@ public class HeadImageInfo extends BaseEntity {
     public String toString() {
         if (BuildConfig.DEBUG) {
             return "HeadImageInfo{" +
-                    "accountavatar:" + accountavatar + '\'' +
+                    "accountAvatar:" + accountAvatar + '\'' +
                     '}';
         } else {
             return super.toString();
@@ -47,12 +47,12 @@ public class HeadImageInfo extends BaseEntity {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeString(this.accountavatar);
+        dest.writeString(this.accountAvatar);
     }
 
     protected HeadImageInfo(Parcel in) {
         super(in);
-        this.accountavatar = in.readString();
+        this.accountAvatar = in.readString();
     }
 
     public static final Creator<HeadImageInfo> CREATOR = new Creator<HeadImageInfo>() {

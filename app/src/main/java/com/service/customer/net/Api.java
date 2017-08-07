@@ -10,6 +10,7 @@ import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.base.constant.net.ResponseCode;
 import com.service.customer.base.constant.net.ResponseParameterKey;
 import com.service.customer.base.view.BaseView;
+import com.service.customer.components.http.model.FileWrapper;
 import com.service.customer.components.http.request.HttpRequest;
 import com.service.customer.components.http.request.RequestParameter;
 import com.service.customer.components.utils.LogUtil;
@@ -191,8 +192,7 @@ public class Api {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.ACCOUNT, account);
             parameters.put(RequestParameterKey.PASSWORD, password);
-            parameters.put(RequestParameterKey.TOKEN, token);
-            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.MODIFY_PASSWORD, parameters, null, false);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.MODIFY_PASSWORD, parameters, token, false);
             if (requestParameter != null) {
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new ModifyPasswordResponse() {
 
@@ -252,8 +252,7 @@ public class Api {
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.REAL_NAME, realName);
-            parameters.put(RequestParameterKey.TOKEN, token);
-            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.MODIFY_NAME, parameters, null, false);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.MODIFY_NAME, parameters, token, false);
             if (requestParameter != null) {
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new ModifyRealNameResponse() {
 
@@ -308,13 +307,12 @@ public class Api {
         }
     }
 
-    //todo upload image
-    public void saveHeadImage(final Context context, final BaseView view, String url, String token, File file, final ApiListener apiListener) {
+    public void saveHeadImage(final Context context, final BaseView view, String url, String token, FileWrapper fileWrapper, final ApiListener apiListener) {
         LogUtil.getInstance().print("saveHeadImage");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
-            HashMap<String, String> parameters = new HashMap<>();
-            parameters.put(RequestParameterKey.TOKEN, token);
-            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SAVE_HEAD_IMAGE, parameters, null, false);
+            HashMap<String, FileWrapper> fileWrappers = new HashMap<>();
+            fileWrappers.put(RequestParameterKey.FILE_DATA, fileWrapper);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SAVE_HEAD_IMAGE, null, fileWrappers, token, false);
             if (requestParameter != null) {
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveHeadImageResponse() {
 
@@ -373,18 +371,17 @@ public class Api {
         }
     }
 
-    //todo upload image
+    //todo upload task
     public void saveTaskInfo(final Context context, final BaseView view, String url, String token, String taskType, double longitude, double latitude, String address, String taskNote, List<File> files, final ApiListener apiListener) {
         LogUtil.getInstance().print("saveHeadImage");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
-            parameters.put(RequestParameterKey.TOKEN, token);
             parameters.put(RequestParameterKey.TASK_TYPE, taskType);
             parameters.put(RequestParameterKey.LONGITUDE, String.valueOf(longitude));
             parameters.put(RequestParameterKey.LATITUDE, String.valueOf(latitude));
             parameters.put(RequestParameterKey.ADDRESS, address);
             parameters.put(RequestParameterKey.TASK_NOTE, taskNote);
-            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, null, false);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, token, false);
             if (requestParameter != null) {
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveHeadImageResponse() {
 

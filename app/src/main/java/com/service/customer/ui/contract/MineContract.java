@@ -10,13 +10,15 @@ public interface MineContract {
     interface View extends BaseView<Presenter> {
 
         boolean isActive();
+        
+        void setHeadImage(String url);
 
         void startLoginActivity();
     }
 
     interface Presenter extends BasePresenter {
 
-        void modifyHeadImage(File file);
+        void saveHeadImage(File file);
 
         void logout();
     }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.RequestParameterKey;
+import com.service.customer.base.handler.FragmentHandler;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.BitmapUtil;
 import com.service.customer.components.utils.GlideUtil;
@@ -26,8 +28,10 @@ import com.service.customer.components.utils.IOUtil;
 import com.service.customer.components.utils.ImageUtil;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
+import com.service.customer.components.utils.MessageUtil;
 import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ViewUtil;
+import com.service.customer.constant.Constant;
 import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.activity.LoginActivity;
 import com.service.customer.ui.contract.MineContract;
@@ -49,6 +53,30 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     private TextView tvPhone;
     private TextView tvIdCard;
     private Button btnLogout;
+    private MineHandler mineHandler;
+
+    private class MineHandler extends FragmentHandler<MineFragment> {
+
+        public MineHandler(MineFragment fragments) {
+            super(fragments);
+        }
+
+        @Override
+        protected void handleMessage(MineFragment fragments, Message msg) {
+            switch (msg.what) {
+                case Constant.Message.GET_IMAGE_SUCCESS:
+                    hideLoadingPromptDialog();
+                    minePresenter.saveHeadImage((File) msg.obj);
+                    break;
+                case Constant.Message.GET_IMAGE_FAILED:
+                    hideLoadingPromptDialog();
+                    showPromptDialog(R.string.dialog_prompt_get_image_error, Constant.RequestCode.DIALOG_PROMPT_GET_IMAGE_ERROR);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,12 +100,13 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     @Override
     protected void initialize(Bundle savedInstanceState) {
         initializeToolbar(R.color.color_1f90f0, android.R.color.white, false, getString(R.string.mine), null);
+        mineHandler = new MineHandler(this);
         minePresenter = new MinePresenter(getActivity(), this);
         minePresenter.initialize();
         setBasePresenterImplement(minePresenter);
         getSavedInstanceState(savedInstanceState);
 
-        GlideUtil.getInstance().with(BaseApplication.getInstance(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
+        setHeadImage(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getAccountAvatar());
         tvRealName.setText(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getRealName()
                                    + Regex.LEFT_PARENTHESIS.getRegext()
                                    + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getAccountId()
@@ -128,46 +157,56 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            switch (requestCode) {
-                case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
-                case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        minePresenter.checkPermission(getActivity());
+        switch (requestCode) {
+            case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
+            case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    minePresenter.checkPermission(getActivity());
+                }
+                break;
+            case com.service.customer.constant.Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:
+                ThreadPoolUtil.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), com.service.customer.constant.Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
+                            if (file != null) {
+                                mineHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, file));
+                            } else {
+                                mineHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            mineHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
+                        }
                     }
-                    break;
-                case com.service.customer.constant.Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:
+                });
+                break;
+            case com.service.customer.constant.Constant.RequestCode.REQUEST_CODE_ALBUM:
+                if (data != null) {
+                    final Uri uri = data.getData();
+                    showLoadingPromptDialog(R.string.get_image_prompt, Constant.RequestCode.DIALOG_PROGRESS_GET_IMAGE);
                     ThreadPoolUtil.execute(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                minePresenter.modifyHeadImage(IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), com.service.customer.constant.Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext()));
-                            } catch (IOException e) {
+                                File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), com.service.customer.constant.Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
+                                Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), uri, 0.25f);
+                                if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
+                                    mineHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, file));
+                                } else {
+                                    mineHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
+                                }
+                            } catch (InterruptedException | ExecutionException | IOException e) {
                                 e.printStackTrace();
+                                mineHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                             }
                         }
                     });
-                    break;
-                case com.service.customer.constant.Constant.RequestCode.REQUEST_CODE_ALBUM:
-                    if (data != null) {
-                        final Uri uri = data.getData();
-                        ThreadPoolUtil.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), com.service.customer.constant.Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
-                                    Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), uri, 0.5f);
-                                    if (BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
-                                        minePresenter.modifyHeadImage(file);
-                                    }
-                                } catch (InterruptedException | ExecutionException | IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }
-                    break;
-                default:
-                    break;
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -221,6 +260,11 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     @Override
     public boolean isActive() {
         return false;
+    }
+
+    @Override
+    public void setHeadImage(String url) {
+        GlideUtil.getInstance().with(BaseApplication.getInstance(), url, null, null, DiskCacheStrategy.NONE, ivHeadImage);
     }
 
     @Override

@@ -46,12 +46,14 @@ public final class Constant {
         public static final int DIALOG_PROMPT_MODIFY_PASSWORD_ERROR = 0x5017;
         public static final int DIALOG_PROGRESS_MODIFY_REAL_NAME = 0x5018;
         public static final int DIALOG_PROMPT_MODIFY_REAL_NAME_ERROR = 0x5019;
-        public static final int DIALOG_PROGRESS_SAVE_HEAD_IMAGE = 0x5020;
-        public static final int DIALOG_PROMPT_SAVE_HEAD_IMAGE_ERROR = 0x5021;
-        public static final int DIALOG_PROMPT_SELECT_IMAGE = 0x5022;
-        public static final int DIALOG_PROMPT_GET_EVENT_INFOS = 0x5023;
-        public static final int DIALOG_PROGRESS_SAVE_TASK_INFO = 0x5024;
-        public static final int DIALOG_PROMPT_SAVE_TASK_INFO_ERROR = 0x5025;
+        public static final int DIALOG_PROGRESS_GET_IMAGE = 0x5020;
+        public static final int DIALOG_PROMPT_GET_IMAGE_ERROR = 0x5021;
+        public static final int DIALOG_PROGRESS_SAVE_HEAD_IMAGE = 0x5022;
+        public static final int DIALOG_PROMPT_SAVE_HEAD_IMAGE_ERROR = 0x5023;
+        public static final int DIALOG_PROMPT_SELECT_IMAGE = 0x5024;
+        public static final int DIALOG_PROMPT_GET_EVENT_INFOS = 0x5025;
+        public static final int DIALOG_PROGRESS_SAVE_TASK_INFO = 0x5026;
+        public static final int DIALOG_PROMPT_SAVE_TASK_INFO_ERROR = 0x5027;
         public static final int INSTALL_APK = 0x5097;
         public static final int REQUEST_CODE_PHOTOGRAPH = 0x5098;
         public static final int REQUEST_CODE_ALBUM = 0x5099;
@@ -106,6 +108,8 @@ public final class Constant {
         public static final int GET_NOTIFICATION_ANNOUNCEMENT_INFOS_FAILED = 0x7004;
         public static final int GET_EVENT_INFOS_SUCCESS = 0x7005;
         public static final int GET_EVNET_INFOS_FAILED = 0x7006;
+        public static final int GET_IMAGE_SUCCESS = 0x7007;
+        public static final int GET_IMAGE_FAILED = 0x7008;
     }
 
     public static class Map {

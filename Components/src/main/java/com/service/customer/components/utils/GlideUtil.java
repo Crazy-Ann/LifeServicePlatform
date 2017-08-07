@@ -708,8 +708,5 @@ public class GlideUtil {
                 strategy,
                 view,
                 null);
-
-
-
     }
 }

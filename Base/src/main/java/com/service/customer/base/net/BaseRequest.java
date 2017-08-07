@@ -6,6 +6,7 @@ import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.http.model.FileWrapper;
 import com.service.customer.components.http.request.RequestParameter;
 import com.service.customer.components.utils.DeviceUtil;
 import com.service.customer.components.utils.LogUtil;
@@ -42,7 +43,7 @@ public class BaseRequest {
         return parameters;
     }
 
-    protected RequestParameter formatParameters(HashMap<String, String> parameters, boolean isJson) {
+    protected RequestParameter formatParameters(HashMap<String, String> parameters, HashMap<String, FileWrapper> fileWrappers, boolean isJson) {
         RequestParameter parameter = new RequestParameter();
         parameter.setJsonType(isJson);
 //        String requestData = SecurityUtil.getInstance().encryptAES(jsonObject.toString(), BuildConfig.DECRYPT_KEY);
@@ -51,7 +52,16 @@ public class BaseRequest {
                 String value = parameters.get(key);
                 if (!TextUtils.isEmpty(value)) {
                     parameter.addFormDataParameter(key, value);
-                    LogUtil.getInstance().print(key + " = " + value);
+                    LogUtil.getInstance().print("parameters:" + key + " = " + value);
+                }
+            }
+            if (fileWrappers != null) {
+                for (String key : fileWrappers.keySet()) {
+                    FileWrapper fileWrapper = fileWrappers.get(key);
+                    if (fileWrapper != null && fileWrapper.getFile() != null) {
+                        parameter.addFormDataParameter(key, fileWrapper);
+                        LogUtil.getInstance().print("fileWrappers:" + key + " = " + fileWrapper.getFileName());
+                    }
                 }
             }
             return parameter;

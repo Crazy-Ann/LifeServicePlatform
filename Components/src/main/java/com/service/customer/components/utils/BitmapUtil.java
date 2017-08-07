@@ -128,12 +128,12 @@ public class BitmapUtil {
     /**
      * 保存图片到指定文件夹
      *
-     * @param bmp
+     * @param bitmap
      * @param fileName
      * @return
      */
-    public boolean saveBitmap(Bitmap bmp, String fileName) {
-        if (bmp == null || fileName == null)
+    public boolean saveBitmap(Bitmap bitmap, String fileName) {
+        if (bitmap == null || fileName == null)
             return false;
         File file = new File(fileName);
         if (file.exists()) {
@@ -147,6 +147,6 @@ public class BitmapUtil {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return bmp.compress(format, quality, stream);
+        return bitmap.compress(format, quality, stream);
     }
 }

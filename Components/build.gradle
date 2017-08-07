@@ -59,4 +59,5 @@ dependencies {
     compile deps.JsBridge
     compile deps.zip4j
     compile deps.zxing
+//    annotationProcessor deps.glide_compiler
 }

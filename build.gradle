@@ -49,6 +49,8 @@ ext.deps = [
         bugly                : 'com.tencent.bugly:crashreport:latest.release',
         gson                 : 'com.google.code.gson:gson:2.8.0',
         glide                : 'com.github.bumptech.glide:glide:3.7.0',
+//        glide                : 'com.github.bumptech.glide:glide:4.0.0',
+//        glide_compiler       : 'com.github.bumptech.glide:compiler:4.0.0',
         guava                : 'com.google.guava:guava:20.0',
         fastjson             : 'com.alibaba:fastjson:1.1.55.android',
         okhttp3              : 'com.squareup.okhttp3:okhttp:3.4.2',

@@ -2,7 +2,16 @@ package com.service.customer.ui.presenter;
 
 import android.content.Context;
 
+import com.service.customer.base.BuildConfig;
+import com.service.customer.base.application.BaseApplication;
+import com.service.customer.base.net.model.BaseEntity;
+import com.service.customer.components.http.model.FileWrapper;
 import com.service.customer.components.utils.LogUtil;
+import com.service.customer.constant.ServiceMethod;
+import com.service.customer.net.Api;
+import com.service.customer.net.entity.HeadImageInfo;
+import com.service.customer.net.entity.LoginInfo;
+import com.service.customer.net.listener.ApiListener;
 import com.service.customer.ui.contract.MineContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
@@ -24,12 +33,32 @@ public class MinePresenter extends BasePresenterImplement implements MineContrac
     }
 
     @Override
-    public void modifyHeadImage(File file) {
+    public void saveHeadImage(File file) {
         LogUtil.getInstance().print("file:" + file.getAbsolutePath());
+        Api.getInstance().saveHeadImage(
+                context,
+                view,
+//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
+                BuildConfig.SERVICE_URL + ServiceMethod.SAVE_HEAD_IMAGE,
+                ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
+                new FileWrapper(file),
+                new ApiListener() {
+
+                    @Override
+                    public void success(BaseEntity baseEntity) {
+                        view.setHeadImage(((HeadImageInfo) baseEntity).getAccountAvatar());
+                    }
+
+                    @Override
+                    public void failed(BaseEntity entity, String errorCode, String errorMessage) {
+
+                    }
+                }
+        );
     }
 
     @Override
     public void logout() {
-        
+
     }
 }

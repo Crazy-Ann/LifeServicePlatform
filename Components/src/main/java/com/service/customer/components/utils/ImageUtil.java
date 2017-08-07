@@ -219,19 +219,18 @@ public class ImageUtil {
 
     // 按百分比压缩图片
     public static Bitmap getNarrowBitmap(Context context, Uri uri, float f) throws InterruptedException, ExecutionException, IOException {
-        final Bitmap photo = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-        LogUtil.getInstance().print("图片压缩前大小，" + "w:" + photo.getWidth() + "h:" + photo.getHeight());
-        Bitmap myBitmap = null;
-        myBitmap = Glide
+        final Bitmap original = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+        LogUtil.getInstance().print("图片压缩前大小，" + "w:" + original.getWidth() + "h:" + original.getHeight());
+        Bitmap bitmap = Glide
                 .with(context)
                 .load(uri)
                 .asBitmap()
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into((int) (photo.getWidth() * f), (int) (photo.getHeight() * f))
+                .into((int) (original.getWidth() * f), (int) (original.getHeight() * f))
                 .get();
-        LogUtil.getInstance().print("图片压缩后大小，" + "w:" + myBitmap.getWidth() + "h:" + myBitmap.getHeight());
-        return myBitmap;
+        LogUtil.getInstance().print("图片压缩后大小，" + "w:" + bitmap.getWidth() + "h:" + bitmap.getHeight());
+        return bitmap;
     }
 
     // 按指定dp压缩图片
