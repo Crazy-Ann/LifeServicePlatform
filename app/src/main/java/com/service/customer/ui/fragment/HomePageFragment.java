@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.service.customer.R;
-import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.handler.FragmentHandler;
 import com.service.customer.base.sticky.adapter.FixedStickyViewAdapter;
 import com.service.customer.components.utils.LogUtil;
@@ -126,6 +125,7 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
         notificationAnnouncementAdapter = new NotificationAnnouncementAdapter(getActivity(), new NotificationAnnouncementBinder(getActivity(), rvNotificationAnnouncement), true);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         rvNotificationAnnouncement.setHasFixedSize(true);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvNotificationAnnouncement.setLayoutManager(linearLayoutManager);
         rvNotificationAnnouncement.addItemDecoration(new LinearLayoutDividerItemDecoration(getResources().getColor(R.color.color_e4e4e4), 2, LinearLayoutManager.HORIZONTAL));
         rvNotificationAnnouncement.setAdapter(notificationAnnouncementAdapter);

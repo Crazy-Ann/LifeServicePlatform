@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.service.customer.R;
+import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.net.model.BaseEntity;
 import com.service.customer.components.utils.ApplicationUtil;
@@ -11,6 +12,7 @@ import com.service.customer.components.utils.IOUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.NetworkUtil;
 import com.service.customer.constant.Constant;
+import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
 import com.service.customer.net.entity.ConfigInfo;
 import com.service.customer.net.listener.ApiListener;
@@ -26,7 +28,6 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
     private WelcomeContract.View view;
     private boolean isForceUpdate;
     private String filePath;
-    private String serviceUrl;
 
     public boolean isForceUpdate() {
         return isForceUpdate;
@@ -53,40 +54,33 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
 
     @Override
     public void getConfig() {
-        Api.getInstance().getConfig(context, view, new ApiListener() {
+        Api.getInstance().getConfig(context, view, BuildConfig.SERVICE_URL + ServiceMethod.CONFIG, BuildConfig.VERSION_CODE, new ApiListener() {
 
             @Override
             public void success(BaseEntity entity) {
-                checkVersion((ConfigInfo) entity);
+                ConfigInfo configInfo = (ConfigInfo) entity;
+                if (configInfo != null) {
+                    BaseApplication.getInstance().setConfigInfo(configInfo);
+                    if (ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getVersion()) {
+                        if (ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getLowestVersion()) {
+                            isForceUpdate = true;
+                        } else {
+                            isForceUpdate = false;
+                        }
+                        view.showVersionUpdatePromptDialog(configInfo.getUpdateMessage());
+                    } else {
+                        view.startLoginActivity();
+                    }
+                } else {
+                    view.showPromptDialog(R.string.dialog_prompt_get_config_error, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR);
+                }
             }
 
             @Override
             public void failed(BaseEntity entity, String errorCode, String errorMsg) {
-                if (entity != null) {
-                    checkVersion((ConfigInfo) entity);
-                }
+
             }
         });
-    }
-
-    @Override
-    public void checkVersion(ConfigInfo configInfo) {
-        if (configInfo != null) {
-            BaseApplication.getInstance().setConfigInfo(configInfo);
-            serviceUrl = configInfo.getServerUrl();
-            if (ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getVersion()) {
-                if (ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getLowestVersion()) {
-                    isForceUpdate = true;
-                } else {
-                    isForceUpdate = false;
-                }
-                view.showVersionUpdatePromptDialog(configInfo.getUpdateMessage());
-            } else {
-                view.startLoginActivity();
-            }
-        } else {
-            view.showPromptDialog(R.string.dialog_prompt_check_version_error, Constant.RequestCode.DIALOG_PROMPT_CHECK_VERSION_ERROR);
-        }
     }
 
     @Override

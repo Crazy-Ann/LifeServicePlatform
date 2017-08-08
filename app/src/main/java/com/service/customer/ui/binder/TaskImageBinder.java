@@ -26,6 +26,7 @@ public class TaskImageBinder extends BaseViewBinder {
         TaskImageHolder taskImageHolder = (TaskImageHolder) viewHolder;
         TaskImageInfo imageInfo = (TaskImageInfo) o;
         GlideUtil.getInstance().with(context, imageInfo.getFile() != null ? imageInfo.getFile() : imageInfo.getResourceId(), context.getResources().getDrawable(R.mipmap.icon_default), context.getResources().getDrawable(R.mipmap.icon_default), DiskCacheStrategy.NONE, taskImageHolder.ivTaskImage);
+//        GlideUtil.getInstance().with(context, "http://img3.tbcdn.cn/tfscom/i3/TB1oM2FRFXXXXXGXXXXXXXXXXXX_!!0-item_pic.jpg", context.getResources().getDrawable(R.mipmap.icon_default), context.getResources().getDrawable(R.mipmap.icon_default), DiskCacheStrategy.NONE, taskImageHolder.ivTaskImage);
     }
 
     @Override

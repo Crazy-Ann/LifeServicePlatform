@@ -17,7 +17,7 @@
     <string name="dialog_prompt">提示</string>
     <string name="dialog_known">知道了</string>
     <string name="get_config">正在获取配置信息,请稍后…</string>
-    <string name="dialog_prompt_get_version_error">版本信息获取异常</string>
+    <string name="dialog_prompt_get_config_error">配置信息获取异常</string>
     <string name="dialog_prompt_check_version_error">版本信息校验异常</string>
     <string name="download">下载</string>
     <string name="dialog_prompt_download">如果下载失败，可以点击下载图标重试。</string>
@@ -42,6 +42,8 @@
     <string name="dialog_prompt_modify_real_name_error">修改用户昵称异常</string>
     <string name="location_prompt">正在获取地理位置，请稍后…</string>
     <string name="dialog_prompt_location_error">获取地理位置异常</string>
+    <string name="get_boundary_prompt">正在获取区域边界，请稍后…</string>
+    <string name="dialog_prompt_get_boundary_error">获取区域边界异常</string>
     <string name="select_image_prompt">请选择图片</string>
     <string name="get_image_prompt">正在获取图片数据，请稍后…</string>
     <string name="dialog_prompt_get_image_error">获取图片数据异常</string>

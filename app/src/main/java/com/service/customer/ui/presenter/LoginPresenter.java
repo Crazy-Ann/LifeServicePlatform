@@ -2,6 +2,7 @@ package com.service.customer.ui.presenter;
 
 import android.content.Context;
 
+import com.service.customer.R;
 import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.net.model.BaseEntity;
@@ -54,22 +55,26 @@ public class LoginPresenter extends BasePresenterImplement implements LoginContr
                     @Override
                     public void success(BaseEntity baseEntity) {
                         LoginInfo loginInfo = (LoginInfo) baseEntity;
-                        BaseApplication.getInstance().setLoginInfo(loginInfo);
-                        try {
-                            SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.INDEX_URL, loginInfo.getIndexUrl(), true);
-                            SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.TASK_URL, loginInfo.getTaskUrl(), true);
-                            if (view.isRememberLoginInfo()) {
-                                LogUtil.getInstance().print("是否记住密码：" + view.isRememberLoginInfo());
-                                SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, account, true);
-                                SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, password, true);
-                            } else {
-                                LogUtil.getInstance().print("是否记住密码：" + view.isRememberLoginInfo());
-                                SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, Regex.NONE.getRegext(), true);
-                                SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, Regex.NONE.getRegext(), true);
+                        if (loginInfo != null) {
+                            try {
+                                BaseApplication.getInstance().setLoginInfo(loginInfo);
+                                SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.INDEX_URL, loginInfo.getIndexUrl(), true);
+                                SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.TASK_URL, loginInfo.getTaskUrl(), true);
+                                if (view.isRememberLoginInfo()) {
+                                    LogUtil.getInstance().print("是否记住密码：" + view.isRememberLoginInfo());
+                                    SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, account, true);
+                                    SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, password, true);
+                                } else {
+                                    LogUtil.getInstance().print("是否记住密码：" + view.isRememberLoginInfo());
+                                    SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, Regex.NONE.getRegext(), true);
+                                    SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, Regex.NONE.getRegext(), true);
+                                }
+                                view.startMainActivity();
+                            } catch (NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | NoSuchAlgorithmException e) {
+                                e.printStackTrace();
                             }
-                            view.startMainActivity();
-                        } catch (NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | NoSuchAlgorithmException e) {
-                            e.printStackTrace();
+                        } else {
+                            view.showPromptDialog(R.string.dialog_prompt_login_error, Constant.RequestCode.DIALOG_PROMPT_LOGIN_ERROR);
                         }
                     }
 

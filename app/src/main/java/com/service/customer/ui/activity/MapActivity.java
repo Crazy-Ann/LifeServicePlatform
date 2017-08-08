@@ -2,6 +2,7 @@ package com.service.customer.ui.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -17,6 +18,12 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.PolylineOptions;
+import com.amap.api.services.core.AMapException;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.district.DistrictItem;
+import com.amap.api.services.district.DistrictResult;
+import com.amap.api.services.district.DistrictSearch;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.service.customer.R;
 import com.service.customer.base.handler.ActivityHandler;
@@ -36,11 +43,12 @@ import com.service.customer.net.entity.TaskInfo;
 import com.service.customer.net.entity.TaskInfos;
 import com.service.customer.ui.contract.MapContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
+import com.service.customer.ui.dialog.PromptDialog;
 import com.service.customer.ui.presenter.MapPresenter;
 
 import java.util.List;
 
-public class MapActivity extends ActivityViewImplement<MapContract.Presenter> implements MapContract.View, View.OnClickListener, OnLeftIconEventListener, AMap.OnMarkerClickListener {
+public class MapActivity extends ActivityViewImplement<MapContract.Presenter> implements MapContract.View, View.OnClickListener, OnLeftIconEventListener, AMap.OnMarkerClickListener, DistrictSearch.OnDistrictSearchListener {
 
     private MapPresenter mapPresenter;
     private MapView mapView;
@@ -63,6 +71,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
                 case com.service.customer.constant.Constant.Message.GET_EVENT_INFOS_SUCCESS:
                     hideLoadingPromptDialog();
                     setEventMarker((TaskInfos) msg.obj);
+                    mapPresenter.getBoundary(Constant.Map.MIYUN_DISTRICT);
                     break;
                 case com.service.customer.constant.Constant.Message.GET_EVNET_INFOS_FAILED:
                     hideLoadingPromptDialog();
@@ -103,16 +112,15 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mapPresenter.checkPermission(this);
         } else {
-            mapPresenter.generateEventInfos();
+            mapPresenter.getEventInfos();
         }
         setBasePresenterImplement(mapPresenter);
         getSavedInstanceState(savedInstanceState);
 
-        mapPresenter.setMapCamera(Constant.Map.MIYUN_DISTRICT, Constant.Map.ZOOM, Constant.Map.BEARING, Constant.Map.TILT);
         ThreadPoolUtil.execute(new Runnable() {
             @Override
             public void run() {
-                TaskInfos taskInfos = mapPresenter.generateEventInfos();
+                TaskInfos taskInfos = mapPresenter.getEventInfos();
                 if (taskInfos != null) {
                     mapHandler.sendMessage(MessageUtil.getMessage(com.service.customer.constant.Constant.Message.GET_EVENT_INFOS_SUCCESS, taskInfos));
                 } else {
@@ -125,6 +133,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     @Override
     protected void setListener() {
         mapPresenter.getAMap().setOnMarkerClickListener(this);
+        mapPresenter.getDistrictSearch().setOnDistrictSearchListener(this);
     }
 
     @Override
@@ -174,7 +183,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     mapPresenter.checkPermission(this);
                 } else {
-                    mapPresenter.generateEventInfos();
+                    mapPresenter.getEventInfos();
                 }
                 break;
             default:
@@ -200,6 +209,9 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
             case Constant.RequestCode.DIALOG_PROMPT_SET_PERMISSION:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SET_PERMISSION");
                 startPermissionSettingActivity();
+            case Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR:
+                LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_LOCATION_ERROR");
+                mapPresenter.getBoundary(Constant.Map.MIYUN_DISTRICT);
                 break;
             default:
                 break;
@@ -216,6 +228,9 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_SET_PERMISSION");
                 refusePermissionSetting();
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR:
+                LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_LOCATION_ERROR");
+                break;
             default:
                 break;
         }
@@ -228,7 +243,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
 
     @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        mapPresenter.generateEventInfos();
+        mapPresenter.getEventInfos();
     }
 
     @Override
@@ -244,6 +259,19 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     @Override
     public MapView getMapView() {
         return mapView;
+    }
+
+    @Override
+    public void showBoundaryPromptDialog(int resoutId, int requestCode) {
+        PromptDialog.createBuilder(getSupportFragmentManager())
+                .setTitle(getString(R.string.dialog_prompt))
+                .setPrompt(getString(resoutId))
+                .setPositiveButtonText(this, R.string.try_again)
+                .setNegativeButtonText(this, R.string.cancel)
+                .setCancelable(true)
+                .setCancelableOnTouchOutside(true)
+                .setRequestCode(requestCode)
+                .show(this);
     }
 
     @Override
@@ -266,6 +294,56 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
         tvRealName.setText(taskInfo.getRealName());
         tvDescreption.setText(taskInfo.getDescreption());
         return true;
+    }
+
+    @Override
+    public void onDistrictSearched(DistrictResult districtResult) {
+        hideLoadingPromptDialog();
+        if (districtResult.getAMapException() != null) {
+            switch (districtResult.getAMapException().getErrorCode()) {
+                case AMapException.CODE_AMAP_SUCCESS:
+                    final DistrictItem districtItem = districtResult.getDistrict().get(0);
+                    if (districtItem == null) {
+                        return;
+                    }
+                    LatLonPoint centerLatLng = districtItem.getCenter();
+                    if (centerLatLng != null) {
+                        mapPresenter.mapCameraOperation(new LatLng(centerLatLng.getLatitude(), centerLatLng.getLongitude()), Constant.Map.ZOOM, Constant.Map.BEARING, Constant.Map.TILT);
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String[] districtBoundaries = districtItem.districtBoundary();
+                            if (districtBoundaries != null) {
+                                for (String districtBoundary : districtBoundaries) {
+                                    PolylineOptions polylineOption = new PolylineOptions();
+                                    boolean isStartPoint = true;
+                                    LatLng startPointLatLng = null;
+                                    for (String latstr : districtBoundary.split(Regex.SEMICOLON.getRegext())) {
+                                        String[] latLngs = latstr.split(Regex.COMMA.getRegext());
+                                        if (isStartPoint) {
+                                            isStartPoint = false;
+                                            startPointLatLng = new LatLng(Double.parseDouble(latLngs[1]), Double.parseDouble(latLngs[0]));
+                                        }
+                                        polylineOption.add(new LatLng(Double.parseDouble(latLngs[1]), Double.parseDouble(latLngs[0])));
+                                    }
+                                    if (startPointLatLng != null) {
+                                        polylineOption.add(startPointLatLng);
+                                    }
+                                    polylineOption.width(10).color(Color.BLUE);
+                                    mapPresenter.getAMap().addPolyline(polylineOption);
+                                }
+                            }
+                        }
+                    });
+                    break;
+                default:
+                    showBoundaryPromptDialog(R.string.dialog_prompt_get_boundary_error, Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
+                    break;
+            }
+        } else {
+            showBoundaryPromptDialog(R.string.dialog_prompt_get_boundary_error, Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
+        }
     }
 
     @Override

@@ -3,10 +3,13 @@ package com.service.customer.components.utils;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.webkit.MimeTypeMap;
 
 import com.google.common.collect.Lists;
+import com.service.customer.components.constant.Constant;
 import com.service.customer.components.constant.Regex;
 
 import java.io.BufferedInputStream;
@@ -422,7 +425,6 @@ public class IOUtil {
         }
     }
 
-
     private boolean isSDCardExsist() {
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
@@ -441,5 +443,17 @@ public class IOUtil {
                                 + ctx.getPackageName()
                                 + File.separator
                                 + dirName + File.separator);
+    }
+
+    public Uri getFileUri(Context context, boolean isProvider, String path) {
+        return getFileUri(context, isProvider, new File(path));
+    }
+
+    public Uri getFileUri(Context context, boolean isProvider, File file) {
+        if (isProvider) {
+            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? FileProvider.getUriForFile(context, Constant.FileProvider.AUTHORITY, file) : Uri.fromFile(file);
+        } else {
+            return Uri.fromFile(file);
+        }
     }
 }

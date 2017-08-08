@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.R;
-import com.service.customer.base.BuildConfig;
 import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.base.constant.net.ResponseCode;
 import com.service.customer.base.constant.net.ResponseParameterKey;
@@ -40,14 +39,14 @@ public class Api {
         return api;
     }
 
-    public void getConfig(final Context context, final BaseView view, final ApiListener apiListener) {
-        LogUtil.getInstance().print("getVersion");
+    public void getConfig(final Context context, final BaseView view, String url, int version, final ApiListener apiListener) {
+        LogUtil.getInstance().print("getConfig");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
-            parameters.put(RequestParameterKey.VERSION, String.valueOf(BuildConfig.VERSION_CODE));
+            parameters.put(RequestParameterKey.VERSION, String.valueOf(version));
             RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.CONFIG, parameters, null, false);
             if (requestParameter != null) {
-                HttpRequest.getInstance().doPost(context, BuildConfig.SERVICE_URL, requestParameter, new ConfigResponse() {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new ConfigResponse() {
 
                     @Override
                     public void onStart() {
@@ -63,7 +62,7 @@ public class Api {
                         if (configInfo != null) {
                             apiListener.success(configInfo);
                         } else {
-                            view.showPromptDialog(R.string.dialog_prompt_get_version_error, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR);
+                            view.showPromptDialog(R.string.dialog_prompt_get_config_error, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR);
                         }
                     }
 
@@ -85,7 +84,7 @@ public class Api {
                                     if (configInfo != null) {
                                         apiListener.failed(configInfo, code, message);
                                     } else {
-                                        view.showPromptDialog(R.string.dialog_prompt_get_version_error, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR);
+                                        view.showPromptDialog(R.string.dialog_prompt_get_config_error, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR);
                                     }
                                     break;
                                 default:

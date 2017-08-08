@@ -2,6 +2,7 @@ package com.service.customer.ui.presenter;
 
 import android.content.Context;
 
+import com.service.customer.R;
 import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.RequestParameterKey;
@@ -10,6 +11,7 @@ import com.service.customer.components.constant.Regex;
 import com.service.customer.components.http.model.FileWrapper;
 import com.service.customer.components.utils.IOUtil;
 import com.service.customer.components.utils.LogUtil;
+import com.service.customer.constant.Constant;
 import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
 import com.service.customer.net.entity.HeadImageInfo;
@@ -50,11 +52,17 @@ public class MinePresenter extends BasePresenterImplement implements MineContrac
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-                        try {
-                            view.setHeadImage(((HeadImageInfo) baseEntity).getAccountAvatar());
-                            IOUtil.getInstance().deleteFile(IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), com.service.customer.constant.Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext()));
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        HeadImageInfo headImageInfo = (HeadImageInfo) baseEntity;
+                        if (headImageInfo != null) {
+                            try {
+                                view.setHeadImage(((HeadImageInfo) baseEntity).getAccountAvatar());
+                                IOUtil.getInstance().deleteFile(IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), com.service.customer.constant.Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext()));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            view.showPromptDialog(R.string.dialog_prompt_check_version_error, Constant.RequestCode.DIALOG_PROMPT_CHECK_VERSION_ERROR);
+
                         }
                     }
 

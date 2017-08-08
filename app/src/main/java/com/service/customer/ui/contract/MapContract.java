@@ -14,14 +14,18 @@ public interface MapContract {
 
         MapView getMapView();
 
+        void showBoundaryPromptDialog(int resoutId, int requestCode);
+
         void setEventMarker(TaskInfos taskInfos);
     }
 
     interface Presenter extends BasePresenter {
 
-        void setMapCamera(LatLng lating, float zoom, float tilt, float bearing);
+        void getBoundary(String condition);
 
-        TaskInfos generateEventInfos();
+        void mapCameraOperation(LatLng lating, float zoom, float tilt, float bearing);
+
+        TaskInfos getEventInfos();
 
     }
 }

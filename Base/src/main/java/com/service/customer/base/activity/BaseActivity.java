@@ -327,11 +327,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivity(String act, Bundle mBundle) {
+    protected void startActivity(String act, Bundle bundle) {
         Intent intent = new Intent();
         intent.setAction(act);
-        if (mBundle != null) {
-            intent.putExtras(mBundle);
+        if (bundle != null) {
+            intent.putExtras(bundle);
         }
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
@@ -353,8 +353,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivityForResult(act, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, int requestCode, Bundle mBundle) {
-        startActivityForResult(act, null, null, requestCode, mBundle);
+    protected void startActivityForResult(String act, int requestCode, Bundle bundle) {
+        startActivityForResult(act, null, null, requestCode, bundle);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
@@ -362,8 +362,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivityForResult(act, data, null, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, String type, int requestCode, Bundle mBundle) {
-        startActivityForResult(act, null, type, requestCode, mBundle);
+    protected void startActivityForResult(String act, String type, int requestCode, Bundle bundle) {
+        startActivityForResult(act, null, type, requestCode, bundle);
     }
 
     protected void startActivityForResult(String act, Uri data, String type, int requestCode) {
@@ -408,24 +408,35 @@ public abstract class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResult(String act, Uri data, String type, int requestCode, Bundle mBundle) {
+    protected void startActivityForResult(String act, Uri data, String type, int requestCode, Bundle bundle) {
+        startActivityForResult(act, data, type, Constant.FileProvider.DEFAULT_FLAG, requestCode, bundle);
+    }
+
+    protected void startActivityForResult(String act, Uri data, String type, int flags, int requestCode) {
+        startActivityForResult(act, data, type, flags, requestCode, null);
+    }
+
+    protected void startActivityForResult(String act, Uri data, String type, int flags, int requestCode, Bundle bundle) {
         Intent intent = new Intent();
         intent.setAction(act);
+        if (flags != Constant.FileProvider.DEFAULT_FLAG) {
+            intent.addFlags(flags);
+        }
         if (data != null && !TextUtils.isEmpty(type)) {
             intent.setDataAndType(data, type);
         }
-        if (mBundle != null) {
-            intent.putExtras(mBundle);
+        if (bundle != null) {
+            intent.putExtras(bundle);
         }
         startActivityForResult(intent, requestCode);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResult(Class<?> cls, int requestCode, Bundle mBundle) {
+    protected void startActivityForResult(Class<?> cls, int requestCode, Bundle bundle) {
         Intent intent = new Intent();
         intent.setClass(this, cls);
-        if (mBundle != null) {
-            intent.putExtras(mBundle);
+        if (bundle != null) {
+            intent.putExtras(bundle);
         }
         startActivityForResult(intent, requestCode);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);

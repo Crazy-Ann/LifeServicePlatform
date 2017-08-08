@@ -46,13 +46,13 @@ public final class Constant {
         public final static String APP_VERSION = "app_version";
     }
 
-    public static class HttpTask {
+    public final static class HttpTask {
         public static final int REQUEST_TIME_OUT_PERIOD = 30000;
         public static final String DEFAULT_TASK_KEY = "default_key";
         public static final String TIME_OUT = "timeout";
     }
 
-    public static class Extra {
+    public final static class Extra {
         public static final int DEFAULT_VALUE = 0x9999;
     }
 
@@ -81,7 +81,7 @@ public final class Constant {
         };
     }
 
-    public static class Lock {
+    public final static class Lock {
         public static final int STATE_UNSELECTED = 0;
         public static final int STATE_SELECTED = 1;
         public static final int STATE_HIGHLIGHTED = 2;
@@ -129,7 +129,7 @@ public final class Constant {
         public static final int SET_GESTURE_RESULT_CODE = 4;
     }
 
-    public static class Scanner {
+    public final static class Scanner {
         public static final int REQUEST_CODE_PAYMENT = 0x0030;
         public static final float BEEP_VOLUME = 0.10f;
         public static final long VIBRATE_DURATION = 200L;
@@ -137,7 +137,7 @@ public final class Constant {
         public static final int FAIL = -1;
     }
 
-    public class TTS {
+    public final static class TTS {
         public static final String TTS_ROLE = "xiaoyan";
         public static final String TTS_SPEED = "40";
         public static final String TTS_VOLUME = "100";
@@ -159,5 +159,10 @@ public final class Constant {
         public static final String WS = "ws";
         public static final String CW = "cw";
         public static final String W = "w";
+    }
+
+    public final static class FileProvider {
+        public static final int DEFAULT_FLAG = -1;
+        public static final String AUTHORITY = "com.service.customer.provider";
     }
 }

@@ -10,7 +10,7 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -39,6 +39,7 @@ import com.service.customer.components.utils.MessageUtil;
 import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ToastUtil;
 import com.service.customer.components.utils.ViewUtil;
+import com.service.customer.components.widget.sticky.LinearLayoutDividerItemDecoration;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.TaskImageInfo;
@@ -64,7 +65,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
     private VoiceEdittext vetDescreption;
     private RecyclerView rvTaskImage;
     private TaskImageAdapter taskImageAdapter;
-    private GridLayoutManager gridLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
     private Button btnSubmit;
 
     private AMapLocation aMapLocation;
@@ -138,9 +139,11 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
         taskImageInfo.setResourceId(R.mipmap.ic_launcher);
         taskImageInfos.add(taskImageInfo);
         taskImageAdapter = new TaskImageAdapter(this, new TaskImageBinder(this, rvTaskImage), true);
-        gridLayoutManager = new GridLayoutManager(this, 4);
-        rvTaskImage.setLayoutManager(gridLayoutManager);
-//        rvTaskImage.addItemDecoration(new GridLayoutItemDecoration(4, 30, true));
+        linearLayoutManager = new LinearLayoutManager(this);
+        rvTaskImage.setHasFixedSize(true);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvTaskImage.setLayoutManager(linearLayoutManager);
+        rvTaskImage.addItemDecoration(new LinearLayoutDividerItemDecoration(getResources().getColor(android.R.color.transparent), 10, LinearLayoutManager.VERTICAL));
         rvTaskImage.setAdapter(taskImageAdapter);
         taskImageAdapter.setData(taskImageInfos);
     }
@@ -187,7 +190,9 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                         try {
                             File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
                             if (file != null) {
-                                taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, file));
+                                TaskImageInfo taskImageInfo = new TaskImageInfo();
+                                taskImageInfo.setFile(file);
+                                taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
                             } else {
                                 taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                             }
@@ -369,7 +374,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                     .setCancelableOnTouchOutside(true)
                     .setCancelable(true)
                     .show(this);
-        }else{
+        } else {
             ToastUtil.getInstance().showToast(this, R.string.get_task_image_prompt, Toast.LENGTH_SHORT);
         }
     }

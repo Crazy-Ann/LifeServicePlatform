@@ -2,8 +2,6 @@ package com.service.customer.constant;
 
 import android.Manifest;
 
-import com.amap.api.maps.model.LatLng;
-
 public final class Constant {
 
     private Constant() {
@@ -56,6 +54,8 @@ public final class Constant {
         public static final int DIALOG_PROMPT_SAVE_TASK_INFO_ERROR = 0x5027;
         public static final int DIALOG_PROGRESS_LOCATION = 0x5028;
         public static final int DIALOG_PROMPT_LOCATION_ERROR = 0x5029;
+        public static final int DIALOG_PROGRESS_GET_BOUNDARY = 0x5030;
+        public static final int DIALOG_PROMPT_GET_BOUNDARY_ERROR = 0x5031;
         public static final int INSTALL_APK = 0x5097;
         public static final int REQUEST_CODE_PHOTOGRAPH = 0x5098;
         public static final int REQUEST_CODE_ALBUM = 0x5099;
@@ -115,7 +115,7 @@ public final class Constant {
     }
 
     public static class Map {
-        public static final LatLng MIYUN_DISTRICT = new LatLng(40.376834, 116.843177);
+        public static final String MIYUN_DISTRICT = "密云区";
         public static final float ZOOM = 15;
         public static final float TILT = 0;
         public static final float BEARING = 0;

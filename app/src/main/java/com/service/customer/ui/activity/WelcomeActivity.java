@@ -2,7 +2,6 @@ package com.service.customer.ui.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,14 +18,13 @@ import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
-import com.service.customer.ui.presenter.WelcomePresenter;
 import com.service.customer.ui.contract.WelcomeContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.dialog.DownloadDialog;
 import com.service.customer.ui.dialog.PromptDialog;
+import com.service.customer.ui.presenter.WelcomePresenter;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Presenter> implements WelcomeContract.View, View.OnClickListener {
@@ -151,9 +149,19 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_INSTALL:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_INSTALL");
+//                if (!TextUtils.isEmpty(welcomePresenter.getFilePath())) {
+//                    ApplicationUtil.getInstance().chmod(Regex.PERMISSION.getRegext(), welcomePresenter.getFilePath());
+//                    startActivityForResult(Intent.ACTION_VIEW, Uri.parse(Regex.FILE_HEAD.getRegext() + welcomePresenter.getFilePath()), Regex.FILE_TYPE.getRegext(), Constant.RequestCode.INSTALL_APK);
+//                } else {
+//                    showPromptDialog(R.string.install_failed_prompt, Constant.RequestCode.DIALOG_PROMPT_INSTALL_FAILED);
+//                }
                 if (!TextUtils.isEmpty(welcomePresenter.getFilePath())) {
                     ApplicationUtil.getInstance().chmod(Regex.PERMISSION.getRegext(), welcomePresenter.getFilePath());
-                    startActivityForResult(Intent.ACTION_VIEW, Uri.parse(Regex.FILE_HEAD.getRegext() + welcomePresenter.getFilePath()), Regex.FILE_TYPE.getRegext(), Constant.RequestCode.INSTALL_APK);
+                    startActivityForResult(Intent.ACTION_VIEW,
+                                           IOUtil.getInstance().getFileUri(this, true, welcomePresenter.getFilePath()),
+                                           Regex.FILE_TYPE.getRegext(),
+                                           Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? Intent.FLAG_GRANT_READ_URI_PERMISSION : com.service.customer.components.constant.Constant.FileProvider.DEFAULT_FLAG,
+                                           Constant.RequestCode.INSTALL_APK);
                 } else {
                     showPromptDialog(R.string.install_failed_prompt, Constant.RequestCode.DIALOG_PROMPT_INSTALL_FAILED);
                 }
@@ -183,19 +191,32 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_VERSION_UPDATE:
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_VERSION_UPDATE");
+                if (welcomePresenter.isForceUpdate()) {
+                    onFinish("onNegativeButtonClicked_DIALOG_PROMPT_VERSION_UPDATE");
+                } else {
+                    startLoginActivity();
+                }
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_DOWNLOAD:
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_DOWNLOAD");
-                try {
-                    IOUtil.getInstance().deleteFile(IOUtil.getInstance().getExternalStoragePublicDirectory(this, Constant.FILE_NAME, null));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (welcomePresenter.isForceUpdate()) {
+                    onFinish("onNegativeButtonClicked_DIALOG_PROMPT_DOWNLOAD");
+                } else {
+                    startLoginActivity();
                 }
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_INSTALL:
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_INSTALL");
                 if (welcomePresenter.isForceUpdate()) {
-                    onFinish("onNegativeButtonClicked_DIALOG_PROMPT_DOWNLOAD");
+                    onFinish("onNegativeButtonClicked_DIALOG_PROMPT_INSTALL");
+                } else {
+                    startLoginActivity();
+                }
+                break;
+            case Constant.RequestCode.DIALOG_PROMPT_INSTALL_FAILED:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_INSTALL_FAILED");
+                if (welcomePresenter.isForceUpdate()) {
+                    onFinish("onPositiveButtonClicked_DIALOG_PROMPT_INSTALL_FAILED");
                 } else {
                     startLoginActivity();
                 }

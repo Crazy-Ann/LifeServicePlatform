@@ -10,7 +10,7 @@
         android:id="@+id/tvPrompt"
         style="@style/Light_Dialog.TextView.Message" />
 
-    <com.hynet.mergepay.ui.widget.progressbar.DownloadProgressBar
+    <com.service.customer.components.widget.progressbar.DownloadProgressBar
         android:id="@+id/dpbProgress"
         android:layout_width="@dimen/dp_100"
         android:layout_height="@dimen/dp_100"

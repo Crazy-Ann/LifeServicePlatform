@@ -41,10 +41,12 @@ public class ConfigInfo extends BaseEntity {
 
     public ConfigInfo parse(JSONObject object) {
         if (object != null) {
-            this.version = object.getIntValue(ResponseParameterKey.VERSION);
-            this.lowestVersion = object.getIntValue(ResponseParameterKey.LOWEST_VERSION);
-            this.updateMessage = object.getString(ResponseParameterKey.UPDATE_MESSAGE);
+//            this.version = object.getIntValue(ResponseParameterKey.VERSION);
+//            this.lowestVersion = object.getIntValue(ResponseParameterKey.LOWEST_VERSION);
+            this.version = 1;
+            this.lowestVersion = 1;
             this.downloadUrl = object.getString(ResponseParameterKey.DOWNLOAD_URL);
+            this.updateMessage = object.getString(ResponseParameterKey.UPDATE_MESSAGE);
             //todo
 //            this.key = object.getString(ResponseParameterKey.KEY);
             if (object.containsKey(ResponseParameterKey.INTERFACE_URL)) {
