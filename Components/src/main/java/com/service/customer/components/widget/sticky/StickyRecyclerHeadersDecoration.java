@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 
+import com.service.customer.components.widget.sticky.decoration.LinearLayoutOrientationItemDecoration;
 import com.service.customer.components.widget.sticky.listener.HeaderProvider;
 import com.service.customer.components.widget.sticky.listener.OrientationProvider;
 import com.service.customer.components.widget.sticky.listener.StickyRecyclerHeadersAdapter;

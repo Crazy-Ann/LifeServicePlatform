@@ -19,7 +19,7 @@ import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.MessageUtil;
 import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ViewUtil;
-import com.service.customer.components.widget.sticky.LinearLayoutDividerItemDecoration;
+import com.service.customer.components.widget.sticky.decoration.LinearLayoutDividerItemDecoration;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.NotificationAnnouncementInfo;
 import com.service.customer.net.entity.NotificationAnnouncementInfos;

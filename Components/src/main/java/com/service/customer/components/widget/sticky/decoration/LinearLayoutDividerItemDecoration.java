@@ -1,4 +1,4 @@
-package com.service.customer.components.widget.sticky;
+package com.service.customer.components.widget.sticky.decoration;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

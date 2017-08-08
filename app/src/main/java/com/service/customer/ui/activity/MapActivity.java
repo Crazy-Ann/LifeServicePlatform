@@ -71,7 +71,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
                 case com.service.customer.constant.Constant.Message.GET_EVENT_INFOS_SUCCESS:
                     hideLoadingPromptDialog();
                     setEventMarker((TaskInfos) msg.obj);
-                    mapPresenter.getBoundary(Constant.Map.MIYUN_DISTRICT);
+                    mapPresenter.getBoundary(getString(R.string.miyun_district));
                     break;
                 case com.service.customer.constant.Constant.Message.GET_EVNET_INFOS_FAILED:
                     hideLoadingPromptDialog();
@@ -211,7 +211,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
                 startPermissionSettingActivity();
             case Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR:
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_LOCATION_ERROR");
-                mapPresenter.getBoundary(Constant.Map.MIYUN_DISTRICT);
+                mapPresenter.getBoundary(getString(R.string.miyun_district));
                 break;
             default:
                 break;

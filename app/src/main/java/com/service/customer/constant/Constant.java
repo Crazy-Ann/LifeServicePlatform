@@ -7,7 +7,6 @@ public final class Constant {
     private Constant() {
     }
 
-    public static final int RETRY_TIME = 3;
     public static final String FILE_NAME = "LifeServicePlatform";
 
     public static final String[] PERMISSIONS = {Manifest.permission.READ_PHONE_STATE
@@ -115,7 +114,6 @@ public final class Constant {
     }
 
     public static class Map {
-        public static final String MIYUN_DISTRICT = "密云区";
         public static final float ZOOM = 15;
         public static final float TILT = 0;
         public static final float BEARING = 0;

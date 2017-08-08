@@ -13,14 +13,14 @@ import javax.net.ssl.X509TrustManager;
 
 public class CustomX509TrustManager implements X509TrustManager {
 
-    private X509TrustManager mDefaultTrustManager;
-    private X509TrustManager mLocalTrustManager;
+    private X509TrustManager defaultTrustManager;
+    private X509TrustManager localTrustManager;
 
     public CustomX509TrustManager(X509TrustManager localTrustManager) throws NoSuchAlgorithmException, KeyStoreException {
         TrustManagerFactory factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         factory.init((KeyStore) null);
-        mDefaultTrustManager = chooseTrustManager(factory.getTrustManagers());
-        this.mLocalTrustManager = localTrustManager;
+        defaultTrustManager = chooseTrustManager(factory.getTrustManagers());
+        this.localTrustManager = localTrustManager;
     }
 
     @Override
@@ -31,9 +31,9 @@ public class CustomX509TrustManager implements X509TrustManager {
     @Override
     public void checkServerTrusted(X509Certificate[] x509Certificates, String authType) throws CertificateException {
         try {
-            mDefaultTrustManager.checkServerTrusted(x509Certificates, authType);
+            defaultTrustManager.checkServerTrusted(x509Certificates, authType);
         } catch (CertificateException ce) {
-            mLocalTrustManager.checkServerTrusted(x509Certificates, authType);
+            localTrustManager.checkServerTrusted(x509Certificates, authType);
         }
     }
 

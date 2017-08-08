@@ -10,9 +10,10 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,7 +40,7 @@ import com.service.customer.components.utils.MessageUtil;
 import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ToastUtil;
 import com.service.customer.components.utils.ViewUtil;
-import com.service.customer.components.widget.sticky.LinearLayoutDividerItemDecoration;
+import com.service.customer.components.widget.sticky.decoration.GridLayoutDividerItemDecoration;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.TaskImageInfo;
@@ -65,7 +66,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
     private VoiceEdittext vetDescreption;
     private RecyclerView rvTaskImage;
     private TaskImageAdapter taskImageAdapter;
-    private LinearLayoutManager linearLayoutManager;
+    private GridLayoutManager gridLayoutManager;
     private Button btnSubmit;
 
     private AMapLocation aMapLocation;
@@ -138,12 +139,13 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
         TaskImageInfo taskImageInfo = new TaskImageInfo();
         taskImageInfo.setResourceId(R.mipmap.ic_launcher);
         taskImageInfos.add(taskImageInfo);
+        
         taskImageAdapter = new TaskImageAdapter(this, new TaskImageBinder(this, rvTaskImage), true);
-        linearLayoutManager = new LinearLayoutManager(this);
-        rvTaskImage.setHasFixedSize(true);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rvTaskImage.setLayoutManager(linearLayoutManager);
-        rvTaskImage.addItemDecoration(new LinearLayoutDividerItemDecoration(getResources().getColor(android.R.color.transparent), 10, LinearLayoutManager.VERTICAL));
+        gridLayoutManager = new GridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
+        rvTaskImage.setLayoutManager(gridLayoutManager);
+        SparseArray<GridLayoutDividerItemDecoration.ItemDecorationProps> itemDecorationProps = new SparseArray<>();
+        itemDecorationProps.put(com.service.customer.components.constant.Constant.View.GRID_LAYOUT, new GridLayoutDividerItemDecoration.ItemDecorationProps(ViewUtil.getInstance().dp2px(this, getResources().getDimension(R.dimen.dp_10)), ViewUtil.getInstance().dp2px(this, getResources().getDimension(R.dimen.dp_10)), true, true));
+        rvTaskImage.addItemDecoration(new GridLayoutDividerItemDecoration(itemDecorationProps));
         rvTaskImage.setAdapter(taskImageAdapter);
         taskImageAdapter.setData(taskImageInfos);
     }

@@ -44,6 +44,7 @@
     <string name="dialog_prompt_location_error">获取地理位置异常</string>
     <string name="get_boundary_prompt">正在获取区域边界，请稍后…</string>
     <string name="dialog_prompt_get_boundary_error">获取区域边界异常</string>
+    <string name="miyun_district">密云区</string>
     <string name="select_image_prompt">请选择图片</string>
     <string name="get_image_prompt">正在获取图片数据，请稍后…</string>
     <string name="dialog_prompt_get_image_error">获取图片数据异常</string>

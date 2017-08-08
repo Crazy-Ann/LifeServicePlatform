@@ -69,13 +69,7 @@ public class ViewUtil {
     }
 
     public int dp2px(Context ctx, float dpValue) {
-        final float scale = ctx.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
-
-    public int px2dp(Context ctx, float pxValue) {
-        final float scale = ctx.getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
+        return (int) dp2px(ctx.getResources(), dpValue);
     }
 
     public float dp2px(Resources resources, float dp) {
@@ -83,6 +77,11 @@ public class ViewUtil {
         return dp * scale + 0.5f;
     }
 
+    public int px2dp(Context ctx, float pxValue) {
+        final float scale = ctx.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+    
     public float sp2px(Resources resources, float sp) {
         final float scale = resources.getDisplayMetrics().scaledDensity;
         return sp * scale;

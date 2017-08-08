@@ -30,6 +30,7 @@ public final class Constant {
         public static final int DEFAULT_COLOR = 0x9999;
         public static final int DEFAULT_SIZE = 0x9999;
         public static final int DEFAULT_RESOURCE = 0x9999;
+        public static final int GRID_LAYOUT = 0x0009;
     }
 
     public final static class Device {
