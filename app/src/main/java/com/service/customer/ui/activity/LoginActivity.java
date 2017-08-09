@@ -29,10 +29,10 @@ import com.service.customer.components.validation.Validation;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.entity.validation.AccountValidation;
 import com.service.customer.net.entity.validation.PasswordValidation;
-import com.service.customer.ui.presenter.LoginPresenter;
 import com.service.customer.ui.contract.LoginContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
+import com.service.customer.ui.presenter.LoginPresenter;
 
 import java.util.List;
 
@@ -81,16 +81,8 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
         editTextValidator = new EditTextValidator();
         editTextValidator.add(new Validation(null, etAccount, true, ibAccountEmpty, new AccountValidation()));
         editTextValidator.add(new Validation(null, etPassword, true, ibPasswordEmpty, new PasswordValidation()));
-        editTextValidator.execute(this, btnLogin,
-                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
-                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
-                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
-                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);
+        editTextValidator.execute(this, btnLogin, R.drawable.frame_fillet_e4e4e4, R.drawable.frame_fillet_f40046, android.R.color.white, android.R.color.white, null, null, false);
 
-        LogUtil.getInstance().print("name:" + SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, null, true));
-        LogUtil.getInstance().print("password:" + SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, null, true));
-        LogUtil.getInstance().print("url1:" + SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.INDEX_URL, null, true));
-        LogUtil.getInstance().print("url2:" + SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.TASK_URL, null, true));
         etAccount.setText(SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, null, true));
         etPassword.setText(SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, null, true));
     }

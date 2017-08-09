@@ -20,24 +20,24 @@ import java.util.ArrayList;
 
 public class EditTextValidator {
 
-    private ArrayList<Validation> mValidations;
+    private ArrayList<Validation> validations;
 
     public EditTextValidator() {
-        mValidations = Lists.newArrayList();
+        validations = Lists.newArrayList();
     }
 
     public EditTextValidator add(Validation validation) {
-        mValidations.add(validation);
+        validations.add(validation);
         return this;
     }
 
     public EditTextValidator clear() {
-        mValidations.clear();
+        validations.clear();
         return this;
     }
 
     public EditTextValidator execute(final Context ctx, final View view, final int backgroundId1, final int backgroundId2, final int textColorId1, final int textColorId2, final OnTextCountListener onTextCountListener, final OnButtonEnableListener onButtonEnableListener, final boolean clickable) {
-        for (final Validation validation : mValidations) {
+        for (final Validation validation : validations) {
             if (validation.getEditText() != null) {
                 validation.getEditText().addTextChangedListener(new TextWatcher() {
 
@@ -102,7 +102,7 @@ public class EditTextValidator {
     }
 
     private void setEnabled(Context ctx, View view, int backgroundId1, int backgroundId2, int textColorId1, int textColorId2, boolean clickable) {
-        for (final Validation validation : mValidations) {
+        for (final Validation validation : validations) {
             if (validation.isTextEmpty()) {
                 ViewUtil.getInstance().setButton(ctx, (TextView) view, backgroundId1, textColorId1, false, clickable);
                 return;
@@ -115,7 +115,7 @@ public class EditTextValidator {
     }
 
     public boolean validate(Context ctx) {
-        for (Validation validation : mValidations) {
+        for (Validation validation : validations) {
             if (validation.getValidationExecutor() == null || validation.getEditText() == null) {
                 return true;
             }

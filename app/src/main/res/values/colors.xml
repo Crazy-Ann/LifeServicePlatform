@@ -31,6 +31,9 @@
     <color name="color_dde0e7">#dde0e7</color>
     <color name="color_b0b0b0">#b0b0b0</color>
     <color name="color_ececec">#ececec</color>
+    <color name="color_e8e7e9">#e8e7e9</color>
+    <color name="color_f40046">#f40046</color>
+    <color name="color_e4e4e4">#e4e4e4</color>
 
     <!-- 字体颜色  -->
     <color name="color_505050">#505050</color>
@@ -43,7 +46,6 @@
 
     <!-- 线的颜色 -->
     <color name="color_cbcacf">#CBCACF</color>
-    <color name="color_e4e4e4">#E4E4E4</color>
     <color name="color_d8d8d8">#D8D8D8</color>
     <!-- Lock -->
     <color name="color_aa0a00">#aa0a00</color>
