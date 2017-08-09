@@ -18,7 +18,7 @@ import com.service.customer.net.listener.ApiListener;
 import com.service.customer.ui.contract.TaskContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
-import java.io.File;
+import java.util.List;
 
 
 public class TaskPresenter extends BasePresenterImplement implements TaskContract.Presenter {
@@ -67,7 +67,7 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
     }
 
     @Override
-    public void saveTaskInfo(double longitude, double latitude, String address, String taskNote, File file) {
+    public void saveTaskInfo(String longitude, String latitude, String address, String taskNote, List<FileWrapper> fileWrappers) {
         LogUtil.getInstance().print("saveTaskInfo:");
         Api.getInstance().saveTaskInfo(
                 context,
@@ -80,7 +80,7 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
                 latitude,
                 address,
                 taskNote,
-                new FileWrapper(file),
+                fileWrappers,
                 new ApiListener() {
 
                     @Override

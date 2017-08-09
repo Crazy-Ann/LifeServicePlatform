@@ -96,32 +96,26 @@ public class IOUtil {
     }
 
     public void deleteFile(String path) {
-        if (isSDCardExsist()) {
-            File folder = new File(path);
-            File[] files = folder.listFiles();
-            for (File file : files) {
-                file.delete();
-            }
+        File folder = new File(path);
+        File[] files = folder.listFiles();
+        for (File file : files) {
+            file.delete();
         }
     }
 
     public void deleteFile(File folder) {
-        if (isSDCardExsist()) {
-            File[] files = folder.listFiles();
-            for (File file : files) {
-                file.delete();
-            }
+        File[] files = folder.listFiles();
+        for (File file : files) {
+            file.delete();
         }
     }
 
     public void deleteFile(String path, String fileName) {
-        if (isSDCardExsist()) {
-            File folder = new File(path);
-            File[] files = folder.listFiles();
-            for (File file : files) {
-                if (file.getName().split("\\.")[0].equals(fileName)) {
-                    file.delete();
-                }
+        File folder = new File(path);
+        File[] files = folder.listFiles();
+        for (File file : files) {
+            if (file.getName().split("\\.")[0].equals(fileName)) {
+                file.delete();
             }
         }
     }

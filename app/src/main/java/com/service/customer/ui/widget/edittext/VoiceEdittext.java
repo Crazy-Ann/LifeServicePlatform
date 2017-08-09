@@ -58,6 +58,10 @@ public class VoiceEdittext extends LinearLayout implements View.OnClickListener,
         }
     }
 
+    public EditText getEtContent() {
+        return etContent;
+    }
+
     public void setText(String content) {
         if (TextUtils.isEmpty(etContent.getText())) {
             etContent.setText(content);

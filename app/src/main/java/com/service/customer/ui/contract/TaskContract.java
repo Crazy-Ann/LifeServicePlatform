@@ -2,8 +2,9 @@ package com.service.customer.ui.contract;
 
 import com.service.customer.base.presenter.BasePresenter;
 import com.service.customer.base.view.BaseView;
+import com.service.customer.components.http.model.FileWrapper;
 
-import java.io.File;
+import java.util.List;
 
 public interface TaskContract {
 
@@ -18,6 +19,6 @@ public interface TaskContract {
 
         void location();
 
-        void saveTaskInfo(double longitude, double latitude, String address, String descreption, File file);
+        void saveTaskInfo(String longitude, String latitude, String address, String descreption, List<FileWrapper> fileWrappers);
     }
 }

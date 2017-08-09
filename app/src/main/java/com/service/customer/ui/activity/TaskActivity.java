@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +27,7 @@ import com.service.customer.base.handler.ActivityHandler;
 import com.service.customer.base.sticky.adapter.FixedStickyViewAdapter;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.http.model.FileWrapper;
 import com.service.customer.components.tts.OnDictationListener;
 import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.BitmapUtil;
@@ -40,10 +40,13 @@ import com.service.customer.components.utils.MessageUtil;
 import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ToastUtil;
 import com.service.customer.components.utils.ViewUtil;
+import com.service.customer.components.validation.EditTextValidator;
+import com.service.customer.components.validation.Validation;
 import com.service.customer.components.widget.sticky.decoration.GridLayoutDividerItemDecoration;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.TaskImageInfo;
+import com.service.customer.net.entity.validation.TaskValidation;
 import com.service.customer.ui.adapter.TaskImageAdapter;
 import com.service.customer.ui.binder.TaskImageBinder;
 import com.service.customer.ui.contract.TaskContract;
@@ -68,6 +71,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
     private TaskImageAdapter taskImageAdapter;
     private GridLayoutManager gridLayoutManager;
     private Button btnSubmit;
+    private EditTextValidator editTextValidator;
 
     private AMapLocation aMapLocation;
     private List<TaskImageInfo> taskImageInfos;
@@ -86,6 +90,13 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                 case Constant.Message.GET_IMAGE_SUCCESS:
                     hideLoadingPromptDialog();
                     taskImageInfos.add((TaskImageInfo) msg.obj);
+                    LogUtil.getInstance().print("size:" + taskImageInfos.size());
+                    for (TaskImageInfo taskImageInfo : taskImageInfos) {
+                        if (taskImageInfo.getFile() != null) {
+                            LogUtil.getInstance().print("path1:" + taskImageInfo.getFile().getAbsolutePath());
+                        }
+                        LogUtil.getInstance().print("path2:" + taskImageInfo.getResourceId());
+                    }
                     taskImageAdapter.setData(taskImageInfos);
                     break;
                 case Constant.Message.GET_IMAGE_FAILED:
@@ -118,9 +129,10 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_1f90f0, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
+        initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
         TTSUtil.getInstance(this).initializeSpeechRecognizer();
 
+        vetDescreption.setHint(getString(R.string.text_descreption_prompt));
         vetDescreption.setTextCount(0);
         taskHandler = new TaskHandler(this);
         taskPresenter = new TaskPresenter(this, this);
@@ -129,22 +141,34 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             taskPresenter.checkPermission(this);
         } else {
-            taskPresenter.location();
+            if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
+                ViewUtil.getInstance().setViewVisible(tvLocation);
+                taskPresenter.location();
+            } else {
+                ViewUtil.getInstance().setViewGone(tvLocation);
+            }
         }
 
         setBasePresenterImplement(taskPresenter);
         getSavedInstanceState(savedInstanceState);
 
+        editTextValidator = new EditTextValidator();
+        editTextValidator.add(new Validation(null, vetDescreption.getEtContent(), true, null, new TaskValidation()));
+        editTextValidator.execute(this, btnSubmit, com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
+                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
+                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
+                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);
+
         taskImageInfos = new ArrayList<>();
         TaskImageInfo taskImageInfo = new TaskImageInfo();
-        taskImageInfo.setResourceId(R.mipmap.ic_launcher);
+        taskImageInfo.setResourceId(R.mipmap.icon_add);
         taskImageInfos.add(taskImageInfo);
-        
+
         taskImageAdapter = new TaskImageAdapter(this, new TaskImageBinder(this, rvTaskImage), true);
         gridLayoutManager = new GridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
         rvTaskImage.setLayoutManager(gridLayoutManager);
         SparseArray<GridLayoutDividerItemDecoration.ItemDecorationProps> itemDecorationProps = new SparseArray<>();
-        itemDecorationProps.put(com.service.customer.components.constant.Constant.View.GRID_LAYOUT, new GridLayoutDividerItemDecoration.ItemDecorationProps(ViewUtil.getInstance().dp2px(this, getResources().getDimension(R.dimen.dp_10)), ViewUtil.getInstance().dp2px(this, getResources().getDimension(R.dimen.dp_10)), true, true));
+        itemDecorationProps.put(com.service.customer.components.constant.Constant.View.GRID_LAYOUT, new GridLayoutDividerItemDecoration.ItemDecorationProps(ViewUtil.getInstance().dp2px(this, getResources().getDimension(R.dimen.dp_5)), ViewUtil.getInstance().dp2px(this, getResources().getDimension(R.dimen.dp_5)), true, true));
         rvTaskImage.addItemDecoration(new GridLayoutDividerItemDecoration(itemDecorationProps));
         rvTaskImage.setAdapter(taskImageAdapter);
         taskImageAdapter.setData(taskImageInfos);
@@ -164,8 +188,35 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
         }
         switch (view.getId()) {
             case R.id.btnSubmit:
-                if (aMapLocation != null && !TextUtils.isEmpty(vetDescreption.getText().trim())) {
-                    taskPresenter.saveTaskInfo(aMapLocation.getLongitude(), aMapLocation.getLatitude(), aMapLocation.getAddress(), vetDescreption.getText().trim(), null);
+                if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
+                    if (aMapLocation != null) {
+                        if (editTextValidator.validate(this)) {
+                            List<FileWrapper> fileWrappers = new ArrayList<>();
+                            for (TaskImageInfo taskImageInfo : taskImageInfos) {
+                                File file = taskImageInfo.getFile();
+                                if (file != null) {
+                                    fileWrappers.add(new FileWrapper(file));
+                                }
+                            }
+                            taskPresenter.saveTaskInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), String.valueOf(aMapLocation.getAddress()), vetDescreption.getText().trim(), fileWrappers);
+                        }
+                    } else {
+                        showLocationPromptDialog(R.string.dialog_prompt_location_error, Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
+                    }
+                } else {
+                    if (editTextValidator.validate(this)) {
+//                        if (taskImageInfos != null && taskImageInfos.size() > 2) {
+                        List<FileWrapper> fileWrappers = new ArrayList<>();
+                        for (TaskImageInfo taskImageInfo : taskImageInfos) {
+                            File file = taskImageInfo.getFile();
+                            if (file != null) {
+                                fileWrappers.add(new FileWrapper(file));
+                            }
+                        }
+                        taskPresenter.saveTaskInfo(null, null, null, vetDescreption.getText().trim(), fileWrappers);
+//                        }else{
+//                        }
+                    }
                 }
                 break;
             default:
@@ -182,7 +233,12 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     taskPresenter.checkPermission(this);
                 } else {
-                    taskPresenter.location();
+                    if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
+                        ViewUtil.getInstance().setViewVisible(tvLocation);
+                        taskPresenter.location();
+                    } else {
+                        ViewUtil.getInstance().setViewGone(tvLocation);
+                    }
                 }
                 break;
             case Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:
@@ -190,7 +246,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                     @Override
                     public void run() {
                         try {
-                            File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
+                            File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
                             if (file != null) {
                                 TaskImageInfo taskImageInfo = new TaskImageInfo();
                                 taskImageInfo.setFile(file);
@@ -213,7 +269,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                         @Override
                         public void run() {
                             try {
-                                File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
+                                File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
                                 Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), uri, 0.5f);
                                 if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
                                     TaskImageInfo taskImageInfo = new TaskImageInfo();
@@ -315,7 +371,12 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
 
     @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-//        taskPresenter.location();
+        if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
+            ViewUtil.getInstance().setViewVisible(tvLocation);
+            taskPresenter.location();
+        } else {
+            ViewUtil.getInstance().setViewGone(tvLocation);
+        }
     }
 
     @Override

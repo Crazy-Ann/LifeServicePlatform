@@ -5,11 +5,8 @@ import android.content.Context;
 import com.service.customer.R;
 import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
-import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.base.net.model.BaseEntity;
-import com.service.customer.components.constant.Regex;
 import com.service.customer.components.http.model.FileWrapper;
-import com.service.customer.components.utils.IOUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.ServiceMethod;
@@ -21,7 +18,6 @@ import com.service.customer.ui.contract.MineContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
 import java.io.File;
-import java.io.IOException;
 
 public class MinePresenter extends BasePresenterImplement implements MineContract.Presenter {
 
@@ -54,12 +50,7 @@ public class MinePresenter extends BasePresenterImplement implements MineContrac
                     public void success(BaseEntity baseEntity) {
                         HeadImageInfo headImageInfo = (HeadImageInfo) baseEntity;
                         if (headImageInfo != null) {
-                            try {
-                                view.setHeadImage(((HeadImageInfo) baseEntity).getAccountAvatar());
-                                IOUtil.getInstance().deleteFile(IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), com.service.customer.constant.Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext()));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            view.setHeadImage(((HeadImageInfo) baseEntity).getAccountAvatar());
                         } else {
                             view.showPromptDialog(R.string.dialog_prompt_check_version_error, Constant.RequestCode.DIALOG_PROMPT_CHECK_VERSION_ERROR);
 

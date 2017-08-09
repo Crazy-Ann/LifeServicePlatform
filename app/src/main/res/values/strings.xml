@@ -51,6 +51,7 @@
     <string name="save_head_image_prompt1">点击修改</string>
     <string name="save_head_image_prompt2">正在修改用户头像，请稍后…</string>
     <string name="dialog_prompt_save_head_image_error">修改用户头像异常</string>
+    <string name="task_prompt">请输入相关描述信息</string>
     <string name="save_task_info_prompt">正在提交任务，请稍后…</string>
     <string name="dialog_prompt_save_task_info_error">提交任务异常</string>
     <string name="get_task_image_prompt">最多只能上传三张</string>
@@ -82,6 +83,10 @@
     <string name="mine">我的</string>
     <string name="submit">提交</string>
     <string name="get_evnet_infos">正在事件信息,请稍后…</string>
+    <string name="related_description">相关描述</string>
+    <string name="text_descreption_prompt">请输入相关描述</string>
+    <string name="piture_description_prompt">请提供相关问题的截图或照片</string>
+    <string name="my_repair">我的维修</string>
 
     <!-- 手势密码 -->
     <string name="gesture_password_tv_tittle">设置手势</string>

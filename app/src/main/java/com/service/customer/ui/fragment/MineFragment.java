@@ -50,8 +50,6 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     private MinePresenter minePresenter;
     private ImageView ivHeadImage;
     private TextView tvRealName;
-    private TextView tvPhone;
-    private TextView tvIdCard;
     private Button btnLogout;
     private MineHandler mineHandler;
 
@@ -89,17 +87,13 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
 
     @Override
     protected void findViewById() {
-        inToolbar = ViewUtil.getInstance().findView(rootView, R.id.inToolbar);
         ivHeadImage = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.ivHeadImage, this);
         btnLogout = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.btnLogout, this);
         tvRealName = ViewUtil.getInstance().findView(rootView, R.id.tvRealName);
-        tvPhone = ViewUtil.getInstance().findView(rootView, R.id.tvPhone);
-        tvIdCard = ViewUtil.getInstance().findView(rootView, R.id.tvIdCard);
     }
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_1f90f0, android.R.color.white, false, getString(R.string.mine), null);
         mineHandler = new MineHandler(this);
         minePresenter = new MinePresenter(getActivity(), this);
         minePresenter.initialize();
@@ -111,8 +105,6 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                                    + Regex.LEFT_PARENTHESIS.getRegext()
                                    + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getAccountId()
                                    + Regex.RIGHT_PARENTHESIS.getRegext());
-        tvPhone.setText(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getPhone());
-        tvIdCard.setText(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIdCard());
     }
 
     @Override

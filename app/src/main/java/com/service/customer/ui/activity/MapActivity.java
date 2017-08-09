@@ -104,7 +104,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_1f90f0, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
+        initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
         mapView.onCreate(savedInstanceState);
         mapHandler = new MapHandler(this);
         mapPresenter = new MapPresenter(this, this);

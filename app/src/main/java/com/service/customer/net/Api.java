@@ -23,6 +23,7 @@ import com.service.customer.net.reponse.ModifyRealNameResponse;
 import com.service.customer.net.reponse.SaveHeadImageResponse;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Api {
 
@@ -368,18 +369,95 @@ public class Api {
         }
     }
 
-    public void saveTaskInfo(final Context context, final BaseView view, String url, String token, int taskType, double longitude, double latitude, String address, String taskNote, FileWrapper fileWrapper, final ApiListener apiListener) {
+    public void saveTaskInfo(final Context context, final BaseView view, String url, String token, int taskType, String longitude, String latitude, String address, String taskNote, List<FileWrapper> fileWrappers, final ApiListener apiListener) {
         LogUtil.getInstance().print("saveTaskInfo");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.TASK_TYPE, String.valueOf(taskType));
-            parameters.put(RequestParameterKey.LONGITUDE, String.valueOf(longitude));
-            parameters.put(RequestParameterKey.LATITUDE, String.valueOf(latitude));
-            parameters.put(RequestParameterKey.ADDRESS, address);
+            if (!TextUtils.isEmpty(longitude)) {
+                parameters.put(RequestParameterKey.LONGITUDE, longitude);
+            }
+            if (!TextUtils.isEmpty(latitude)) {
+                parameters.put(RequestParameterKey.LATITUDE, latitude);
+            }
+            if (!TextUtils.isEmpty(address)) {
+                parameters.put(RequestParameterKey.ADDRESS, address);
+            }
             parameters.put(RequestParameterKey.TASK_NOTE, taskNote);
-            HashMap<String, FileWrapper> fileWrappers = new HashMap<>();
-            fileWrappers.put(RequestParameterKey.UPLOAD_IMAGE, fileWrapper);
-            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, fileWrappers, token, false);
+            HashMap<String, FileWrapper> fileParameters = new HashMap<>();
+            for (FileWrapper fileWrapper : fileWrappers) {
+                fileParameters.put(RequestParameterKey.UPLOAD_IMAGE, fileWrapper);
+            }
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, fileParameters, token, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveHeadImageResponse() {
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        LogUtil.getInstance().print("提交任务开始");
+                        view.showLoadingPromptDialog(R.string.save_task_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SAVE_TASK_INFO);
+                    }
+
+                    @Override
+                    public void onResponseSuccess(JSONObject object) {
+                        super.onResponseSuccess(object);
+                        LogUtil.getInstance().print("提交任务成功:" + object.toString());
+                        if (headImageInfo != null) {
+                            apiListener.success(headImageInfo);
+                        } else {
+                            view.showPromptDialog(R.string.dialog_prompt_save_task_info_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                        }
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message) {
+                        super.onResponseFailed(code, message);
+                        LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                        apiListener.failed(null, code, message);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message, JSONObject object) {
+                        super.onResponseFailed(code, message, object);
+                        LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                    }
+
+                    @Override
+                    public void onEnd() {
+                        super.onEnd();
+                        LogUtil.getInstance().print("提交任务结束");
+                        view.hideLoadingPromptDialog();
+                    }
+
+                    @Override
+                    public void onFailed(int code, String message) {
+                        super.onFailed(code, message);
+                        LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                    }
+                });
+            } else {
+                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+            }
+        } else {
+            view.showNetWorkPromptDialog();
+        }
+    }
+
+    public void saveTaskInfo(final Context context, final BaseView view, String url, String token, int taskType, String taskNote, List<FileWrapper> fileWrappers, final ApiListener apiListener) {
+        LogUtil.getInstance().print("saveTaskInfo");
+        if (NetworkUtil.getInstance().isInternetConnecting(context)) {
+            HashMap<String, String> parameters = new HashMap<>();
+            parameters.put(RequestParameterKey.TASK_TYPE, String.valueOf(taskType));
+            parameters.put(RequestParameterKey.TASK_NOTE, taskNote);
+            HashMap<String, FileWrapper> fileParameters = new HashMap<>();
+            for (FileWrapper fileWrapper : fileWrappers) {
+                fileParameters.put(RequestParameterKey.UPLOAD_IMAGE, fileWrapper);
+            }
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, fileParameters, token, false);
             if (requestParameter != null) {
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveHeadImageResponse() {
 

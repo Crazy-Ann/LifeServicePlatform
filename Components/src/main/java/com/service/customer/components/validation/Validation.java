@@ -65,12 +65,16 @@ public class Validation {
     }
 
     public boolean isTextEmpty() {
-        if (editText == null || TextUtils.isEmpty(editText.getText())) {
-            ViewUtil.getInstance().setViewGone(button);
+        if (button != null) {
+            if (editText == null || TextUtils.isEmpty(editText.getText())) {
+                ViewUtil.getInstance().setViewGone(button);
+                return true;
+            }
+            ViewUtil.getInstance().setViewVisible(button);
+            return false;
+        }else{
             return true;
         }
-        ViewUtil.getInstance().setViewVisible(button);
-        return false;
     }
 
 }

@@ -114,7 +114,7 @@ public final class Constant {
     }
 
     public static class Map {
-        public static final float ZOOM = 15;
+        public static final float ZOOM = 10;
         public static final float TILT = 0;
         public static final float BEARING = 0;
         public static final long LOCATION_INTERVAL = 2000;

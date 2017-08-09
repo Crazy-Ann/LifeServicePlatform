@@ -110,7 +110,7 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_1f90f0, android.R.color.white, false, getString(R.string.home_page), null);
+        initializeToolbar(R.color.color_383857, android.R.color.white, false, getString(R.string.home_page), null);
         homePageHandler = new HomePageHandler(this);
         homePagePresenter = new HomePagePresenter(getActivity(), this);
         homePagePresenter.initialize();
@@ -152,9 +152,14 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
                     case com.service.customer.constant.Constant.ServiceAction.EMERGENCY_CALL_FOR_HELP:
                         bundle = new Bundle();
                         bundle.putString(Temp.TITLE.getContent(), serviceInfos.get(position).getName());
+                        bundle.putBoolean(Temp.NEED_LOCATION.getContent(), true);
                         startActivity(TaskActivity.class, bundle);
                         break;
                     case com.service.customer.constant.Constant.ServiceAction.APPLIANCE_MAINTENANCE:
+                        bundle = new Bundle();
+                        bundle.putString(Temp.TITLE.getContent(), serviceInfos.get(position).getName());
+                        bundle.putBoolean(Temp.NEED_LOCATION.getContent(), false);
+                        startActivity(TaskActivity.class, bundle);
                         break;
                     case com.service.customer.constant.Constant.ServiceAction.LIVING_FACILITIES_MAINTENANCE:
                         break;
