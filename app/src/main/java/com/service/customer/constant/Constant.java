@@ -115,4 +115,8 @@ public final class Constant {
         public static final long LOCATION_INTERVAL = 2000;
         public static final long LOCATION_TIME_OUT = 30000;
     }
+
+    public static class JavaScript {
+        public static final String INJECTED_NAME = "LifeServicePlatform";
+    }
 }
