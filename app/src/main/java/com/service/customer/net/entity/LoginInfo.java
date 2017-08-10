@@ -5,8 +5,14 @@ import android.os.Parcelable;
 
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.BuildConfig;
+import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.ResponseParameterKey;
 import com.service.customer.base.net.model.BaseEntity;
+import com.service.customer.components.constant.Regex;
+import com.service.customer.components.utils.IOUtil;
+import com.service.customer.constant.Constant;
+
+import java.io.IOException;
 
 public final class LoginInfo extends BaseEntity {
 
@@ -59,26 +65,30 @@ public final class LoginInfo extends BaseEntity {
     }
 
     public LoginInfo parse(JSONObject object) {
-        if (object != null) {
-            this.indexUrl = object.getString(ResponseParameterKey.INDEX_URL);
-            this.taskUrl = object.getString(ResponseParameterKey.TASK_URL);
-            this.token = object.getString(ResponseParameterKey.TOKEN);
-            if (object.containsKey(ResponseParameterKey.USER_INFO)) {
-                JSONObject userInfo = object.getJSONObject(ResponseParameterKey.USER_INFO);
-                this.accountId = userInfo.getString(ResponseParameterKey.ACCOUNT_ID);
-                this.memberType = userInfo.getString(ResponseParameterKey.MEMBER_TYPE);
-                this.accountAvatar = userInfo.getString(ResponseParameterKey.ACCOUNT_AVATAR);
-                this.phone = userInfo.getString(ResponseParameterKey.PHONE);
-                this.idCard = userInfo.getString(ResponseParameterKey.ID_CARD);
-                this.realName = userInfo.getString(ResponseParameterKey.REAL_NAME);
-                
-                //todo 
-                this.accountAvatar = "http://admin.jujiamao.com/img/profile_small.jpg";
-                this.phone = "13811111111";
-                this.idCard = "1101111111111111";
+        try {
+            if (object != null) {
+                this.indexUrl = object.getString(ResponseParameterKey.INDEX_URL);
+                this.taskUrl = object.getString(ResponseParameterKey.TASK_URL);
+                this.token = object.getString(ResponseParameterKey.TOKEN);
+                if (object.containsKey(ResponseParameterKey.USER_INFO)) {
+                    JSONObject userInfo = object.getJSONObject(ResponseParameterKey.USER_INFO);
+                    this.accountId = userInfo.getString(ResponseParameterKey.ACCOUNT_ID);
+                    this.memberType = userInfo.getString(ResponseParameterKey.MEMBER_TYPE);
+                    this.accountAvatar = userInfo.getString(ResponseParameterKey.ACCOUNT_AVATAR);
+                    this.phone = userInfo.getString(ResponseParameterKey.PHONE);
+                    this.idCard = userInfo.getString(ResponseParameterKey.ID_CARD);
+                    this.realName = userInfo.getString(ResponseParameterKey.REAL_NAME);
+                    String directory = BaseApplication.getInstance().getCacheDir().getAbsolutePath() + Constant.Cache.LOGIN_INFO_CACHE_PATH;
+                    delete(directory);
+                    IOUtil.getInstance().forceMkdir(directory);
+                    write(this, directory + Regex.LEFT_SLASH.getRegext() + getClass().getSimpleName());
+                }
+                return this;
+            } else {
+                return null;
             }
-            return this;
-        } else {
+        } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }

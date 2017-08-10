@@ -90,13 +90,6 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                 case Constant.Message.GET_IMAGE_SUCCESS:
                     hideLoadingPromptDialog();
                     taskImageInfos.add((TaskImageInfo) msg.obj);
-                    LogUtil.getInstance().print("size:" + taskImageInfos.size());
-                    for (TaskImageInfo taskImageInfo : taskImageInfos) {
-                        if (taskImageInfo.getFile() != null) {
-                            LogUtil.getInstance().print("path1:" + taskImageInfo.getFile().getAbsolutePath());
-                        }
-                        LogUtil.getInstance().print("path2:" + taskImageInfo.getResourceId());
-                    }
                     taskImageAdapter.setData(taskImageInfos);
                     break;
                 case Constant.Message.GET_IMAGE_FAILED:

@@ -123,12 +123,10 @@ public class IOUtil {
     public File forceMkdir(File directory) throws IOException {
         if (directory != null) {
             if (directory.exists()) {
-                LogUtil.getInstance().print("文件夹存在:" + directory.getAbsolutePath());
                 if (!directory.isDirectory()) {
                     throw new IOException("File " + directory + " exists and is not a directory. Unable to create directory.");
                 }
             } else {
-                LogUtil.getInstance().print("文件夹不存在，创建:" + directory.getAbsolutePath());
                 if (!directory.mkdirs()) {
                     if (!directory.isDirectory()) {
                         throw new IOException("Unable to create directory " + directory);
@@ -403,7 +401,6 @@ public class IOUtil {
                 inStream.close();
             }
         } catch (Exception e) {
-            System.out.println("复制单个文件操作出错");
             e.printStackTrace();
         } finally {
             try {

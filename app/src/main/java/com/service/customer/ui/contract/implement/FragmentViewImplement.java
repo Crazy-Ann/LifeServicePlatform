@@ -1,5 +1,6 @@
 package com.service.customer.ui.contract.implement;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -10,6 +11,7 @@ import com.service.customer.base.view.BaseView;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
+import com.service.customer.ui.activity.LoginActivity;
 import com.service.customer.ui.dialog.ProgressDialog;
 import com.service.customer.ui.dialog.PromptDialog;
 
@@ -94,6 +96,12 @@ public abstract class FragmentViewImplement<T> extends BaseFragment implements B
 
     @Override
     protected void setSavedInstanceState(Bundle savedInstanceState) {
+    }
+
+    @Override
+    public void startLoginActivity() {
+        startActivity(LoginActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        onFinish("startLoginActivity");
     }
 
     @Override

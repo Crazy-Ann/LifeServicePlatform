@@ -296,8 +296,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(cls, null);
     }
 
-    protected void startActivity(String act) {
-        startActivity(act, null);
+    protected void startActivity(String action) {
+        startActivity(action, null);
     }
 
     protected void startActivity(Class<?> cls, Bundle bundle) {
@@ -327,11 +327,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivity(String act, Bundle bundle) {
+    protected void startActivity(String action, Bundle bundle) {
         Intent intent = new Intent();
-        intent.setAction(act);
+        intent.setAction(action);
         if (bundle != null) {
             intent.putExtras(bundle);
+        }
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+    }
+
+    protected void startActivity(Class<?> cls, int flag) {
+        startActivity(cls, flag, null, null);
+    }
+
+    protected void startActivity(Class<?> cls, int flag, Uri data, String type) {
+        Intent intent = new Intent();
+        intent.setClass(this, cls);
+        intent.addFlags(flag);
+        if (data != null && !TextUtils.isEmpty(type)) {
+            intent.setDataAndType(data, type);
         }
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
@@ -340,7 +355,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void startActivity(String action, int flag, Uri data, String type) {
         Intent intent = new Intent(action);
         intent.addFlags(flag);
-        intent.setDataAndType(data, type);
+        if (data != null && !TextUtils.isEmpty(type)) {
+            intent.setDataAndType(data, type);
+        }
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }

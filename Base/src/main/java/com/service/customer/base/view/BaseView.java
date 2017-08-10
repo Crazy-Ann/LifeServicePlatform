@@ -23,6 +23,8 @@ public interface BaseView<T> extends PermissionCallback, OnDialogPositiveListene
 
     void showPromptDialog(String prompt, int requestCode);
 
+    void startLoginActivity();
+    
     void startPermissionSettingActivity();
 
     void refusePermissionSetting();

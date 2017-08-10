@@ -9,11 +9,13 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -33,7 +35,7 @@ import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.entity.LoginInfo;
-import com.service.customer.ui.activity.LoginActivity;
+import com.service.customer.ui.activity.SettingActivity;
 import com.service.customer.ui.contract.MineContract;
 import com.service.customer.ui.contract.implement.FragmentViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
@@ -50,6 +52,9 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     private MinePresenter minePresenter;
     private ImageView ivHeadImage;
     private TextView tvRealName;
+    private RelativeLayout rlTask;
+    private RelativeLayout rlGreetingCard;
+    private RelativeLayout rlSetting;
     private Button btnLogout;
     private MineHandler mineHandler;
 
@@ -88,6 +93,9 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     @Override
     protected void findViewById() {
         ivHeadImage = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.ivHeadImage, this);
+        rlTask = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlTask, this);
+        rlGreetingCard = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlGreetingCard, this);
+        rlSetting = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlSetting, this);
         btnLogout = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.btnLogout, this);
         tvRealName = ViewUtil.getInstance().findView(rootView, R.id.tvRealName);
     }
@@ -105,6 +113,13 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                                    + Regex.LEFT_PARENTHESIS.getRegext()
                                    + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getAccountId()
                                    + Regex.RIGHT_PARENTHESIS.getRegext());
+        if (TextUtils.equals(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType(), "1")) {
+            ViewUtil.getInstance().setViewGone(rlGreetingCard);
+            ViewUtil.getInstance().setViewVisible(rlTask);
+        } else {
+            ViewUtil.getInstance().setViewGone(rlTask);
+            ViewUtil.getInstance().setViewVisible(rlGreetingCard);
+        }
     }
 
     @Override
@@ -129,12 +144,14 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                         .setCancelable(true)
                         .showAllowingStateLoss(getActivity());
                 break;
-            case R.id.btnLogout:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    minePresenter.checkPermission(getActivity());
-                } else {
-                    minePresenter.logout();
-                }
+            case R.id.rlTask:
+                //TODO
+                break;
+            case R.id.rlGreetingCard:
+                //TODO
+                break;
+            case R.id.rlSetting:
+                startActivity(SettingActivity.class);
                 break;
             default:
                 break;
@@ -257,11 +274,5 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     @Override
     public void setHeadImage(String url) {
         GlideUtil.getInstance().with(BaseApplication.getInstance(), url, null, null, DiskCacheStrategy.NONE, ivHeadImage);
-    }
-
-    @Override
-    public void startLoginActivity() {
-        startActivity(LoginActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        onFinish("startLoginActivity");
     }
 }

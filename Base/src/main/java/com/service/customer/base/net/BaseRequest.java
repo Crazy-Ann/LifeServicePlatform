@@ -51,16 +51,16 @@ public class BaseRequest {
             for (String key : parameters.keySet()) {
                 String value = parameters.get(key);
                 if (!TextUtils.isEmpty(value)) {
-                    parameter.addFormDataParameter(key, value);
                     LogUtil.getInstance().print("parameters:" + key + " = " + value);
+                    parameter.addFormDataParameter(key, value);
                 }
             }
             if (fileWrappers != null) {
                 for (String key : fileWrappers.keySet()) {
                     FileWrapper fileWrapper = fileWrappers.get(key);
                     if (fileWrapper != null && fileWrapper.getFile() != null) {
+                        LogUtil.getInstance().print("fileWrapper:" + key + " = " + fileWrapper.getFileName());
                         parameter.addFormDataParameter(key, fileWrapper);
-                        LogUtil.getInstance().print("fileWrappers:" + key + " = " + fileWrapper.getFileName());
                     }
                 }
             }

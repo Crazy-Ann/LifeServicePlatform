@@ -1,7 +1,6 @@
 package com.service.customer.components.cache.listener.implement;
 
 import com.service.customer.components.cache.listener.Cacheable;
-import com.service.customer.components.utils.LogUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -15,7 +14,6 @@ public abstract class CacheableImplement implements Serializable, Cacheable {
     @Override
     public void write(Object object, File file) {
         if (object != null && file != null) {
-            LogUtil.getInstance().print("执行写文件操作：" + file.getAbsolutePath());
             ByteArrayOutputStream byteArrayOutputStream = null;
             ObjectOutputStream objectOutputStream = null;
             FileOutputStream fileOutputStream = null;
@@ -56,27 +54,20 @@ public abstract class CacheableImplement implements Serializable, Cacheable {
     public void delete(File file) {
         if (file != null && file.exists()) {
             if (file.isFile()) {
-                LogUtil.getInstance().print("删除单个文件" + file.getAbsolutePath());
                 file.delete();
                 return;
             }
             if (file.isDirectory()) {
-                LogUtil.getInstance().print("删除一个文件夹开始" + file.getAbsolutePath());
                 File[] childFile = file.listFiles();
                 if (childFile == null || childFile.length == 0) {
-                    LogUtil.getInstance().print("删除空文件夹" + file.getAbsolutePath());
                     file.delete();
                     return;
                 }
                 for (File f : childFile) {
-                    LogUtil.getInstance().print("删除子文件或文件夹" + file.getAbsolutePath());
                     delete(f);
                 }
                 file.delete();
-                LogUtil.getInstance().print("删除一个文件夹结束" + file.getAbsolutePath());
             }
-        } else {
-            LogUtil.getInstance().print("无需执行删除操作");
         }
     }
 

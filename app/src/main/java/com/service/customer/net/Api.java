@@ -386,6 +386,7 @@ public class Api {
             parameters.put(RequestParameterKey.TASK_NOTE, taskNote);
             HashMap<String, FileWrapper> fileParameters = new HashMap<>();
             for (FileWrapper fileWrapper : fileWrappers) {
+                LogUtil.getInstance().print("fileWrapper1:" + fileWrapper.getFileName());
                 fileParameters.put(RequestParameterKey.UPLOAD_IMAGE, fileWrapper);
             }
             RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, fileParameters, token, false);

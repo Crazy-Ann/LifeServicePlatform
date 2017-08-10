@@ -7,7 +7,6 @@ import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.net.model.BaseEntity;
 import com.service.customer.components.constant.Regex;
-import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.SharedPreferenceUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.ServiceMethod;
@@ -61,11 +60,9 @@ public class LoginPresenter extends BasePresenterImplement implements LoginContr
                                 SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.INDEX_URL, loginInfo.getIndexUrl(), true);
                                 SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.TASK_URL, loginInfo.getTaskUrl(), true);
                                 if (view.isRememberLoginInfo()) {
-                                    LogUtil.getInstance().print("是否记住密码：" + view.isRememberLoginInfo());
                                     SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, account, true);
                                     SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, password, true);
                                 } else {
-                                    LogUtil.getInstance().print("是否记住密码：" + view.isRememberLoginInfo());
                                     SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, Regex.NONE.getRegext(), true);
                                     SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, Regex.NONE.getRegext(), true);
                                 }

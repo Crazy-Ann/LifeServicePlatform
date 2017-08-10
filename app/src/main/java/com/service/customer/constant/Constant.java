@@ -77,12 +77,7 @@ public final class Constant {
     public class Cache {
         public static final String ROOT = "/LifeServicePlatform";
         public static final String CACHE_ROOT = ROOT + "/cache";
-        public static final String PAGE_DATA_CACHE_PATH = CACHE_ROOT + "/page";
-        public static final String PAGE_IMAGE_CACHE_PATH = PAGE_DATA_CACHE_PATH + "/image";
-        public static final String SERVICE_DATA_CACHE_PATH = CACHE_ROOT + "/service";
-        public static final String SERVICE_IMAGE_CACHE_PATH = SERVICE_DATA_CACHE_PATH + "/icon";
-        public static final String TAB_DATA_CACHE_PATH = CACHE_ROOT + "/tab";
-        public static final String TAB_IMAGE_CACHE_PATH = TAB_DATA_CACHE_PATH + "/icon";
+        public static final String LOGIN_INFO_CACHE_PATH = CACHE_ROOT + "/login_info";
     }
 
     public class ServiceAction {

@@ -274,12 +274,6 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
     }
 
     @Override
-    public void startLoginActivity() {
-        startActivity(LoginActivity.class);
-        onFinish("startLoginActivity");
-    }
-
-    @Override
     public void onDialogInstall(String path) {
         welcomePresenter.setFilePath(path);
         PromptDialog.createBuilder(getSupportFragmentManager())

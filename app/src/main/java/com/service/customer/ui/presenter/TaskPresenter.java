@@ -68,7 +68,7 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
 
     @Override
     public void saveTaskInfo(String longitude, String latitude, String address, String taskNote, List<FileWrapper> fileWrappers) {
-        LogUtil.getInstance().print("saveTaskInfo:");
+        LogUtil.getInstance().print("saveTaskInfo");
         Api.getInstance().saveTaskInfo(
                 context,
                 view,
