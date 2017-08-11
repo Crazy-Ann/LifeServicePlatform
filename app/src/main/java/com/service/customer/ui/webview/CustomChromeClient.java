@@ -28,7 +28,9 @@ public class CustomChromeClient extends InjectedChromeClient {
     @Override
     public void onReceivedTitle(WebView view, String title) {
         super.onReceivedTitle(view, title);
-        onReceivedTitleListener.receivedTitle(view, title);
+        if (onReceivedTitleListener != null) {
+            onReceivedTitleListener.receivedTitle(view, title);
+        }
     }
 
     @Override

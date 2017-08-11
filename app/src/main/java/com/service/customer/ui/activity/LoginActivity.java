@@ -179,6 +179,10 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
                 BaseApplication.getInstance().releaseInstance();
                 ActivityUtil.removeAll();
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_TOKEN_ERROR:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
+                startLoginActivity(true);
+                break;
             default:
                 break;
         }

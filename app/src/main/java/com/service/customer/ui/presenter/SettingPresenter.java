@@ -25,7 +25,6 @@ public class SettingPresenter extends BasePresenterImplement implements SettingC
 
     @Override
     public void logout() {
-        IOUtil.getInstance().deleteFile(BaseApplication.getInstance().getCacheDir().getAbsolutePath() + Constant.Cache.LOGIN_INFO_CACHE_PATH);
-        view.startLoginActivity();
+        view.startLoginActivity(true);
     }
 }

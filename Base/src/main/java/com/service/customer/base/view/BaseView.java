@@ -1,15 +1,11 @@
 package com.service.customer.base.view;
 
-import android.support.annotation.NonNull;
-
 import com.service.customer.base.dialog.listener.OnDialogNegativeListener;
 import com.service.customer.base.dialog.listener.OnDialogNeutralListener;
 import com.service.customer.base.dialog.listener.OnDialogPositiveListener;
 import com.service.customer.components.permission.listener.PermissionCallback;
 
 public interface BaseView<T> extends PermissionCallback, OnDialogPositiveListener, OnDialogNegativeListener, OnDialogNeutralListener {
-
-    void setLoginPresenter(@NonNull T loginPresenter);
 
     void showNetWorkPromptDialog();
 
@@ -23,8 +19,8 @@ public interface BaseView<T> extends PermissionCallback, OnDialogPositiveListene
 
     void showPromptDialog(String prompt, int requestCode);
 
-    void startLoginActivity();
-    
+    void startLoginActivity(boolean isClearLoginInfo);
+
     void startPermissionSettingActivity();
 
     void refusePermissionSetting();

@@ -247,9 +247,4 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
     public boolean isActive() {
         return false;
     }
-
-    @Override
-    public void setLoginPresenter(@NonNull HomePageContract.Presenter loginPresenter) {
-
-    }
 }

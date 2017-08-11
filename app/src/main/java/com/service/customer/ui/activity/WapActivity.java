@@ -155,6 +155,10 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SET_PERMISSION");
                 startPermissionSettingActivity();
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_TOKEN_ERROR:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
+                startLoginActivity(true);
+                break;
             default:
                 break;
         }

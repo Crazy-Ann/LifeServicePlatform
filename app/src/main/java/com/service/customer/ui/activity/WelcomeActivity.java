@@ -171,8 +171,12 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 if (welcomePresenter.isForceUpdate()) {
                     onFinish("onPositiveButtonClicked_DIALOG_PROMPT_INSTALL_FAILED");
                 } else {
-                    startLoginActivity();
+                    startLoginActivity(false);
                 }
+                break;
+            case Constant.RequestCode.DIALOG_PROMPT_TOKEN_ERROR:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
+                startLoginActivity(true);
                 break;
             default:
                 break;
@@ -194,7 +198,7 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 if (welcomePresenter.isForceUpdate()) {
                     onFinish("onNegativeButtonClicked_DIALOG_PROMPT_VERSION_UPDATE");
                 } else {
-                    startLoginActivity();
+                    startLoginActivity(false);
                 }
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_DOWNLOAD:
@@ -202,7 +206,7 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 if (welcomePresenter.isForceUpdate()) {
                     onFinish("onNegativeButtonClicked_DIALOG_PROMPT_DOWNLOAD");
                 } else {
-                    startLoginActivity();
+                    startLoginActivity(false);
                 }
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_INSTALL:
@@ -210,7 +214,7 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 if (welcomePresenter.isForceUpdate()) {
                     onFinish("onNegativeButtonClicked_DIALOG_PROMPT_INSTALL");
                 } else {
-                    startLoginActivity();
+                    startLoginActivity(false);
                 }
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_INSTALL_FAILED:
@@ -218,7 +222,7 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 if (welcomePresenter.isForceUpdate()) {
                     onFinish("onPositiveButtonClicked_DIALOG_PROMPT_INSTALL_FAILED");
                 } else {
-                    startLoginActivity();
+                    startLoginActivity(false);
                 }
                 break;
             default:
@@ -285,5 +289,11 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 .setCancelableOnTouchOutside(false)
                 .setRequestCode(Constant.RequestCode.DIALOG_PROMPT_INSTALL)
                 .showAllowingStateLoss(this);
+    }
+
+    @Override
+    public void startMainActivity() {
+        startActivity(MainActivity.class);
+        onFinish("startMainActivity");
     }
 }

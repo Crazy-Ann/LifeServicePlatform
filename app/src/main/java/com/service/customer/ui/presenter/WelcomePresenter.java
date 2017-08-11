@@ -7,6 +7,7 @@ import com.service.customer.R;
 import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.net.model.BaseEntity;
+import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.ApplicationUtil;
 import com.service.customer.components.utils.IOUtil;
 import com.service.customer.components.utils.LogUtil;
@@ -15,6 +16,7 @@ import com.service.customer.constant.Constant;
 import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
 import com.service.customer.net.entity.ConfigInfo;
+import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.net.listener.ApiListener;
 import com.service.customer.ui.contract.WelcomeContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
@@ -69,7 +71,13 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
                         }
                         view.showVersionUpdatePromptDialog(configInfo.getUpdateMessage());
                     } else {
-                        view.startLoginActivity();
+                        LoginInfo loginInfo = (LoginInfo) IOUtil.getInstance().readObject(context.getCacheDir().getAbsolutePath() + Constant.Cache.LOGIN_INFO_CACHE_PATH + Regex.LEFT_SLASH.getRegext() + LoginInfo.class.getSimpleName());
+                        if (loginInfo == null || TextUtils.isEmpty(loginInfo.getToken())) {
+                            view.startLoginActivity(false);
+                        } else {
+                            BaseApplication.getInstance().setLoginInfo(loginInfo);
+                            view.startMainActivity();
+                        }
                     }
                 } else {
                     view.showPromptDialog(R.string.dialog_prompt_get_config_error, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR);

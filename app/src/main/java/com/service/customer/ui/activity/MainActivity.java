@@ -17,13 +17,13 @@ import com.service.customer.components.utils.FragmentUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
-import com.service.customer.ui.presenter.MainPresenter;
 import com.service.customer.ui.contract.MainContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
-import com.service.customer.ui.fragment.HomePageFragment;
+import com.service.customer.ui.fragment.HomePageFragment2;
 import com.service.customer.ui.fragment.MineFragment;
 import com.service.customer.ui.fragment.TaskManagementFragment;
+import com.service.customer.ui.presenter.MainPresenter;
 
 import java.util.List;
 
@@ -64,7 +64,8 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
         tlMenu.addTab(tlMenu.newTab().setCustomView(getLayoutInflater().inflate(R.layout.tab_task_management, null)));
         tlMenu.addTab(tlMenu.newTab().setCustomView(getLayoutInflater().inflate(R.layout.tab_mine, null)));
         fragmentUtil = new FragmentUtil(getSupportFragmentManager(), R.id.tlContent);
-        fragmentUtil.addItem(new FragmentUtil.OperationInfo(this, getString(R.string.home_page), HomePageFragment.class));
+//        fragmentUtil.addItem(new FragmentUtil.OperationInfo(this, getString(R.string.home_page), HomePageFragment.class));
+        fragmentUtil.addItem(new FragmentUtil.OperationInfo(this, getString(R.string.home_page), HomePageFragment2.class));
         fragmentUtil.addItem(new FragmentUtil.OperationInfo(this, getString(R.string.task_management), TaskManagementFragment.class));
         fragmentUtil.addItem(new FragmentUtil.OperationInfo(this, getString(R.string.mine), MineFragment.class));
         fragmentUtil.show(getString(R.string.home_page), true);
@@ -127,6 +128,10 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
                 BaseApplication.getInstance().releaseInstance();
                 ActivityUtil.removeAll();
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_TOKEN_ERROR:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
+                startLoginActivity(true);
+                break;
             default:
                 break;
         }
@@ -158,11 +163,6 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
     @Override
     public boolean isActive() {
         return false;
-    }
-
-    @Override
-    public void setLoginPresenter(@NonNull MainContract.Presenter loginPresenter) {
-
     }
 
     @Override

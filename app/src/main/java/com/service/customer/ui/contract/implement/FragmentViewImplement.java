@@ -2,12 +2,13 @@ package com.service.customer.ui.contract.implement;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import com.service.customer.R;
+import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.fragment.BaseFragment;
 import com.service.customer.base.view.BaseView;
+import com.service.customer.components.utils.IOUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
@@ -19,8 +20,6 @@ public abstract class FragmentViewImplement<T> extends BaseFragment implements B
 
     private DialogFragment dialogFragment;
     private BasePresenterImplement basePresenterImplement;
-
-    public void setLoginPresenter(@NonNull T loginPresenter) { }
 
     public BasePresenterImplement getBasePresenterImplement() {
         return basePresenterImplement;
@@ -99,7 +98,10 @@ public abstract class FragmentViewImplement<T> extends BaseFragment implements B
     }
 
     @Override
-    public void startLoginActivity() {
+    public void startLoginActivity(boolean isClearLoginInfo) {
+        if(isClearLoginInfo){
+            IOUtil.getInstance().deleteFile(BaseApplication.getInstance().getCacheDir().getAbsolutePath() + Constant.Cache.LOGIN_INFO_CACHE_PATH);
+        }
         startActivity(LoginActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         onFinish("startLoginActivity");
     }

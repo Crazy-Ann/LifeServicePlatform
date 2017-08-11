@@ -123,6 +123,10 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SET_PERMISSION");
                 startPermissionSettingActivity();
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_TOKEN_ERROR:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
+                startLoginActivity(true);
+                break;
             default:
                 break;
         }

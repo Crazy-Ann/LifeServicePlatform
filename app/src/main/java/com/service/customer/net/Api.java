@@ -40,6 +40,17 @@ public class Api {
         return api;
     }
 
+    private void handleFailedResponse(BaseView view, int promptCode, JSONObject object) {
+        switch (object.getString(ResponseParameterKey.CODE)) {
+            case ResponseCode.UNKNOWN:
+                view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), Constant.RequestCode.DIALOG_PROMPT_TOKEN_ERROR);
+                break;
+            default:
+                view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), promptCode);
+                break;
+        }
+    }
+
     public void getConfig(final Context context, final BaseView view, String url, int version, final ApiListener apiListener) {
         LogUtil.getInstance().print("getConfig");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
@@ -79,22 +90,7 @@ public class Api {
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
                         LogUtil.getInstance().print("获取配置信息失败,code:" + code + ",message:" + message);
-                        if (!TextUtils.isEmpty(code)) {
-                            switch (code) {
-                                case ResponseCode.ERROR_CODE_VERSION:
-                                    if (configInfo != null) {
-                                        apiListener.failed(configInfo, code, message);
-                                    } else {
-                                        view.showPromptDialog(R.string.dialog_prompt_get_config_error, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR);
-                                    }
-                                    break;
-                                default:
-                                    view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR);
-                                    break;
-                            }
-                        } else {
-                            view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR);
-                        }
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG_ERROR, object);
                     }
 
                     @Override
@@ -159,7 +155,7 @@ public class Api {
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
                         LogUtil.getInstance().print("登录失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), Constant.RequestCode.DIALOG_PROMPT_LOGIN_ERROR);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_LOGIN_ERROR, object);
                     }
 
                     @Override
@@ -220,7 +216,7 @@ public class Api {
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
                         LogUtil.getInstance().print("修改密码失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), Constant.RequestCode.DIALOG_PROMPT_MODIFY_PASSWORD_ERROR);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_MODIFY_PASSWORD_ERROR, object);
                     }
 
                     @Override
@@ -280,7 +276,7 @@ public class Api {
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
                         LogUtil.getInstance().print("修改昵称失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), Constant.RequestCode.DIALOG_PROMPT_MODIFY_REAL_NAME_ERROR);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_MODIFY_REAL_NAME_ERROR, object);
                     }
 
                     @Override
@@ -344,7 +340,7 @@ public class Api {
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
                         LogUtil.getInstance().print("修改头像失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), Constant.RequestCode.DIALOG_PROMPT_SAVE_HEAD_IMAGE_ERROR);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_SAVE_HEAD_IMAGE_ERROR, object);
                     }
 
                     @Override
@@ -423,7 +419,7 @@ public class Api {
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
                         LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR, object);
                     }
 
                     @Override
@@ -492,7 +488,7 @@ public class Api {
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
                         LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR, object);
                     }
 
                     @Override

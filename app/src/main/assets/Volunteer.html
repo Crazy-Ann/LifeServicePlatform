@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>JSBridge</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+    <meta property="og:site_name" content="JsBridge"/>
+    <script src="file:///android_asset/Common.js" type="text/javascript"/>
+
+    <style>
+        .entry{
+            -webkit-padding-start: 30px;
+            }
+            .entry li {
+            line-height: 29px;
+            margin-left: -10px;
+            }
+            .entry li div{
+            margin-right: 10px;
+            padding-left: 8px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            background: #222222;
+            color: white;
+            word-break: break-all;
+            -ms-word-wrap: break-word;
+            word-wrap: break-word;
+            line-height: 15px;
+            font-size: 10pt;
+            }
+            .entry li button{
+            margin-top: 5px;
+            width: 60px;
+            height: 35px;
+            color: #111111;
+        }
+    
+    
+    
+    </style>
+</head>
+
+<body>
+<div class="blog-header">
+    <h3>JsBridge调用native测试列表</h3>
+</div>
+<ul class="entry">
+    <li>
+        <button onclick="JSBridge.callMethod('JSProxy','showToast',{'message':'我是Js调起的Toast'},function(){});">
+            政策法规
+        </button>
+    </li>
+
+    <br/>
+    <li>
+        <button onclick="JSBridge.callMethod('JSProxy','getAppName',{},function(msg){alert(JSON.stringify(msg))});">
+            查询分析
+        </button>
+    </li>
+    <br/>
+    <li>
+        <button onclick="JSBridge.callMethod('JSProxy','delayExecuteTask',{},function(msg){alert(JSON.stringify(msg))});">
+            信息管理
+        </button>
+    </li>
+    <br/>
+    <li>
+        <button onclick="JSBridge.callMethod('JSProxy','getDeviceId',{},function(msg){alert(JSON.stringify(msg))});">
+            事件查询
+        </button>
+    </li>
+    <br/>
+    <li>
+        <button onclick="JSBridge.callMethod('JSProxy','getOsSdk',{},function(msg){alert(JSON.stringify(msg))});">
+            地图查询
+        </button>
+    </li>
+</ul>
+</body>
+</html>

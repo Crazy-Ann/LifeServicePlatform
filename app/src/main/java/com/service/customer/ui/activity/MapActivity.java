@@ -213,6 +213,10 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_LOCATION_ERROR");
                 mapPresenter.getBoundary(getString(R.string.miyun_district));
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_TOKEN_ERROR:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
+                startLoginActivity(true);
+                break;
             default:
                 break;
         }
