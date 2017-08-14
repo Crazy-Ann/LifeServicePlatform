@@ -7,6 +7,7 @@ public class RequestParameterKey {
     public final static String MODIFY_PASSWORD = "ModifyPassword";
     public final static String MODIFY_NAME = "modifyname";
     public final static String TASK_INFO = "taskinfo";
+    public final static String WROK_INFO = "workinfo";
     public final static String SAVE_HEAD_IMAGE = "headimage";
 
     public static final String TYPE = "type";
@@ -28,4 +29,6 @@ public class RequestParameterKey {
     public static final String TASK_TYPE = "tasktype";
     public static final String ADDRESS = "address";
     public static final String TASK_NOTE = "tasknote";
+    public static final String WORK_TYPE = "worktype";
+    public static final String WORK_NOTE = "worknote";
 }

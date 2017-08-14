@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,8 +35,11 @@ import com.service.customer.components.utils.MessageUtil;
 import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
+import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.LoginInfo;
+import com.service.customer.ui.activity.MapActivity;
 import com.service.customer.ui.activity.SettingActivity;
+import com.service.customer.ui.activity.TaskActivity;
 import com.service.customer.ui.contract.MineContract;
 import com.service.customer.ui.contract.implement.FragmentViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
@@ -52,7 +56,10 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     private MinePresenter minePresenter;
     private ImageView ivHeadImage;
     private TextView tvRealName;
+    private LinearLayout llVolunteerContent;
     private RelativeLayout rlTask;
+    private RelativeLayout rlAddWorkLog;
+    private RelativeLayout rlMapEvent;
     private RelativeLayout rlGreetingCard;
     private RelativeLayout rlSetting;
     private Button btnLogout;
@@ -93,7 +100,10 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     @Override
     protected void findViewById() {
         ivHeadImage = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.ivHeadImage, this);
+        llVolunteerContent = ViewUtil.getInstance().findView(rootView, R.id.llVolunteerContent);
         rlTask = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlTask, this);
+        rlAddWorkLog = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlAddWorkLog, this);
+        rlMapEvent = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlMapEvent, this);
         rlGreetingCard = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlGreetingCard, this);
         rlSetting = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlSetting, this);
         btnLogout = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.btnLogout, this);
@@ -115,9 +125,9 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                                    + Regex.RIGHT_PARENTHESIS.getRegext());
         if (TextUtils.equals(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType(), "1")) {
             ViewUtil.getInstance().setViewGone(rlGreetingCard);
-            ViewUtil.getInstance().setViewVisible(rlTask);
+            ViewUtil.getInstance().setViewVisible(llVolunteerContent);
         } else {
-            ViewUtil.getInstance().setViewGone(rlTask);
+            ViewUtil.getInstance().setViewGone(llVolunteerContent);
             ViewUtil.getInstance().setViewVisible(rlGreetingCard);
         }
     }
@@ -145,10 +155,18 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                         .showAllowingStateLoss(getActivity());
                 break;
             case R.id.rlTask:
-                //TODO
+                //TODO  H5任务列表
+                break;
+            case R.id.rlAddWorkLog:
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(Temp.NEED_LOCATION.getContent(), false);
+                startActivity(TaskActivity.class, bundle);
+                break;
+            case R.id.rlMapEvent:
+                startActivity(MapActivity.class);
                 break;
             case R.id.rlGreetingCard:
-                //TODO
+                //TODO H5贺卡页面
                 break;
             case R.id.rlSetting:
                 startActivity(SettingActivity.class);

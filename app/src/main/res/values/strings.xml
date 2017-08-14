@@ -92,6 +92,8 @@
     <string name="text_descreption_prompt">请输入相关描述</string>
     <string name="piture_description_prompt">请提供相关问题的截图或照片</string>
     <string name="my_task">我的任务</string>
+    <string name="add_work_log">添加工作日志</string>
+    <string name="map_event">地图事件</string>
     <string name="my_greeting_card">我的贺卡</string>
 
     <!--图片获取相关-->

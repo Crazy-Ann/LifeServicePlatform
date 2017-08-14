@@ -444,17 +444,17 @@ public class Api {
         }
     }
 
-    public void saveTaskInfo(final Context context, final BaseView view, String url, String token, int taskType, String taskNote, List<FileWrapper> fileWrappers, final ApiListener apiListener) {
-        LogUtil.getInstance().print("saveTaskInfo");
+    public void saveWrokInfo(final Context context, final BaseView view, String url, String token, int workType, String workNote, List<FileWrapper> fileWrappers, final ApiListener apiListener) {
+        LogUtil.getInstance().print("saveWrokInfo");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
-            parameters.put(RequestParameterKey.TASK_TYPE, String.valueOf(taskType));
-            parameters.put(RequestParameterKey.TASK_NOTE, taskNote);
+            parameters.put(RequestParameterKey.WORK_TYPE, String.valueOf(workType));
+            parameters.put(RequestParameterKey.WORK_NOTE, workNote);
             HashMap<String, FileWrapper> fileParameters = new HashMap<>();
             for (FileWrapper fileWrapper : fileWrappers) {
                 fileParameters.put(RequestParameterKey.UPLOAD_IMAGE, fileWrapper);
             }
-            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, fileParameters, token, false);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.WROK_INFO, parameters, fileParameters, token, false);
             if (requestParameter != null) {
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveHeadImageResponse() {
 
