@@ -51,7 +51,7 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
     public void showPermissionPromptDialog() {
         PromptDialog.createBuilder(getSupportFragmentManager())
                 .setTitle(getString(R.string.dialog_prompt))
-                .setPrompt(getString(R.string.permission_error_prompt))
+                .setPrompt(getString(R.string.dialog_prompt_permission_error))
                 .setPositiveButtonText(this, R.string.setting)
                 .setNegativeButtonText(this, R.string.cancel)
                 .setRequestCode(Constant.RequestCode.DIALOG_PROMPT_SET_PERMISSION)

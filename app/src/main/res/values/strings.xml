@@ -6,7 +6,7 @@
     <string name="login">登录</string>
     <string name="logout">退出登录</string>
     <string name="net_work_error_prompt">网络不可用，请先设置网络!</string>
-    <string name="permission_error_prompt">我们需要的一些权限被您拒绝或者系统发生错误申请失败，请您到设置页面手动授权，否则功能无法正常使用！
+    <string name="dialog_prompt_permission_error">我们需要的一些权限被您拒绝或者系统发生错误申请失败，请您到设置页面手动授权，否则功能无法正常使用！
     </string>
     <string name="quit_prompt">是否退出当前应用?</string>
     <string name="logout_prompt1">是否退出当前帐号?</string>
@@ -31,11 +31,16 @@
     <string name="dialog_prompt_logout_error">退出登录异常</string>
     <string name="account_prompt">请输入账号信息</string>
     <string name="password_prompt">请输入密码</string>
+    <string name="new_password_prompt">请输入新密码</string>
     <string name="password_login_prompt">请输入登录密码</string>
     <string name="login_prompt">正在登录，请稍后…</string>
     <string name="dialog_prompt_login_error">登录信息获取异常</string>
     <string name="modify_password">修改密码</string>
-    <string name="modify_password_prompt">正在修改密码，请稍后…</string>
+    <string name="new_password">请输入新密码</string>
+    <string name="new_password_again">请再次输入新密码</string>
+    <string name="modify_password_prompt1">正在修改密码，请稍后…</string>
+    <string name="modify_password_prompt2">请确认两次密码是否一致</string>
+    <string name="dialog_prompt_modify_password_success">修改密码成功，请重新登陆</string>
     <string name="dialog_prompt_modify_password_error">修改密码异常</string>
     <string name="modify_real_name">修改用户昵称</string>
     <string name="modify_real_name_prompt">正在修改用户昵称，请稍后…</string>
@@ -88,24 +93,6 @@
     <string name="piture_description_prompt">请提供相关问题的截图或照片</string>
     <string name="my_task">我的任务</string>
     <string name="my_greeting_card">我的贺卡</string>
-
-    <!-- 手势密码 -->
-    <string name="gesture_password_tv_tittle">设置手势</string>
-    <string name="gesture_password_prompt1">为了保障您的账户安全，请绘制手势</string>
-    <string name="gesture_password_prompt2">请再次绘制</string>
-    <string name="gesture_password_prompt3">两次绘制不一致，请重新绘制</string>
-    <string name="gesture_password_prompt4">设置成功</string>
-    <string name="gesture_password_prompt5">手势密码输入正确</string>
-    <string name="gesture_password_prompt6">请输入原手势密码</string>
-    <string name="gesture_password_prompt6_1">手势密码输入错误</string>
-    <string name="gesture_password_prompt6_2">,还剩余</string>
-    <string name="gesture_password_prompt6_3">次</string>
-    <string name="gesture_password_prompt7">请输入新手势密码</string>
-    <string name="gesture_password_prompt7_1">请至少连接四个点</string>
-    <string name="gesture_password_prompt7_2">,还剩余</string>
-    <string name="gesture_password_prompt7_3">次</string>
-    <string name="gesture_password_prompt8">解锁失败</string>
-    <string name="gesture_password_prompt9">连续5次解锁失败,请重新登录</string>
 
     <!--图片获取相关-->
     <string name="get_image_error">图片获取失败</string>

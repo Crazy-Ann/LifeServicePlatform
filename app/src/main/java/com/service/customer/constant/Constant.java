@@ -56,6 +56,7 @@ public final class Constant {
         public static final int DIALOG_PROGRESS_GET_BOUNDARY = 0x5030;
         public static final int DIALOG_PROMPT_GET_BOUNDARY_ERROR = 0x5031;
         public static final int DIALOG_PROMPT_TOKEN_ERROR = 0x5032;
+        public static final int DIALOG_PROMPT_MODIFY_PASSWORD_SUCCESS = 0x5033;
         public static final int INSTALL_APK = 0x5097;
         public static final int REQUEST_CODE_PHOTOGRAPH = 0x5098;
         public static final int REQUEST_CODE_ALBUM = 0x5099;

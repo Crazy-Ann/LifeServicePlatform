@@ -67,7 +67,7 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
         }
         switch (view.getId()) {
             case R.id.rlModifyPassword:
-
+                startActivity(ModifyPasswordActivity.class);
                 break;
             case R.id.btnLogout:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -80,24 +80,6 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
                 break;
         }
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case Constant.RequestCode.NET_WORK_SETTING:
-            case Constant.RequestCode.PREMISSION_SETTING:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    settingPresenter.checkPermission(this);
-                } else {
-
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
 
     @Override
     public void onNeutralButtonClicked(int requestCode) {

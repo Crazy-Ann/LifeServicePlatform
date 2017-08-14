@@ -42,7 +42,7 @@ public class Api {
 
     private void handleFailedResponse(BaseView view, int promptCode, JSONObject object) {
         switch (object.getString(ResponseParameterKey.CODE)) {
-            case ResponseCode.UNKNOWN:
+            case ResponseCode.TOKEN_ERROR:
                 view.showPromptDialog(object.getString(ResponseParameterKey.MESSAGE), Constant.RequestCode.DIALOG_PROMPT_TOKEN_ERROR);
                 break;
             default:
@@ -194,7 +194,7 @@ public class Api {
                     public void onStart() {
                         super.onStart();
                         LogUtil.getInstance().print("修改密码开始");
-                        view.showLoadingPromptDialog(R.string.modify_password_prompt, Constant.RequestCode.DIALOG_PROGRESS_MODIFY_PASSWORD);
+                        view.showLoadingPromptDialog(R.string.modify_password_prompt1, Constant.RequestCode.DIALOG_PROGRESS_MODIFY_PASSWORD);
                     }
 
                     @Override
