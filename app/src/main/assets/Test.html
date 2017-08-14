@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<!--lang 属性可以指定标签范围内的元素的语言种类!-->
+<head>
+    <meta charset="UTF-8">
+    <!--HTML-5 中声明文档使用的字符编码!-->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <!--网页的宽度自动适应手机屏幕的宽度.device-width:可视区域的宽度,intial-scale:初始缩放比例，取值1.0则页面按实际尺寸显示，无任何缩放,maximum-scale最大缩放比例,1.0将禁止用户放大到实际尺寸之上,user-scalable:是否允许用户缩放，no 禁止缩放！ shrink-to-fit=no可替代元素下的自适应宽度 ！-->
+
+    <meta name="format-detection" content="telephone=no">
+    <!-- format-detection翻译成中文的意思是"格式检测",telephone=no就禁止了把数字转化为拨号链接！ -->
+    <title>混合应用通信测试</title>
+    <style>
+        .btn {
+            border: 1px solid #ccc;
+            padding: 1rem 0.5rem;
+            display: block;
+            text-align: center;
+            width: 60%;
+            margin: 30% auto 0 auto;
+        }
+    </style>
+    <script>
+        function appCallPage(data) {
+            /// <summary>APP 调用页面方法</summary>
+            try {
+                data = JSON.stringify(data);
+            } catch (e) {
+
+            }
+            alert(data);
+        }
+
+        function pageCallApp() {
+            /// <summary>页面 调用APP方法</summary>
+            try {
+                var param = { "id": "20170814", "name": "艾佛森" };
+
+                window.LifeServicePlatform.call(param);
+            } catch (e) {
+
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <a onclick="pageCallApp()" class="btn">执行APP方法</a>
+</body>
+</html>

@@ -13,10 +13,8 @@ import android.webkit.WebView;
 
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
-import com.service.customer.components.utils.BundleUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
-import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.contract.HomePageContract;
 import com.service.customer.ui.contract.implement.FragmentViewImplement;
@@ -67,7 +65,7 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract.Pr
         }
 //        wvHomePage.getSettings().setUserAgentString(wvHomePage.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
         if (TextUtils.equals(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType(), "1")) {
-            wvHomePage.loadUrl("file:///android_asset/Volunteer.html");
+            wvHomePage.loadUrl("file:///android_asset/Test.html");
         } else {
             wvHomePage.loadUrl("file:///android_asset/Demander.html");
         }
