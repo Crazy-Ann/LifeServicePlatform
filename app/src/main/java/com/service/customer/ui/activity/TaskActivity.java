@@ -191,7 +191,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                                     fileWrappers.add(new FileWrapper(file));
                                 }
                             }
-                            taskPresenter.saveTaskInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), String.valueOf(aMapLocation.getAddress()), vetDescreption.getText().trim(), fileWrappers);
+                            taskPresenter.saveTaskInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), String.valueOf(aMapLocation.getAddress()), 1, vetDescreption.getText().trim(), fileWrappers);
                         }
                     } else {
                         showLocationPromptDialog(R.string.dialog_prompt_location_error, Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
@@ -206,7 +206,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                                 fileWrappers.add(new FileWrapper(file));
                             }
                         }
-                        taskPresenter.saveTaskInfo(null, null, null, vetDescreption.getText().trim(), fileWrappers);
+                        taskPresenter.saveWrokInfo(1, vetDescreption.getText().trim(), fileWrappers);
 //                        }else{
 //                        }
                     }

@@ -19,6 +19,8 @@ public interface TaskContract {
 
         void location();
 
-        void saveTaskInfo(String longitude, String latitude, String address, String descreption, List<FileWrapper> fileWrappers);
+        void saveTaskInfo(String longitude, String latitude, String address, int taskType, String taskNote, List<FileWrapper> fileWrappers);
+
+        void saveWrokInfo(int workType, String workNote, List<FileWrapper> fileWrappers);
     }
 }

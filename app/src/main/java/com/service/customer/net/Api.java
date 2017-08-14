@@ -1,7 +1,6 @@
 package com.service.customer.net;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.R;
@@ -365,20 +364,14 @@ public class Api {
         }
     }
 
-    public void saveTaskInfo(final Context context, final BaseView view, String url, String token, int taskType, String longitude, String latitude, String address, String taskNote, List<FileWrapper> fileWrappers, final ApiListener apiListener) {
+    public void saveTaskInfo(final Context context, final BaseView view, String url, String token, String longitude, String latitude, String address, int taskType, String taskNote, List<FileWrapper> fileWrappers, final ApiListener apiListener) {
         LogUtil.getInstance().print("saveTaskInfo");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.TASK_TYPE, String.valueOf(taskType));
-            if (!TextUtils.isEmpty(longitude)) {
-                parameters.put(RequestParameterKey.LONGITUDE, longitude);
-            }
-            if (!TextUtils.isEmpty(latitude)) {
-                parameters.put(RequestParameterKey.LATITUDE, latitude);
-            }
-            if (!TextUtils.isEmpty(address)) {
-                parameters.put(RequestParameterKey.ADDRESS, address);
-            }
+            parameters.put(RequestParameterKey.LONGITUDE, longitude);
+            parameters.put(RequestParameterKey.LATITUDE, latitude);
+            parameters.put(RequestParameterKey.ADDRESS, address);
             parameters.put(RequestParameterKey.TASK_NOTE, taskNote);
             HashMap<String, FileWrapper> fileParameters = new HashMap<>();
             for (FileWrapper fileWrapper : fileWrappers) {

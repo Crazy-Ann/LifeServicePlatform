@@ -67,7 +67,7 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
     }
 
     @Override
-    public void saveTaskInfo(String longitude, String latitude, String address, String taskNote, List<FileWrapper> fileWrappers) {
+    public void saveTaskInfo(String longitude, String latitude, String address, int taskType, String taskNote, List<FileWrapper> fileWrappers) {
         LogUtil.getInstance().print("saveTaskInfo");
         Api.getInstance().saveTaskInfo(
                 context,
@@ -75,11 +75,38 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
 //                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
                 BuildConfig.SERVICE_URL + ServiceMethod.SAVE_HEAD_IMAGE,
                 ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
-                1,
                 longitude,
                 latitude,
                 address,
+                taskType,
                 taskNote,
+                fileWrappers,
+                new ApiListener() {
+
+                    @Override
+                    public void success(BaseEntity baseEntity) {
+
+                    }
+
+                    @Override
+                    public void failed(BaseEntity entity, String errorCode, String errorMessage) {
+
+                    }
+                }
+        );
+    }
+
+    @Override
+    public void saveWrokInfo(int workType, String workNote, List<FileWrapper> fileWrappers) {
+        LogUtil.getInstance().print("saveWrokInfo");
+        Api.getInstance().saveWrokInfo(
+                context,
+                view,
+//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
+                BuildConfig.SERVICE_URL + ServiceMethod.SAVE_HEAD_IMAGE,
+                ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
+                workType,
+                workNote,
                 fileWrappers,
                 new ApiListener() {
 
