@@ -9,5 +9,6 @@ public final class ServiceMethod {
     public final static String MODIFY_PASSWORD = "/ModifyPassword";
     public final static String MODIFY_NAME     = "/ModifyRealName";
     public final static String SAVE_TASK_INFO  = "/SaveTaskInfo";
+    public final static String SAVE_WOORK_INFO  = "/SaveWorkInfo";
     public final static String SAVE_HEAD_IMAGE = "/SaveHeadImage";
 }
