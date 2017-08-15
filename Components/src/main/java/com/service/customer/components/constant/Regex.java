@@ -3,7 +3,6 @@ package com.service.customer.components.constant;
 public enum Regex {
 
     NONE(""),
-    UNKNOWN("?"),
     CHINESE_AREA_CODE("+86"),
     YUAN("￥"),
     PERCENT("%"),

@@ -15,11 +15,11 @@ import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.NetworkUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.listener.ApiListener;
-import com.service.customer.net.reponse.ConfigResponse;
-import com.service.customer.net.reponse.LoginResponse;
-import com.service.customer.net.reponse.ModifyPasswordResponse;
-import com.service.customer.net.reponse.ModifyRealNameResponse;
-import com.service.customer.net.reponse.SaveHeadImageResponse;
+import com.service.customer.net.response.ConfigResponse;
+import com.service.customer.net.response.LoginResponse;
+import com.service.customer.net.response.ModifyPasswordResponse;
+import com.service.customer.net.response.ModifyRealNameResponse;
+import com.service.customer.net.response.SaveHeadImageResponse;
 
 import java.util.HashMap;
 import java.util.List;

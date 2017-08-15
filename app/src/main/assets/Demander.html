@@ -4,89 +4,72 @@
     <meta charset="utf-8">
     <title>JSBridge</title>
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <meta property="og:site_name" content="JsBridge"/>
-    <script src="file:///android_asset/Common.js" type="text/javascript"/>
-
     <style>
-        .entry{
-            -webkit-padding-start: 30px;
+        .btn {
+            border: 1px solid #ccc;
+            padding: 1rem 0.5rem;
+            display: block;
+            text-align: center;
+            width: 60%;
+            margin: 30% auto 0 auto;
+        }
+    </style>
+    <script>
+        function callH5(data) {
+            /// <summary>APP 调用页面方法</summary>
+            try {
+                data = JSON.stringify(data);
+            } catch (e) {
+                console.log(e)'
             }
-            .entry li {
-            line-height: 29px;
-            margin-left: -10px;
+                console.log(data)'
+        }
+        function callNative(data) {
+            try {
+                window.LifeServicePlatform.call(data);
+            } catch (e) {
+                console.log(e)'
             }
-            .entry li div{
-            margin-right: 10px;
-            padding-left: 8px;
-            padding-top: 8px;
-            padding-bottom: 8px;
-            background: #222222;
-            color: white;
-            word-break: break-all;
-            -ms-word-wrap: break-word;
-            word-wrap: break-word;
-            line-height: 15px;
-            font-size: 10pt;
-            }
-            .entry li button{
-            margin-top: 5px;
-            width: 60px;
-            height: 35px;
-            color: #111111;
         }
     
-    
-    
-    </style>
+    </script>
 </head>
 
 <body>
-<div class="blog-header">
-    <h3>JsBridge调用native测试列表</h3>
-</div>
-<ul class="entry">
-    <li>
-        <button onclick="JSBridge.callMethod('JSProxy','showToast',{'message':'我是Js调起的Toast'},function(){});">
-            紧急求助
-        </button>
-    </li>
-
-    <br/>
-    <li>
-        <button onclick="JSBridge.callMethod('JSProxy','getAppName',{},function(msg){alert(JSON.stringify(msg))});">
-            家电维修
-        </button>
-    </li>
-    <br/>
-    <li>
-        <button onclick="JSBridge.callMethod('JSProxy','delayExecuteTask',{},function(msg){alert(JSON.stringify(msg))});">
-            生活设施维修
-        </button>
-    </li>
-    <br/>
-    <li>
-        <button onclick="JSBridge.callMethod('JSProxy','getDeviceId',{},function(msg){alert(JSON.stringify(msg))});">
-            其他生活事件
-        </button>
-    </li>
-    <br/>
-    <li>
-        <button onclick="JSBridge.callMethod('JSProxy','getOsSdk',{},function(msg){alert(JSON.stringify(msg))});">
-            心理咨询
-        </button>
-    </li>
-    <br/>
-    <li>
-        <button onclick="JSBridge.callMethod('JSProxy','performTimeConsumeTask',{},function(msg){alert(JSON.stringify(msg))});">
-            寻医问药
-        </button>
-    </li>
-    <li>
-        <button onclick="JSBridge.callMethod('JSProxy','finish',{},function(msg){alert(JSON.stringify(msg))});">
-            其他
-        </button>
-    </li>
-</ul>
+<a onclick="callNative({'tag':'a', 'parameter':{'index':'1', 'title':'紧急求助'}})"
+   class="btn">
+    紧急求助
+</a>
+<br/>
+<a onclick="callNative({'tag':'b', 'parameter':{'index':'2', 'title':'家电维修'}})"
+   class="btn">
+    家电维修
+</a>
+<br/>
+<a onclick="callNative({'tag':'c', 'parameter':{'index':'3', 'title':'生活设施维修'}})"
+   class="btn">
+    生活设施维修
+</a>
+<br/>
+<a onclick="callNative({'tag':'d', 'parameter':{'index':'4', 'title':'其他生活事件'}})"
+   class="btn">
+    其他生活事件
+</a>
+<br/>
+<a onclick="callNative({'tag':'e', 'parameter':{'index':'5', 'title':'心理咨询'}})"
+   class="btn">
+    心理咨询
+</a>
+<br/>
+<a onclick="callNative({'tag':'f', 'parameter':{'index':'6', 'title':'寻医问药'}})"
+   class="btn">
+    寻医问药
+</a>
+<a onclick="callNative({'tag':'g', 'parameter':{'index':'7', 'title':'其他'}})"
+   class="btn">
+    其他
+</a>
 </body>
 </html>

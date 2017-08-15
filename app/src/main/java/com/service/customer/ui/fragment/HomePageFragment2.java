@@ -50,10 +50,13 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract.Pr
         initializeToolbar(R.color.color_383857, android.R.color.white, false, getString(R.string.home_page), null);
         homePagePresenter = new HomePagePresenter(getActivity(), this);
         homePagePresenter.initialize();
+        
         setBasePresenterImplement(homePagePresenter);
         getSavedInstanceState(savedInstanceState);
+        
         wvHomePage.setWebViewClient(new InjectedWebviewClient(getActivity()));
         wvHomePage.setWebChromeClient(new CustomChromeClient(Constant.JavaScript.INJECTED_NAME, LifeServicePlatform.class));
+        wvHomePage.getSettings().setJavaScriptEnabled(true);
         wvHomePage.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         wvHomePage.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         wvHomePage.getSettings().setSupportMultipleWindows(false);
@@ -65,7 +68,7 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract.Pr
         }
 //        wvHomePage.getSettings().setUserAgentString(wvHomePage.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
         if (TextUtils.equals(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType(), "1")) {
-            wvHomePage.loadUrl("file:///android_asset/Test.html");
+            wvHomePage.loadUrl("file:///android_asset/Volunteer.html");
         } else {
             wvHomePage.loadUrl("file:///android_asset/Demander.html");
         }

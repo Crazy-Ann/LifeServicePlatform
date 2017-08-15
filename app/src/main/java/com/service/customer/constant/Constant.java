@@ -120,5 +120,14 @@ public final class Constant {
 
     public static class JavaScript {
         public static final String INJECTED_NAME = "LifeServicePlatform";
+        public static final String TAG = "tag";
+        public static final String PARAMETER = "parameter";
+        public static final String A = "a";
+        public static final String B = "b";
+        public static final String C = "c";
+        public static final String D = "d";
+        public static final String E = "e";
+        public static final String TITLE = "title";
+        public static final String URL = "url";
     }
 }

@@ -11,7 +11,7 @@
         android:id="@+id/inToolbar"
         layout="@layout/view_toolbar"/>
 
-    <Webview
+    <WebView
         android:id="@+id/wvContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
