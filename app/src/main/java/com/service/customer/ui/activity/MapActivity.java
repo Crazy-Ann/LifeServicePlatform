@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,7 +25,6 @@ import com.amap.api.services.district.DistrictResult;
 import com.amap.api.services.district.DistrictSearch;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.service.customer.R;
-import com.service.customer.base.handler.ActivityHandler;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.AnimationUtil;
@@ -34,8 +32,6 @@ import com.service.customer.components.utils.BundleUtil;
 import com.service.customer.components.utils.GlideUtil;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
-import com.service.customer.components.utils.MessageUtil;
-import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
@@ -57,30 +53,6 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     private TextView tvRealName;
     private ImageView ivClose;
     private TextView tvDescreption;
-    private MapHandler mapHandler;
-
-    private class MapHandler extends ActivityHandler<MapActivity> {
-
-        public MapHandler(MapActivity activity) {
-            super(activity);
-        }
-
-        @Override
-        protected void handleMessage(MapActivity activity, Message msg) {
-            switch (msg.what) {
-                case com.service.customer.constant.Constant.Message.GET_EVENT_INFOS_SUCCESS:
-                    hideLoadingPromptDialog();
-                    setEventMarker((TaskInfos) msg.obj);
-                    mapPresenter.getBoundary(getString(R.string.miyun_district));
-                    break;
-                case com.service.customer.constant.Constant.Message.GET_EVNET_INFOS_FAILED:
-                    hideLoadingPromptDialog();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,28 +78,16 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     protected void initialize(Bundle savedInstanceState) {
         initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
         mapView.onCreate(savedInstanceState);
-        mapHandler = new MapHandler(this);
+
         mapPresenter = new MapPresenter(this, this);
         mapPresenter.initialize();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mapPresenter.checkPermission(this);
         } else {
-            mapPresenter.getEventInfos();
+            mapPresenter.getTaskInfos();
         }
         setBasePresenterImplement(mapPresenter);
         getSavedInstanceState(savedInstanceState);
-
-        ThreadPoolUtil.execute(new Runnable() {
-            @Override
-            public void run() {
-                TaskInfos taskInfos = mapPresenter.getEventInfos();
-                if (taskInfos != null) {
-                    mapHandler.sendMessage(MessageUtil.getMessage(com.service.customer.constant.Constant.Message.GET_EVENT_INFOS_SUCCESS, taskInfos));
-                } else {
-                    mapHandler.sendMessage(MessageUtil.getMessage(com.service.customer.constant.Constant.Message.GET_EVNET_INFOS_FAILED));
-                }
-            }
-        });
     }
 
     @Override
@@ -183,7 +143,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     mapPresenter.checkPermission(this);
                 } else {
-                    mapPresenter.getEventInfos();
+                    mapPresenter.getTaskInfos();
                 }
                 break;
             default:
@@ -247,7 +207,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
 
     @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        mapPresenter.getEventInfos();
+        mapPresenter.getTaskInfos();
     }
 
     @Override
@@ -296,7 +256,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
         AnimationUtil.getInstance().fadeInByAlphaAnimation(llTaskInfo, 100, 100);
         GlideUtil.getInstance().with(this, taskInfo.getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
         tvRealName.setText(taskInfo.getRealName());
-        tvDescreption.setText(taskInfo.getDescreption());
+        tvDescreption.setText(taskInfo.getTasNote());
         return true;
     }
 

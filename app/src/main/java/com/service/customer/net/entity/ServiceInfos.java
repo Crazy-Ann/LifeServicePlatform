@@ -1,20 +1,19 @@
 package com.service.customer.net.entity;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.BuildConfig;
 import com.service.customer.base.constant.net.ResponseParameterKey;
-import com.service.customer.components.cache.listener.implement.CacheableImplement;
+import com.service.customer.base.net.model.BaseEntity;
 import com.service.customer.components.widget.sticky.listener.OnGroupListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public final class ServiceInfos extends CacheableImplement implements Parcelable, OnGroupListener {
+public final class ServiceInfos extends BaseEntity implements OnGroupListener {
 
     private ArrayList<ServiceInfo> serviceInfos;
 

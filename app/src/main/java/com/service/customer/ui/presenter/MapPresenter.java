@@ -2,7 +2,6 @@ package com.service.customer.ui.presenter;
 
 import android.content.Context;
 
-import com.alibaba.fastjson.JSONObject;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.model.CameraPosition;
@@ -10,14 +9,17 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.services.district.DistrictSearch;
 import com.amap.api.services.district.DistrictSearchQuery;
 import com.service.customer.R;
+import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
-import com.service.customer.components.utils.IOUtil;
+import com.service.customer.base.net.model.BaseEntity;
 import com.service.customer.constant.Constant;
+import com.service.customer.constant.ServiceMethod;
+import com.service.customer.net.Api;
+import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.net.entity.TaskInfos;
+import com.service.customer.net.listener.ApiListener;
 import com.service.customer.ui.contract.MapContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
-
-import java.io.IOException;
 
 
 public class MapPresenter extends BasePresenterImplement implements MapContract.Presenter {
@@ -69,13 +71,27 @@ public class MapPresenter extends BasePresenterImplement implements MapContract.
     }
 
     @Override
-    public TaskInfos getEventInfos() {
-        view.showLoadingPromptDialog(R.string.get_evnet_infos, Constant.RequestCode.DIALOG_PROMPT_GET_EVENT_INFOS);
-        try {
-            return new TaskInfos().parse(JSONObject.parseObject(IOUtil.getInstance().readString(context.getAssets().open("TaskInfos.json"))));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public void getTaskInfos() {
+        Api.getInstance().taskList(
+                context,
+                view,
+//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
+                BuildConfig.SERVICE_URL + ServiceMethod.TASK_LIST,
+                ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
+                1,
+                new ApiListener() {
+
+                    @Override
+                    public void success(BaseEntity baseEntity) {
+                        view.setEventMarker((TaskInfos) baseEntity);
+                        getBoundary(context.getString(R.string.miyun_district));
+                    }
+
+                    @Override
+                    public void failed(BaseEntity entity, String errorCode, String errorMessage) {
+
+                    }
+                }
+        );
     }
 }

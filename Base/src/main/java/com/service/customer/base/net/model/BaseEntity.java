@@ -64,7 +64,6 @@ public class BaseEntity extends CacheableImplement implements Parcelable {
     }
 
     public static final Creator<BaseEntity> CREATOR = new Creator<BaseEntity>() {
-
         @Override
         public BaseEntity createFromParcel(Parcel in) {
             return new BaseEntity(in);
@@ -75,4 +74,5 @@ public class BaseEntity extends CacheableImplement implements Parcelable {
             return new BaseEntity[size];
         }
     };
+
 }

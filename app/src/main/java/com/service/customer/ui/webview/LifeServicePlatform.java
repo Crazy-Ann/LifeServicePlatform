@@ -32,7 +32,7 @@ public class LifeServicePlatform {
                     if (!TextUtils.isEmpty(parameter)) {
                         intent = new Intent(webView.getContext(), WapActivity.class);
                         bundle = new Bundle();
-                        StringBuilder stringBuilder = new StringBuilder();
+                        StringBuilder stringBuilder;
                         String url = JSONObject.parseObject(parameter).getString(Constant.JavaScript.URL);
                         if (!TextUtils.isEmpty(url)) {
                             stringBuilder = new StringBuilder(url);

@@ -20,6 +20,8 @@ import com.service.customer.net.response.LoginResponse;
 import com.service.customer.net.response.ModifyPasswordResponse;
 import com.service.customer.net.response.ModifyRealNameResponse;
 import com.service.customer.net.response.SaveHeadImageResponse;
+import com.service.customer.net.response.ScoreTaskInfoResponse;
+import com.service.customer.net.response.TaskInfosResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -500,6 +502,132 @@ public class Api {
                 });
             } else {
                 view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+            }
+        } else {
+            view.showNetWorkPromptDialog();
+        }
+    }
+
+    public void scoreTaskInfo(final Context context, final BaseView view, String url, String token, String billNo, String scorenum, String note, final ApiListener apiListener) {
+        LogUtil.getInstance().print("scoreTaskInfo");
+        if (NetworkUtil.getInstance().isInternetConnecting(context)) {
+            HashMap<String, String> parameters = new HashMap<>();
+            parameters.put(RequestParameterKey.BILL_NO, billNo);
+            parameters.put(RequestParameterKey.SCORE_NUM, scorenum);
+            parameters.put(RequestParameterKey.NOTE, note);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SCORE_INFO, parameters, null, token, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new ScoreTaskInfoResponse() {
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        LogUtil.getInstance().print("提交评价开始");
+                        view.showLoadingPromptDialog(R.string.score_task_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SCORE_TASK_INFO);
+                    }
+
+                    @Override
+                    public void onResponseSuccess(JSONObject object) {
+                        super.onResponseSuccess(object);
+                        LogUtil.getInstance().print("提交评价成功:" + object.toString());
+                        apiListener.success(null);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message) {
+                        super.onResponseFailed(code, message);
+                        LogUtil.getInstance().print("提交评价失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR);
+                        apiListener.failed(null, code, message);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message, JSONObject object) {
+                        super.onResponseFailed(code, message, object);
+                        LogUtil.getInstance().print("提交评价失败,code:" + code + ",message:" + message);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR, object);
+                    }
+
+                    @Override
+                    public void onEnd() {
+                        super.onEnd();
+                        LogUtil.getInstance().print("提交评价结束");
+                        view.hideLoadingPromptDialog();
+                    }
+
+                    @Override
+                    public void onFailed(int code, String message) {
+                        super.onFailed(code, message);
+                        LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR);
+                    }
+                });
+            } else {
+                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR);
+            }
+        } else {
+            view.showNetWorkPromptDialog();
+        }
+    }
+
+    public void taskList(final Context context, final BaseView view, String url, String token, int pageindex, final ApiListener apiListener) {
+        LogUtil.getInstance().print("scoreTaskInfo");
+        if (NetworkUtil.getInstance().isInternetConnecting(context)) {
+            HashMap<String, String> parameters = new HashMap<>();
+            parameters.put(RequestParameterKey.PAGE_INDEX, String.valueOf(pageindex));
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_LIST, parameters, null, token, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new TaskInfosResponse() {
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        LogUtil.getInstance().print("获取任务开始");
+                        view.showLoadingPromptDialog(R.string.task_infos_prompt, Constant.RequestCode.DIALOG_PROGRESS_TASK_INFOS);
+                    }
+
+                    @Override
+                    public void onResponseSuccess(JSONObject object) {
+                        super.onResponseSuccess(object);
+                        LogUtil.getInstance().print("获取任务成功:" + object.toString());
+                        if (taskInfos != null) {
+                            apiListener.success(taskInfos);
+                        } else {
+                            view.showPromptDialog(R.string.dialog_prompt_task_infos_error, Constant.RequestCode.DIALOG_PROMPT_TASK_INFOS_ERROR);
+                        }
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message) {
+                        super.onResponseFailed(code, message);
+                        LogUtil.getInstance().print("获取任务失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_TASK_INFOS_ERROR);
+                        apiListener.failed(null, code, message);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message, JSONObject object) {
+                        super.onResponseFailed(code, message, object);
+                        LogUtil.getInstance().print("获取任务失败,code:" + code + ",message:" + message);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_TASK_INFOS_ERROR, object);
+                    }
+
+                    @Override
+                    public void onEnd() {
+                        super.onEnd();
+                        LogUtil.getInstance().print("获取任务结束");
+                        view.hideLoadingPromptDialog();
+                    }
+
+                    @Override
+                    public void onFailed(int code, String message) {
+                        super.onFailed(code, message);
+                        LogUtil.getInstance().print("获取任务失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_TASK_INFOS_ERROR);
+                    }
+                });
+            } else {
+                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_TASK_INFOS_ERROR);
             }
         } else {
             view.showNetWorkPromptDialog();

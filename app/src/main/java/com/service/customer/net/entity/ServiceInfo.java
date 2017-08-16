@@ -39,7 +39,7 @@ public final class ServiceInfo implements Serializable, Parcelable, OnGroupListe
         if (object != null) {
             this.name = object.getString(ResponseParameterKey.NAME);
             this.action = object.getString(ResponseParameterKey.ACTION);
-            this.index = object.getInteger(ResponseParameterKey.INDEX);
+            this.index = object.getIntValue(ResponseParameterKey.INDEX);
             this.iconUrl = object.getString(ResponseParameterKey.ICON_URL);
             return this;
         } else {
@@ -59,16 +59,6 @@ public final class ServiceInfo implements Serializable, Parcelable, OnGroupListe
         } else {
             return super.toString();
         }
-    }
-
-    @Override
-    public String getGroupName() {
-        return null;
-    }
-
-    @Override
-    public long getGroupId() {
-        return 0;
     }
 
     @Override
@@ -96,4 +86,14 @@ public final class ServiceInfo implements Serializable, Parcelable, OnGroupListe
         @Override
         public ServiceInfo[] newArray(int size) {return new ServiceInfo[size];}
     };
+
+    @Override
+    public String getGroupName() {
+        return null;
+    }
+
+    @Override
+    public long getGroupId() {
+        return 0;
+    }
 }

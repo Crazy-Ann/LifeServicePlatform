@@ -8,7 +8,10 @@ public class RequestParameterKey {
     public final static String MODIFY_NAME = "modifyname";
     public final static String TASK_INFO = "taskinfo";
     public final static String WROK_INFO = "workinfo";
+    public final static String SCORE_INFO = "scoreinfo";
     public final static String SAVE_HEAD_IMAGE = "headimage";
+    public final static String TASK_LIST = "tasklist";
+    public final static String WORK_LIST = "workList";
 
     public static final String TYPE = "type";
     public static final String TOKEN = "token";
@@ -31,4 +34,10 @@ public class RequestParameterKey {
     public static final String TASK_NOTE = "tasknote";
     public static final String WORK_TYPE = "worktype";
     public static final String WORK_NOTE = "worknote";
+
+    public static final String BILL_NO = "billno";
+    public static final String SCORE_NUM = "scorenum";
+    public static final String NOTE = "note";
+    
+    public static final String PAGE_INDEX = "pageindex";
 }

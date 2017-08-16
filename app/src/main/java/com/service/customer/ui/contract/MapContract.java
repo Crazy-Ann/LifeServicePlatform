@@ -25,7 +25,7 @@ public interface MapContract {
 
         void mapCameraOperation(LatLng lating, float zoom, float tilt, float bearing);
 
-        TaskInfos getEventInfos();
+        void getTaskInfos();
 
     }
 }

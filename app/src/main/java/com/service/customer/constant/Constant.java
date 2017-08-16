@@ -57,6 +57,10 @@ public final class Constant {
         public static final int DIALOG_PROMPT_GET_BOUNDARY_ERROR = 0x5031;
         public static final int DIALOG_PROMPT_TOKEN_ERROR = 0x5032;
         public static final int DIALOG_PROMPT_MODIFY_PASSWORD_SUCCESS = 0x5033;
+        public static final int DIALOG_PROGRESS_SCORE_TASK_INFO = 0x5034;
+        public static final int DIALOG_PROMPT_SCORE_TASK_INFO_ERROR = 0x5035;
+        public static final int DIALOG_PROGRESS_TASK_INFOS = 0x5036;
+        public static final int DIALOG_PROMPT_TASK_INFOS_ERROR = 0x5037;
         public static final int INSTALL_APK = 0x5097;
         public static final int REQUEST_CODE_PHOTOGRAPH = 0x5098;
         public static final int REQUEST_CODE_ALBUM = 0x5099;
@@ -104,10 +108,8 @@ public final class Constant {
         public static final int GET_SERVICE_INFOS_FAILED = 0x7002;
         public static final int GET_NOTIFICATION_ANNOUNCEMENT_INFOS_SUCCESS = 0x7003;
         public static final int GET_NOTIFICATION_ANNOUNCEMENT_INFOS_FAILED = 0x7004;
-        public static final int GET_EVENT_INFOS_SUCCESS = 0x7005;
-        public static final int GET_EVNET_INFOS_FAILED = 0x7006;
-        public static final int GET_IMAGE_SUCCESS = 0x7007;
-        public static final int GET_IMAGE_FAILED = 0x7008;
+        public static final int GET_IMAGE_SUCCESS = 0x7005;
+        public static final int GET_IMAGE_FAILED = 0x7006;
     }
 
     public static class Map {
