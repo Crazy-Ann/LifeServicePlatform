@@ -99,6 +99,9 @@
     <string name="add_work_log">添加工作日志</string>
     <string name="map_event">地图事件</string>
     <string name="my_greeting_card">我的贺卡</string>
+    <string name="service_evaluate">服务评价</string>
+    <string name="evaluate_prompt1">请输入服务评价</string>
+    <string name="evaluate_prompt2">请选择服务评价星级</string>
 
     <!--图片获取相关-->
     <string name="get_image_error">图片获取失败</string>

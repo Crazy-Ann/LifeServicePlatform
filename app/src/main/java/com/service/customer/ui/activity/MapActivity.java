@@ -67,7 +67,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     protected void findViewById() {
         inToolbar = ViewUtil.getInstance().findView(this, R.id.inToolbar);
         mapView = ViewUtil.getInstance().findView(this, R.id.mapView);
-        llTaskInfo = ViewUtil.getInstance().findView(this, R.id.llTaskInfo);
+        llTaskInfo = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.llTaskInfo, this);
         ivHeadImage = ViewUtil.getInstance().findView(this, R.id.ivHeadImage);
         tvRealName = ViewUtil.getInstance().findView(this, R.id.tvRealName);
         ivClose = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.ivClose, this);
@@ -126,6 +126,15 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
             return;
         }
         switch (view.getId()) {
+            case R.id.llTaskInfo:
+                //todo 被求助角色
+                TaskInfo taskInfo = (TaskInfo) llTaskInfo.getTag();
+                if (taskInfo != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(Temp.TASK_INFO.getContent(), taskInfo);
+                    startActivity(EvaluateActivity.class, bundle);
+                }
+                break;
             case R.id.ivClose:
                 AnimationUtil.getInstance().fadeOutByAlphaAnimation(llTaskInfo, 100, 100);
                 break;
@@ -252,11 +261,14 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        TaskInfo taskInfo = (TaskInfo) marker.getObject();
-        AnimationUtil.getInstance().fadeInByAlphaAnimation(llTaskInfo, 100, 100);
-        GlideUtil.getInstance().with(this, taskInfo.getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
-        tvRealName.setText(taskInfo.getRealName());
-        tvDescreption.setText(taskInfo.getTasNote());
+        if (marker != null) {
+            TaskInfo taskInfo = (TaskInfo) marker.getObject();
+            AnimationUtil.getInstance().fadeInByAlphaAnimation(llTaskInfo, 100, 100);
+            GlideUtil.getInstance().with(this, taskInfo.getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
+            tvRealName.setText(taskInfo.getRealName());
+            tvDescreption.setText(taskInfo.getTasNote());
+            llTaskInfo.setTag(taskInfo);
+        }
         return true;
     }
 

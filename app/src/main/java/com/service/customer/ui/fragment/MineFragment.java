@@ -40,6 +40,7 @@ import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.activity.MapActivity;
 import com.service.customer.ui.activity.SettingActivity;
 import com.service.customer.ui.activity.TaskActivity;
+import com.service.customer.ui.activity.WapActivity;
 import com.service.customer.ui.contract.MineContract;
 import com.service.customer.ui.contract.implement.FragmentViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
@@ -155,10 +156,11 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                         .showAllowingStateLoss(getActivity());
                 break;
             case R.id.rlTask:
-                //TODO  H5任务列表
+                startActivity(WapActivity.class);
                 break;
             case R.id.rlAddWorkLog:
                 Bundle bundle = new Bundle();
+                bundle.putString(Temp.TITLE.getContent(), getString(R.string.add_work_log));
                 bundle.putBoolean(Temp.NEED_LOCATION.getContent(), false);
                 startActivity(TaskActivity.class, bundle);
                 break;
@@ -166,7 +168,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                 startActivity(MapActivity.class);
                 break;
             case R.id.rlGreetingCard:
-                //TODO H5贺卡页面
+                startActivity(WapActivity.class);
                 break;
             case R.id.rlSetting:
                 startActivity(SettingActivity.class);

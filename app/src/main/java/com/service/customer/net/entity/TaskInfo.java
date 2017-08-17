@@ -17,7 +17,7 @@ public class TaskInfo implements Serializable, Parcelable, OnGroupListener {
     private String tasNote;
     private double latitude;
     private double longitude;
-    private double address;
+    private String address;
     private String accountAvatar;
     private String billNo;
     private int status;
@@ -38,7 +38,7 @@ public class TaskInfo implements Serializable, Parcelable, OnGroupListener {
         return longitude;
     }
 
-    public double getAddress() {
+    public String getAddress() {
         return address;
     }
 
@@ -60,14 +60,22 @@ public class TaskInfo implements Serializable, Parcelable, OnGroupListener {
 
     public TaskInfo parse(JSONObject object) {
         if (object != null) {
-            this.realName = object.getString(ResponseParameterKey.REAL_NAME);
-            this.tasNote = object.getString(ResponseParameterKey.DESCREPTION);
-            this.latitude = object.getDoubleValue(ResponseParameterKey.LATITUDE);
-            this.longitude = object.getDoubleValue(ResponseParameterKey.LONGITUDE);
-            this.address = object.getDoubleValue(ResponseParameterKey.ADDRESS);
+//            this.realName = object.getString(ResponseParameterKey.REAL_NAME);
+//            this.tasNote = object.getString(ResponseParameterKey.DESCREPTION);
+//            this.latitude = object.getDoubleValue(ResponseParameterKey.LATITUDE);
+//            this.longitude = object.getDoubleValue(ResponseParameterKey.LONGITUDE);
+//            this.address = object.getDoubleValue(ResponseParameterKey.ADDRESS);
+//            this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR);
+//            this.billNo = object.getString(ResponseParameterKey.TITLE);
+//            this.status = object.getIntValue(ResponseParameterKey.STATUS);
+            this.realName = "卫计委2号";
+            this.tasNote = "一二三四五六七八九十";
+            this.latitude = 40.375265;
+            this.longitude = 116.846052;
+            this.address = "北京市海淀区海淀西街8号靠近中国农业银行(北京北四环支行)";
             this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR);
-            this.billNo = object.getString(ResponseParameterKey.TITLE);
-            this.status = object.getIntValue(ResponseParameterKey.STATUS);
+            this.billNo = "T170816000007811";
+            this.status = 0;
             return this;
         } else {
             return null;
@@ -101,7 +109,7 @@ public class TaskInfo implements Serializable, Parcelable, OnGroupListener {
         dest.writeString(this.tasNote);
         dest.writeDouble(this.latitude);
         dest.writeDouble(this.longitude);
-        dest.writeDouble(this.address);
+        dest.writeString(this.address);
         dest.writeString(this.accountAvatar);
         dest.writeString(this.billNo);
         dest.writeInt(this.status);
@@ -112,7 +120,7 @@ public class TaskInfo implements Serializable, Parcelable, OnGroupListener {
         this.tasNote = in.readString();
         this.latitude = in.readDouble();
         this.longitude = in.readDouble();
-        this.address = in.readDouble();
+        this.address = in.readString();
         this.accountAvatar = in.readString();
         this.billNo = in.readString();
         this.status = in.readInt();

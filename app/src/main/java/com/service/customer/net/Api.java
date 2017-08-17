@@ -508,12 +508,12 @@ public class Api {
         }
     }
 
-    public void scoreTaskInfo(final Context context, final BaseView view, String url, String token, String billNo, String scorenum, String note, final ApiListener apiListener) {
+    public void scoreTaskInfo(final Context context, final BaseView view, String url, String token, String billNo, int score, String note, final ApiListener apiListener) {
         LogUtil.getInstance().print("scoreTaskInfo");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.BILL_NO, billNo);
-            parameters.put(RequestParameterKey.SCORE_NUM, scorenum);
+            parameters.put(RequestParameterKey.SCORE_NUM, String.valueOf(score));
             parameters.put(RequestParameterKey.NOTE, note);
             RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SCORE_INFO, parameters, null, token, false);
             if (requestParameter != null) {

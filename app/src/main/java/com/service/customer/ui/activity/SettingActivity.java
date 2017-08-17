@@ -16,6 +16,7 @@ import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
+import com.service.customer.constant.Temp;
 import com.service.customer.ui.contract.SettingContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.presenter.SettingPresenter;
