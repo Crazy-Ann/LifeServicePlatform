@@ -18,6 +18,7 @@ import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
+import com.service.customer.constant.Temp;
 import com.service.customer.ui.contract.WelcomeContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.dialog.DownloadDialog;
@@ -292,8 +293,10 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
     }
 
     @Override
-    public void startMainActivity() {
-        startActivity(MainActivity.class);
+    public void startMainActivity(int tab) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(Temp.TAB.getContent(), tab);
+        startActivity(MainActivity.class, bundle);
         onFinish("startMainActivity");
     }
 }

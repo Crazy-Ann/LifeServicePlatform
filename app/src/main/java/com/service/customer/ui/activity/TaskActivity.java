@@ -400,6 +400,14 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
     }
 
     @Override
+    public void startMainActivity(int tab) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(Temp.TAB.getContent(), tab);
+        startActivity(MainActivity.class, bundle);
+        onFinish("startMainActivity");
+    }
+
+    @Override
     public void OnLeftIconEvent() {
         onFinish("OnLeftIconEvent");
     }

@@ -1,0 +1,138 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>首页</title>
+    <link rel="stylesheet" href="../css/comm.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <script src="../js/zepto.1.0.min.js"></script>
+    <script src="../js/comm.js"></script>
+    <script>
+        function callH5(data) {
+            /// <summary>APP 调用页面方法</summary>
+            try {
+                data = JSON.stringify(data);
+            } catch (e) {
+                console.log(e)
+            }
+                console.log(data)
+        }
+        function callNative(data) {
+            try {
+                window.LifeServicePlatform.call(JSON.stringify(data));
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    
+    
+    </script>
+</head>
+<body>
+<div class="bannerbox">
+    <img src="../images/banner_index.png" alt="密云生活服务平台">
+</div>
+<nav class="nav-btn">
+    <a targe="_blank" class="btn-sos">
+        <img src="../images/icon/nav_01.png" alt="紧急求助">
+        <p>紧急求助</p>
+    </a>
+    <a targe="_blank"
+       onclick="callNative({'tag':'doctor_medicine', 'parameter':{'location':true, 'title':'寻医问药', 'url':''}})">
+        <img src="../images/icon/nav_02.png" alt="寻医问药">
+        <p>寻医问药</p>
+    </a>
+    <a targe="_blank"
+       onclick="callNative({'tag':'appliance_maintenance', 'parameter':{'location':true, 'title':'家电维修', 'url':''}})">
+        <img src="../images/icon/nav_03.png" alt="家电维修">
+        <p>家电维修</p>
+    </a>
+    <a targe="_blank"
+       onclick="callNative({'tag':'living_facilities_maintenance', 'parameter':{'location':true, 'title':'生活设施维修', 'url':''}})">
+        <img src="../images/icon/nav_04.png" alt="生活设施维修">
+        <p>生活设施维修</p>
+    </a>
+    <a targe="_blank"
+       onclick="callNative({'tag':'other_life_events', 'parameter':{'location':true, 'title':'其他生活事件', 'url':''}})">
+        <img src="../images/icon/nav_05.png" alt="其他生活事件">
+        <p>其他生活事件</p>
+    </a>
+    <a targe="_blank"
+       onclick="callNative({'tag':'psychological_counseling', 'parameter':{'location':true, 'title':'心理咨询', 'url':''}})">
+        <img src="../images/icon/nav_06.png" alt="心理咨询">
+        <p>心理咨询</p>
+    </a>
+</nav>
+
+<div class="adbox">
+    <img src="../images/banner_ad.png" alt="密云广告图">
+</div>
+
+<div class="infobox">
+    <a href="../comView/TaskInfo.html" class="infodiv">
+        <div class="info-top">
+            <div class="fl info-icon">
+                <img src="../images/icon/info-01.png" alt="家电维修">
+            </div>
+            <div class="fl info-con">
+                <h4>家电维修</h4>
+                <h3>您有一条新维修申请，正在为您协调解决</h3>
+                <p>
+                    <span class="fl">发布时间：2017-08-03</span>
+                    <span class="fr">发布人:萧萧下</span>
+                </p>
+            </div>
+        </div>
+    </a>
+
+    <a href="../comView/MessageInfo.html" class="infodiv">
+        <div class="info-top">
+            <div class="fl info-icon">
+                <img src="../images/icon/info-02.png" alt="政策早知道">
+            </div>
+            <div class="fl info-con">
+                <h4>政策法规</h4>
+                <h3>区委书记夏林茂到西田各庄镇检查指导工作</h3>
+                <p>
+                    <span class="fl">发布时间：2017-08-03</span>
+                    <span class="fr">发布人:萧萧下</span>
+                </p>
+            </div>
+        </div>
+    </a>
+
+    <a href="../mView/GreetingCardInfo.html" class="infodiv">
+        <div class="info-top">
+            <div class="fl info-icon">
+                <img src="../images/icon/info-03.png" alt="慰问贺卡">
+            </div>
+            <div class="fl info-con">
+                <h4>慰问贺卡</h4>
+                <h3>中秋快乐！您收到了一份贺卡</h3>
+                <p>
+                    <span class="fl">发布时间：2017-08-03</span>
+                    <span class="fr">发布人:萧萧下</span>
+                </p>
+            </div>
+        </div>
+    </a>
+</div>
+
+<!-- 弹窗 -->
+<div class="mask"></div>
+<div class="showdiv">
+    <ul>
+        <li><a href="tel://110">110 匪警</a></li>
+        <li><a href="tel://119">119 火警</a></li>
+        <li><a href="tel://120">120 急救</a></li>
+        <li><a href="tel://122">122 交通事故</a></li>
+    </ul>
+    <a class="btn-cancel">取消</a>
+
+</div>
+
+</body>
+</html>

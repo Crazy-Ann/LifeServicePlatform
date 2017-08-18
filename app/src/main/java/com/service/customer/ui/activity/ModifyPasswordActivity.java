@@ -214,4 +214,8 @@ public class ModifyPasswordActivity extends ActivityViewImplement<ModifyPassword
         onFinish("OnLeftIconEvent");
     }
 
+    @Override
+    public void startMainActivity(int tab) {
+        
+    }
 }

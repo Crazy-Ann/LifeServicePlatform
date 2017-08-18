@@ -13,6 +13,9 @@ import com.service.customer.components.utils.LogUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.LoginInfo;
+import com.service.customer.net.entity.TaskInfo;
+import com.service.customer.ui.activity.EvaluateActivity;
+import com.service.customer.ui.activity.TaskActivity;
 import com.service.customer.ui.activity.WapActivity;
 
 public class LifeServicePlatform {
@@ -28,32 +31,149 @@ public class LifeServicePlatform {
             Bundle bundle;
             Intent intent;
             switch (tag) {
-                case Constant.JavaScript.A:
+                //Volunteer.html
+                case Constant.JavaScript.POLICIES_REGULATIONS:
                     if (!TextUtils.isEmpty(parameter)) {
                         intent = new Intent(webView.getContext(), WapActivity.class);
-                        bundle = new Bundle();
-                        StringBuilder stringBuilder;
                         String url = JSONObject.parseObject(parameter).getString(Constant.JavaScript.URL);
                         if (!TextUtils.isEmpty(url)) {
-                            stringBuilder = new StringBuilder(url);
-                            stringBuilder.append(Regex.QUESTION_MARK.getRegext()).append(RequestParameterKey.TOKEN).append(Regex.EQUALS.getRegext()).append(((LoginInfo)BaseApplication.getInstance().getLoginInfo()).getToken());
-                            bundle.putString(Temp.URL.getContent(), stringBuilder.toString());
+                            bundle = new Bundle();
+                            bundle.putString(Temp.URL.getContent(), url + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+                            intent.putExtras(bundle);
+                            webView.getContext().startActivity(intent, bundle);
+                        } else {
+                            webView.getContext().startActivity(intent);
                         }
-                        intent.putExtras(bundle);
-                        webView.getContext().startActivity(intent);
                     }
                     break;
-                case Constant.JavaScript.B:
+                case Constant.JavaScript.QUERY_ANALYSIS:
                     webView.getContext().startActivity(new Intent(webView.getContext(), WapActivity.class));
                     break;
-                case Constant.JavaScript.C:
+                case Constant.JavaScript.INFORMATION_MANAGEMENT:
                     webView.getContext().startActivity(new Intent(webView.getContext(), WapActivity.class));
                     break;
-                case Constant.JavaScript.D:
+                case Constant.JavaScript.EVENT_QUERY:
                     webView.getContext().startActivity(new Intent(webView.getContext(), WapActivity.class));
                     break;
-                case Constant.JavaScript.E:
+                case Constant.JavaScript.MAP_QUERY:
                     webView.getContext().startActivity(new Intent(webView.getContext(), WapActivity.class));
+                    break;
+                //Demander.html
+                case Constant.JavaScript.EMERGENCY_CALL_FOR_HELP:
+                    if (!TextUtils.isEmpty(parameter)) {
+                        intent = new Intent(webView.getContext(), TaskActivity.class);
+                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
+                        if (!TextUtils.isEmpty(title)) {
+                            bundle = new Bundle();
+                            bundle.putString(Temp.TITLE.getContent(), title);
+                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
+                            intent.putExtras(bundle);
+                            webView.getContext().startActivity(intent, bundle);
+                        } else {
+                            webView.getContext().startActivity(intent);
+                        }
+                    }
+                    break;
+                case Constant.JavaScript.APPLIANCE_MAINTENANCE:
+                    if (!TextUtils.isEmpty(parameter)) {
+                        intent = new Intent(webView.getContext(), TaskActivity.class);
+                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
+                        if (!TextUtils.isEmpty(title)) {
+                            bundle = new Bundle();
+                            bundle.putString(Temp.TITLE.getContent(), title);
+                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
+                            intent.putExtras(bundle);
+                            webView.getContext().startActivity(intent, bundle);
+                        } else {
+                            webView.getContext().startActivity(intent);
+                        }
+                    }
+                    break;
+                case Constant.JavaScript.LIVING_FACILITIES_MAINTENANCE:
+                    if (!TextUtils.isEmpty(parameter)) {
+                        intent = new Intent(webView.getContext(), TaskActivity.class);
+                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
+                        if (!TextUtils.isEmpty(title)) {
+                            bundle = new Bundle();
+                            bundle.putString(Temp.TITLE.getContent(), title);
+                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
+                            intent.putExtras(bundle);
+                            webView.getContext().startActivity(intent, bundle);
+                        } else {
+                            webView.getContext().startActivity(intent);
+                        }
+                    }
+                    break;
+                case Constant.JavaScript.OTHER_LIFE_EVENTS:
+                    if (!TextUtils.isEmpty(parameter)) {
+                        intent = new Intent(webView.getContext(), TaskActivity.class);
+                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
+                        if (!TextUtils.isEmpty(title)) {
+                            bundle = new Bundle();
+                            bundle.putString(Temp.TITLE.getContent(), title);
+                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
+                            intent.putExtras(bundle);
+                            webView.getContext().startActivity(intent, bundle);
+                        } else {
+                            webView.getContext().startActivity(intent);
+                        }
+                    }
+                    break;
+                case Constant.JavaScript.PSYCHOLOGICAL_COUNSELING:
+                    if (!TextUtils.isEmpty(parameter)) {
+                        intent = new Intent(webView.getContext(), TaskActivity.class);
+                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
+                        if (!TextUtils.isEmpty(title)) {
+                            bundle = new Bundle();
+                            bundle.putString(Temp.TITLE.getContent(), title);
+                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
+                            intent.putExtras(bundle);
+                            webView.getContext().startActivity(intent, bundle);
+                        } else {
+                            webView.getContext().startActivity(intent);
+                        }
+                    }
+                    break;
+                case Constant.JavaScript.DOCTOR_MEDICINE:
+                    if (!TextUtils.isEmpty(parameter)) {
+                        intent = new Intent(webView.getContext(), TaskActivity.class);
+                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
+                        if (!TextUtils.isEmpty(title)) {
+                            bundle = new Bundle();
+                            bundle.putString(Temp.TITLE.getContent(), title);
+                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
+                            intent.putExtras(bundle);
+                            webView.getContext().startActivity(intent, bundle);
+                        } else {
+                            webView.getContext().startActivity(intent);
+                        }
+                    }
+                    break;
+                case Constant.JavaScript.OTHER:
+                    if (!TextUtils.isEmpty(parameter)) {
+                        intent = new Intent(webView.getContext(), TaskActivity.class);
+                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
+                        if (!TextUtils.isEmpty(title)) {
+                            bundle = new Bundle();
+                            bundle.putString(Temp.TITLE.getContent(), title);
+                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
+                            intent.putExtras(bundle);
+                            webView.getContext().startActivity(intent, bundle);
+                        } else {
+                            webView.getContext().startActivity(intent);
+                        }
+                    }
+                    break;
+                case Constant.JavaScript.IMMEDIATE_EVALUATION:
+                    if (!TextUtils.isEmpty(parameter)) {
+                        intent = new Intent(webView.getContext(), EvaluateActivity.class);
+                        //TODO 模拟数据
+                        bundle = new Bundle();
+                        bundle.putParcelable(Temp.TASK_INFO.getContent(), new TaskInfo().parse(JSONObject.parseObject("{\"list\":[{\"accountavatar\":\"\",\"address\":\"测试地址\",\"billno\":\"N170806000004611\",\"latitude\":101,\"longitude\":101,\"realname\":\"志愿者A号\",\"status\":0,\"tasknote\":\"notes\"}],\"pagecount\":1,\"pageindex\":1,\"result\":true,\"totalrecord\":1}")));
+                        intent.putExtras(bundle);
+                        webView.getContext().startActivity(intent, bundle);
+                        webView.getContext().startActivity(intent);
+                    }
                     break;
                 default:
                     break;

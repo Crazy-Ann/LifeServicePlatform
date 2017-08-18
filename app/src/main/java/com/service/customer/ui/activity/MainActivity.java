@@ -13,10 +13,12 @@ import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.ActivityUtil;
+import com.service.customer.components.utils.BundleUtil;
 import com.service.customer.components.utils.FragmentUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
+import com.service.customer.constant.Temp;
 import com.service.customer.ui.contract.MainContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
@@ -68,7 +70,21 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
         fragmentUtil.addItem(new FragmentUtil.OperationInfo(this, getString(R.string.home_page), HomePageFragment.class));
         fragmentUtil.addItem(new FragmentUtil.OperationInfo(this, getString(R.string.task_management), TaskManagementFragment.class));
         fragmentUtil.addItem(new FragmentUtil.OperationInfo(this, getString(R.string.mine), MineFragment.class));
-        fragmentUtil.show(getString(R.string.home_page), true);
+
+        switch (BundleUtil.getInstance().getIntData(this, Temp.TAB.getContent())) {
+            case Constant.Tab.HOME_PAGE:
+                fragmentUtil.show(getString(R.string.home_page), true);
+                tlMenu.getTabAt(Constant.Tab.HOME_PAGE).select();
+                break;
+            case Constant.Tab.TASK_MANAGEMENT:
+                fragmentUtil.show(getString(R.string.task_management), true);
+                tlMenu.getTabAt(Constant.Tab.TASK_MANAGEMENT).select();
+                break;
+            case Constant.Tab.MINE:
+                fragmentUtil.show(getString(R.string.mine), true);
+                tlMenu.getTabAt(Constant.Tab.MINE).select();
+                break;
+        }
     }
 
     @Override
@@ -204,5 +220,10 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
     @Override
     public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
         showPermissionPromptDialog();
+    }
+
+    @Override
+    public void startMainActivity(int tab) {
+
     }
 }

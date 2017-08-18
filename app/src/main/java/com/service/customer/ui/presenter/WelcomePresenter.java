@@ -76,7 +76,7 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
                             view.startLoginActivity(false);
                         } else {
                             BaseApplication.getInstance().setLoginInfo(loginInfo);
-                            view.startMainActivity();
+                            view.startMainActivity(Constant.Tab.HOME_PAGE);
                         }
                     }
                 } else {

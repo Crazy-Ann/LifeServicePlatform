@@ -7,7 +7,8 @@ public enum Temp {
     TITLE("title"),
     NEED_LOCATION("need_location"),
     URL("url"),
-    TASK_INFO("task_info");
+    TASK_INFO("task_info"),
+    TAB("tab");
 
     private String content;
 

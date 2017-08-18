@@ -68,12 +68,27 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
             wvTaskManagement.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 //        wvTaskManagement.getSettings().setUserAgentString(wvTaskManagement.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
-        wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl());
+        if (BaseApplication.getInstance().isRemotePage()) {
+            wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl());
+        } else {
+            wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
+        }
     }
 
     @Override
     protected void setListener() {
 
+    }
+
+    //TODO
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (BaseApplication.getInstance().isRemotePage()) {
+            wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl());
+        } else {
+            wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
+        }
     }
 
     @Override
@@ -134,5 +149,10 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
     @Override
     public boolean isActive() {
         return false;
+    }
+
+    @Override
+    public void startMainActivity(int tab) {
+
     }
 }

@@ -61,7 +61,7 @@ public class TaskInfo implements Serializable, Parcelable, OnGroupListener {
     public TaskInfo parse(JSONObject object) {
         if (object != null) {
 //            this.realName = object.getString(ResponseParameterKey.REAL_NAME);
-//            this.tasNote = object.getString(ResponseParameterKey.DESCREPTION);
+//            this.tasNote = object.getString(ResponseParameterKey.TASK_NOTE);
 //            this.latitude = object.getDoubleValue(ResponseParameterKey.LATITUDE);
 //            this.longitude = object.getDoubleValue(ResponseParameterKey.LONGITUDE);
 //            this.address = object.getDoubleValue(ResponseParameterKey.ADDRESS);

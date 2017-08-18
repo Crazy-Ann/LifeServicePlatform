@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>援助角色交互测试</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="format-detection" content="telephone=no">
+    <style>
+        .btn {
+            border: 1px solid #ccc;
+            padding: 1rem 0.5rem;
+            display: block;
+            text-align: center;
+            width: 60%;
+            margin: 30% auto 0 auto;
+        }
+    </style>
+    <!--H5页面与NATIVE公用引用名称为LifeServicePlatform，输入输出方法名称call(json格式数据)-->
+    <script>
+        function callH5(data) {
+            /// <summary>APP 调用页面方法</summary>
+            try {
+                data = JSON.stringify(data);
+            } catch (e) {
+                console.log(e)
+            }
+                console.log(data)
+        }
+        function callNative(data) {
+            try {
+                window.LifeServicePlatform.call(JSON.stringify(data));
+            } catch (e) {
+                console.log(e)
+            }
+        }
+    </script>
+</head>
+
+<body>
+<!--
+tag:事件区别标记
+parameter：json交互协议
+    title：如果html文件中已定义title,可省略
+    url:新开本地页面显示H5页面后打开的url地址（访问时追加?tokenid=asdfasdf）,如果没有此字段默认不新开本地页面,
+    根据需求经协商可随意增加字段。
+-->
+<a onclick="callNative({'tag':'policies_regulations', 'parameter':{'title':'政策法规', 'url':'http://www.gov.cn/zhengce/index.htm'}})"
+   class="btn">
+    政策法规
+</a>
+<a onclick="callNative({'tag':'query_analysis', 'parameter':{'title':'查询分析', 'url':''}})"
+   class="btn">
+    查询分析
+</a>
+<a onclick="callNative({'tag':'information_management', 'parameter':{'title':'信息管理', 'url':''}})"  
+   class="btn">
+    信息管理
+</a>
+<a onclick="callNative({'tag':'event_query', 'parameter':{'title':'事件查询', 'url':''}})"
+   class="btn">
+    事件查询
+</a>
+<a onclick="callNative({'tag':'map_query', 'parameter':{'title':'地图查询', ''}})"
+   class="btn">
+    地图查询
+</a>
+</body>
+</html>

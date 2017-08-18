@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,13 +66,36 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             wvHomePage.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-//        wvHomePage.getSettings().setUserAgentString(wvHomePage.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
-        wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl());
+        //        wvHomePage.getSettings().setUserAgentString(wvHomePage.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
+        if (BaseApplication.getInstance().isRemotePage()) {
+            wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl());
+        } else {
+            if (TextUtils.equals((((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()), "1")) {
+                wvHomePage.loadUrl(Constant.ASSET_URL.VOLUNTEER_INDEX);
+            } else {
+                wvHomePage.loadUrl(Constant.ASSET_URL.DEMANDER_INDEX);
+            }
+        }
     }
 
     @Override
     protected void setListener() {
 
+    }
+
+    //TODO
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (BaseApplication.getInstance().isRemotePage()) {
+            wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl());
+        } else {
+            if (TextUtils.equals((((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()), "1")) {
+                wvHomePage.loadUrl(Constant.ASSET_URL.VOLUNTEER_INDEX);
+            } else {
+                wvHomePage.loadUrl(Constant.ASSET_URL.DEMANDER_INDEX);
+            }
+        }
     }
 
     @Override
@@ -132,5 +156,10 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
     @Override
     public boolean isActive() {
         return false;
+    }
+
+    @Override
+    public void startMainActivity(int tab) {
+
     }
 }

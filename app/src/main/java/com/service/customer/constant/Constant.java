@@ -125,12 +125,30 @@ public final class Constant {
         public static final String INJECTED_NAME = "LifeServicePlatform";
         public static final String TAG = "tag";
         public static final String PARAMETER = "parameter";
-        public static final String A = "a";
-        public static final String B = "b";
-        public static final String C = "c";
-        public static final String D = "d";
-        public static final String E = "e";
+        public static final String LOCATION = "location";
         public static final String TITLE = "title";
         public static final String URL = "url";
+
+        public static final String EMERGENCY_CALL_FOR_HELP = "emergency_call_for_help";
+        public static final String APPLIANCE_MAINTENANCE = "appliance_maintenance";
+        public static final String LIVING_FACILITIES_MAINTENANCE = "living_facilities_maintenance";
+        public static final String OTHER_LIFE_EVENTS = "other_life_events";
+        public static final String PSYCHOLOGICAL_COUNSELING = "psychological_counseling";
+        public static final String DOCTOR_MEDICINE = "doctor_medicine";
+        public static final String OTHER = "other";
+        public static final String IMMEDIATE_EVALUATION = "immediate_evaluation";
+
+        public static final String POLICIES_REGULATIONS = "policies_regulations";
+        public static final String QUERY_ANALYSIS = "query_analysis";
+        public static final String INFORMATION_MANAGEMENT = "information_management";
+        public static final String EVENT_QUERY = "event_query";
+        public static final String MAP_QUERY = "map_query";
+    }
+    
+    public static class ASSET_URL{
+        public static final String VOLUNTEER_INDEX = "file:///android_asset/h5/zView/Index.html";
+        public static final String DEMANDER_INDEX = "file:///android_asset/h5/mView/Index.html";
+        public static final String GREETING_CARD_LIST = "file:///android_asset/h5/mView/GreetingCardList.html";
+        public static final String TASK_LIST = "file:///android_asset/h5/comView/TaskList.html";
     }
 }

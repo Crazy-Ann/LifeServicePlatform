@@ -66,7 +66,7 @@ public class LoginPresenter extends BasePresenterImplement implements LoginContr
                                     SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, Regex.NONE.getRegext(), true);
                                     SharedPreferenceUtil.getInstance().putString(context, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, Regex.NONE.getRegext(), true);
                                 }
-                                view.startMainActivity();
+                                view.startMainActivity(Constant.Tab.HOME_PAGE);
                             } catch (NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException | NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                             }

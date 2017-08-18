@@ -88,7 +88,6 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);
 
         taskInfo = BundleUtil.getInstance().getParcelableData(this, (Temp.TASK_INFO.getContent()));
-        LogUtil.getInstance().print("taskinfo:" + taskInfo.toString());
         if (taskInfo != null) {
             GlideUtil.getInstance().with(this, taskInfo.getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
             tvRealName.setText(taskInfo.getRealName());
@@ -210,5 +209,10 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
     @Override
     public void OnLeftIconEvent() {
         onFinish("OnLeftIconEvent");
+    }
+
+    @Override
+    public void startMainActivity(int tab) {
+
     }
 }

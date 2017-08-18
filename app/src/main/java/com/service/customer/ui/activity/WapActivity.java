@@ -192,4 +192,9 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
     public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
         showPermissionPromptDialog();
     }
+
+    @Override
+    public void startMainActivity(int tab) {
+        
+    }
 }

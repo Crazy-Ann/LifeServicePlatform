@@ -58,13 +58,18 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     private ImageView ivHeadImage;
     private TextView tvRealName;
     private LinearLayout llVolunteerContent;
-    private RelativeLayout rlTask;
+    private RelativeLayout rlWorkLog;
     private RelativeLayout rlAddWorkLog;
     private RelativeLayout rlMapEvent;
     private RelativeLayout rlGreetingCard;
     private RelativeLayout rlSetting;
     private Button btnLogout;
     private MineHandler mineHandler;
+
+    @Override
+    public void startMainActivity(int tab) {
+
+    }
 
     private class MineHandler extends FragmentHandler<MineFragment> {
 
@@ -102,7 +107,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     protected void findViewById() {
         ivHeadImage = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.ivHeadImage, this);
         llVolunteerContent = ViewUtil.getInstance().findView(rootView, R.id.llVolunteerContent);
-        rlTask = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlTask, this);
+        rlWorkLog = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlWorkLog, this);
         rlAddWorkLog = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlAddWorkLog, this);
         rlMapEvent = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlMapEvent, this);
         rlGreetingCard = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlGreetingCard, this);
@@ -143,6 +148,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
         if (InputUtil.getInstance().isDoubleClick()) {
             return;
         }
+        Bundle bundle;
         switch (view.getId()) {
             case R.id.ivHeadImage:
                 PromptDialog.createBuilder(getActivity().getSupportFragmentManager())
@@ -155,11 +161,13 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                         .setCancelable(true)
                         .showAllowingStateLoss(getActivity());
                 break;
-            case R.id.rlTask:
-                startActivity(WapActivity.class);
+            case R.id.rlWorkLog:
+                bundle = new Bundle();
+                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl());
+                startActivity(WapActivity.class, bundle);
                 break;
             case R.id.rlAddWorkLog:
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putString(Temp.TITLE.getContent(), getString(R.string.add_work_log));
                 bundle.putBoolean(Temp.NEED_LOCATION.getContent(), false);
                 startActivity(TaskActivity.class, bundle);
@@ -168,7 +176,13 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                 startActivity(MapActivity.class);
                 break;
             case R.id.rlGreetingCard:
-                startActivity(WapActivity.class);
+                bundle = new Bundle();
+                if (BaseApplication.getInstance().isRemotePage()) {
+                    bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getCardUrl());
+                } else {
+                    bundle.putString(Temp.URL.getContent(), Constant.ASSET_URL.GREETING_CARD_LIST);
+                }
+                startActivity(WapActivity.class, bundle);
                 break;
             case R.id.rlSetting:
                 startActivity(SettingActivity.class);
@@ -293,6 +307,6 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
 
     @Override
     public void setHeadImage(String url) {
-        GlideUtil.getInstance().with(BaseApplication.getInstance(), url, null, null, DiskCacheStrategy.NONE, ivHeadImage);
+        GlideUtil.getInstance().with(BaseApplication.getInstance(), url, null, getResources().getDrawable(R.mipmap.ic_launcher_round), DiskCacheStrategy.NONE, ivHeadImage);
     }
 }

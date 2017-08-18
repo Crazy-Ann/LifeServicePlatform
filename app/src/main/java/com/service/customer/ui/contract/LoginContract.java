@@ -10,8 +10,6 @@ public interface LoginContract {
         boolean isActive();
 
         boolean isRememberLoginInfo();
-
-        void startMainActivity();
     }
 
     interface Presenter extends BasePresenter {

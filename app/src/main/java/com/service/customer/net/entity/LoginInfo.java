@@ -1,7 +1,6 @@
 package com.service.customer.net.entity;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.BuildConfig;
@@ -25,6 +24,8 @@ public final class LoginInfo extends BaseEntity {
     private String token;
     private String indexUrl;
     private String taskUrl;
+    private String cardUrl;
+    private String workUrl;
 
     public LoginInfo() {}
 
@@ -64,11 +65,21 @@ public final class LoginInfo extends BaseEntity {
         return taskUrl;
     }
 
+    public String getCardUrl() {
+        return cardUrl;
+    }
+
+    public String getWorkUrl() {
+        return workUrl;
+    }
+
     public LoginInfo parse(JSONObject object) {
         try {
             if (object != null) {
                 this.indexUrl = object.getString(ResponseParameterKey.INDEX_URL);
                 this.taskUrl = object.getString(ResponseParameterKey.TASK_URL);
+                this.cardUrl = object.getString(ResponseParameterKey.CARD_URL);
+                this.workUrl = object.getString(ResponseParameterKey.WORK_URL);
                 this.token = object.getString(ResponseParameterKey.TOKEN);
                 if (object.containsKey(ResponseParameterKey.USER_INFO)) {
                     JSONObject userInfo = object.getJSONObject(ResponseParameterKey.USER_INFO);
@@ -105,6 +116,8 @@ public final class LoginInfo extends BaseEntity {
                     ", realName='" + realName + '\'' +
                     ", indexUrl='" + indexUrl + '\'' +
                     ", taskUrl='" + taskUrl + '\'' +
+                    ", cardUrl='" + cardUrl + '\'' +
+                    ", workUrl='" + workUrl + '\'' +
                     ", token='" + token + '\'' +
                     '}';
         } else {
@@ -124,9 +137,11 @@ public final class LoginInfo extends BaseEntity {
         dest.writeString(this.phone);
         dest.writeString(this.idCard);
         dest.writeString(this.realName);
+        dest.writeString(this.token);
         dest.writeString(this.indexUrl);
         dest.writeString(this.taskUrl);
-        dest.writeString(this.token);
+        dest.writeString(this.cardUrl);
+        dest.writeString(this.workUrl);
     }
 
     protected LoginInfo(Parcel in) {
@@ -137,12 +152,14 @@ public final class LoginInfo extends BaseEntity {
         this.phone = in.readString();
         this.idCard = in.readString();
         this.realName = in.readString();
+        this.token = in.readString();
         this.indexUrl = in.readString();
         this.taskUrl = in.readString();
-        this.token = in.readString();
+        this.cardUrl = in.readString();
+        this.workUrl = in.readString();
     }
 
-    public static final Parcelable.Creator<LoginInfo> CREATOR = new Parcelable.Creator<LoginInfo>() {
+    public static final Creator<LoginInfo> CREATOR = new Creator<LoginInfo>() {
         @Override
         public LoginInfo createFromParcel(Parcel source) {return new LoginInfo(source);}
 

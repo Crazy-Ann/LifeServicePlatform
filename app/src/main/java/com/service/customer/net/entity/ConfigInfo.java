@@ -11,10 +11,12 @@ import com.service.customer.base.net.model.BaseEntity;
 public class ConfigInfo extends BaseEntity {
 
     private String serverUrl;
-    private int    version;
+    private int version;
     private String downloadUrl;
-    private int    lowestVersion;
+    private int lowestVersion;
     private String updateMessage;
+    private String cardUrl;
+    private String workUrl;
 
     public ConfigInfo() {
     }
@@ -39,6 +41,13 @@ public class ConfigInfo extends BaseEntity {
         return updateMessage;
     }
 
+    public String getCardUrl() {
+        return cardUrl;
+    }
+
+    public String getWorkUrl() {
+        return workUrl;
+    }
     public ConfigInfo parse(JSONObject object) {
         if (object != null) {
 //            this.version = object.getIntValue(ResponseParameterKey.VERSION);
@@ -50,7 +59,8 @@ public class ConfigInfo extends BaseEntity {
             //todo
 //            this.key = object.getString(ResponseParameterKey.KEY);
             if (object.containsKey(ResponseParameterKey.INTERFACE_URL)) {
-//                JSONObject interfaceUrl = object.getJSONObject(ResponseParameterKey.USER_INFO);
+                this.cardUrl = object.getJSONObject(ResponseParameterKey.INTERFACE_URL).getString(ResponseParameterKey.CARD_URL);
+                this.workUrl = object.getJSONObject(ResponseParameterKey.INTERFACE_URL).getString(ResponseParameterKey.WORK_URL);
             }
             return this;
         } else {
@@ -67,6 +77,8 @@ public class ConfigInfo extends BaseEntity {
                     ", lowestVersion:" + lowestVersion + '\'' +
                     ", updateMessage:" + updateMessage + '\'' +
                     ", downloadUrl:" + downloadUrl + '\'' +
+                    ", cardUrl:" + cardUrl + '\'' +
+                    ", workUrl:" + workUrl + '\'' +
                     '}';
         } else {
             return super.toString();
@@ -74,9 +86,7 @@ public class ConfigInfo extends BaseEntity {
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
+    public int describeContents() { return 0; }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -86,6 +96,8 @@ public class ConfigInfo extends BaseEntity {
         dest.writeString(this.downloadUrl);
         dest.writeInt(this.lowestVersion);
         dest.writeString(this.updateMessage);
+        dest.writeString(this.cardUrl);
+        dest.writeString(this.workUrl);
     }
 
     protected ConfigInfo(Parcel in) {
@@ -95,17 +107,15 @@ public class ConfigInfo extends BaseEntity {
         this.downloadUrl = in.readString();
         this.lowestVersion = in.readInt();
         this.updateMessage = in.readString();
+        this.cardUrl = in.readString();
+        this.workUrl = in.readString();
     }
 
     public static final Creator<ConfigInfo> CREATOR = new Creator<ConfigInfo>() {
         @Override
-        public ConfigInfo createFromParcel(Parcel source) {
-            return new ConfigInfo(source);
-        }
+        public ConfigInfo createFromParcel(Parcel source) {return new ConfigInfo(source);}
 
         @Override
-        public ConfigInfo[] newArray(int size) {
-            return new ConfigInfo[size];
-        }
+        public ConfigInfo[] newArray(int size) {return new ConfigInfo[size];}
     };
 }

@@ -22,6 +22,8 @@ public class ResponseParameterKey {
     public static final String DOWNLOAD_URL = "download_url";
     public static final String UPDATE_MESSAGE = "update_message";
     public static final String INTERFACE_URL = "interfaceurl";
+    public static final String CARD_URL = "cardurl";
+    public static final String WORK_URL = "workurl";
 
     public static final String INDEX_URL = "indexurl";
     public static final String TASK_URL = "taskurl";
@@ -42,5 +44,6 @@ public class ResponseParameterKey {
     public static final String ADDRESS = "address";
     public static final String BILL_NO = "billno";
     public static final String STATUS = "status";
+    public static final String TASK_NOTE = "tasknote";
 
 }

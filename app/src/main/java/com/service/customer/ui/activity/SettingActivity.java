@@ -8,15 +8,16 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.service.customer.R;
+import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
-import com.service.customer.constant.Temp;
 import com.service.customer.ui.contract.SettingContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.presenter.SettingPresenter;
@@ -28,6 +29,11 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
     private SettingPresenter settingPresenter;
     private RelativeLayout rlModifyPassword;
     private Button btnLogout;
+
+    //todo
+    private RelativeLayout rlPageType;
+    private TextView tvPageType;
+    private boolean isRemoteUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,9 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
         inToolbar = ViewUtil.getInstance().findView(this, R.id.inToolbar);
         rlModifyPassword = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlModifyPassword, this);
         btnLogout = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.btnLogout, this);
+        //todo
+        rlPageType = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.rlPageType, this);
+        tvPageType = ViewUtil.getInstance().findView(this, R.id.tvPageType);
     }
 
     @Override
@@ -54,6 +63,9 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
 
         setBasePresenterImplement(settingPresenter);
         getSavedInstanceState(savedInstanceState);
+
+        //todo
+        tvPageType.setText(BaseApplication.getInstance().isRemotePage() ? "远程页面" : "本地页面");
     }
 
     @Override
@@ -69,6 +81,12 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
         switch (view.getId()) {
             case R.id.rlModifyPassword:
                 startActivity(ModifyPasswordActivity.class);
+                break;
+            //todo
+            case R.id.rlPageType:
+                isRemoteUrl = !isRemoteUrl;
+                tvPageType.setText(isRemoteUrl ? "远程页面" : "本地页面");
+                BaseApplication.getInstance().setRemotePage(isRemoteUrl);
                 break;
             case R.id.btnLogout:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -150,4 +168,8 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
         onFinish("OnLeftIconEvent");
     }
 
+    @Override
+    public void startMainActivity(int tab) {
+
+    }
 }

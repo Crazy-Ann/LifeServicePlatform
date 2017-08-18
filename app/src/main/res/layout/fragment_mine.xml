@@ -50,7 +50,7 @@
                 android:visibility="gone">
 
                 <RelativeLayout
-                    android:id="@+id/rlTask"
+                    android:id="@+id/rlWorkLog"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_48"
                     android:paddingStart="@dimen/dp_15">
@@ -62,7 +62,7 @@
                         android:drawablePadding="@dimen/dp_15"
                         android:drawableStart="@mipmap/icon_task"
                         android:gravity="center_vertical"
-                        android:text="@string/my_task"
+                        android:text="@string/my_work_log"
                         android:textColor="@color/color_000000"
                         android:textSize="@dimen/sp_15"/>
 

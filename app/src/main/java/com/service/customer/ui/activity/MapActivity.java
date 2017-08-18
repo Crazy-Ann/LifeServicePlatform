@@ -28,7 +28,6 @@ import com.service.customer.R;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.AnimationUtil;
-import com.service.customer.components.utils.BundleUtil;
 import com.service.customer.components.utils.GlideUtil;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
@@ -76,7 +75,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
+        initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.map_event));
         mapView.onCreate(savedInstanceState);
 
         mapPresenter = new MapPresenter(this, this);
@@ -325,6 +324,11 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     @Override
     public void OnLeftIconEvent() {
         onFinish("OnLeftIconEvent");
+    }
+
+    @Override
+    public void startMainActivity(int tab) {
+
     }
 }
 

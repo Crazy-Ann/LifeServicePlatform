@@ -50,6 +50,11 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract.Pr
     private LinearLayoutManager linearLayoutManager;
     private HomePageHandler homePageHandler;
 
+    @Override
+    public void startMainActivity(int tab) {
+        
+    }
+
     private class HomePageHandler extends FragmentHandler<HomePageFragment2> {
 
         public HomePageHandler(HomePageFragment2 fragments) {

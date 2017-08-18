@@ -85,7 +85,7 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-
+                        view.startMainActivity(Constant.Tab.TASK_MANAGEMENT);
                     }
 
                     @Override
