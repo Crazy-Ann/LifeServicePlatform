@@ -13,7 +13,6 @@ import com.service.customer.components.utils.LogUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.LoginInfo;
-import com.service.customer.net.entity.TaskInfo;
 import com.service.customer.ui.activity.EvaluateActivity;
 import com.service.customer.ui.activity.TaskActivity;
 import com.service.customer.ui.activity.WapActivity;
@@ -169,9 +168,10 @@ public class LifeServicePlatform {
                         intent = new Intent(webView.getContext(), EvaluateActivity.class);
                         //TODO 模拟数据
                         bundle = new Bundle();
-                        bundle.putParcelable(Temp.TASK_INFO.getContent(), new TaskInfo().parse(JSONObject.parseObject("{\"list\":[{\"accountavatar\":\"\",\"address\":\"测试地址\",\"billno\":\"N170806000004611\",\"latitude\":101,\"longitude\":101,\"realname\":\"志愿者A号\",\"status\":0,\"tasknote\":\"notes\"}],\"pagecount\":1,\"pageindex\":1,\"result\":true,\"totalrecord\":1}")));
-                        intent.putExtras(bundle);
-                        webView.getContext().startActivity(intent, bundle);
+//                        TaskInfos taskInfo = new TaskInfos().parse(JSONObject.parseObject("{\"list\":[{\"accountavatar\":\"\",\"address\":\"测试地址\",\"billno\":\"N170806000004611\",\"latitude\":101,\"longitude\":101,\"realname\":\"志愿者A号\",\"status\":0,\"tasknote\":\"notes\"}],\"pagecount\":1,\"pageindex\":1,\"result\":true,\"totalrecord\":1}"));
+//                        bundle.putParcelable(Temp.TASK_INFO.getContent(), taskInfo);
+//                        intent.putExtras(bundle);
+//                        webView.getContext().startActivity(intent, bundle);
                         webView.getContext().startActivity(intent);
                     }
                     break;

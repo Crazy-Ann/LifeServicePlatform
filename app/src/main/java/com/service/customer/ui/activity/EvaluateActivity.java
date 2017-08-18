@@ -89,7 +89,7 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
 
         taskInfo = BundleUtil.getInstance().getParcelableData(this, (Temp.TASK_INFO.getContent()));
         if (taskInfo != null) {
-            GlideUtil.getInstance().with(this, taskInfo.getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
+            GlideUtil.getInstance().with(this, taskInfo.getAccountAvatar(), null, getResources().getDrawable(R.mipmap.ic_launcher_round), DiskCacheStrategy.NONE, ivHeadImage);
             tvRealName.setText(taskInfo.getRealName());
         }
     }
