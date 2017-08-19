@@ -53,14 +53,14 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
     protected void initialize(Bundle savedInstanceState) {
         mainPresenter = new MainPresenter(this, this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainPresenter.checkPermission(this);
+            mainPresenter.checkPermission(this,this);
         }
         mainPresenter.initialize();
         setBasePresenterImplement(mainPresenter);
         getSavedInstanceState(savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainPresenter.checkPermission(this);
+            mainPresenter.checkPermission(this,this);
         }
 
         tlMenu.setTabMode(TabLayout.MODE_FIXED);
@@ -104,7 +104,7 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    mainPresenter.checkPermission(this);
+                    mainPresenter.checkPermission(this,this);
                 }
                 break;
             default:

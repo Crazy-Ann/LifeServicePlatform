@@ -296,10 +296,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(cls, null);
     }
 
-    protected void startActivity(String action) {
-        startActivity(action, null);
-    }
-
     protected void startActivity(Class<?> cls, Bundle bundle) {
         Intent intent = new Intent();
         intent.setClass(this, cls);
@@ -326,7 +322,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
-
+    
     protected void startActivity(String action, Bundle bundle) {
         Intent intent = new Intent();
         intent.setAction(action);
@@ -341,22 +337,22 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(cls, flag, null, null);
     }
 
-    protected void startActivity(Class<?> cls, int flag, Uri data, String type) {
+    protected void startActivity(Class<?> cls, int flag, Uri uri, String type) {
         Intent intent = new Intent();
         intent.setClass(this, cls);
         intent.addFlags(flag);
-        if (data != null && !TextUtils.isEmpty(type)) {
-            intent.setDataAndType(data, type);
+        if (uri != null && !TextUtils.isEmpty(type)) {
+            intent.setDataAndType(uri, type);
         }
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivity(String action, int flag, Uri data, String type) {
+    protected void startActivity(String action, int flag, Uri uri, String type) {
         Intent intent = new Intent(action);
         intent.addFlags(flag);
-        if (data != null && !TextUtils.isEmpty(type)) {
-            intent.setDataAndType(data, type);
+        if (uri != null && !TextUtils.isEmpty(type)) {
+            intent.setDataAndType(uri, type);
         }
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
@@ -375,23 +371,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResult(String act, Uri data, int requestCode) {
-        startActivityForResult(act, data, null, requestCode, null);
+    protected void startActivityForResult(String act, Uri uri, int requestCode) {
+        startActivityForResult(act, uri, null, requestCode, null);
     }
 
     protected void startActivityForResult(String act, String type, int requestCode, Bundle bundle) {
         startActivityForResult(act, null, type, requestCode, bundle);
     }
 
-    protected void startActivityForResult(String act, Uri data, String type, int requestCode) {
-        startActivityForResult(act, data, type, requestCode, null);
+    protected void startActivityForResult(String act, Uri uri, String type, int requestCode) {
+        startActivityForResult(act, uri, type, requestCode, null);
     }
 
     protected void startActivityForResultWithParcelable(String act, HashMap<String, Parcelable> map, int requestCode) {
         startActivityForResultWithParcelable(act, null, null, map, requestCode);
     }
 
-    protected void startActivityForResultWithParcelable(String act, Uri data, String type, HashMap<String, Parcelable> map, int requestCode) {
+    protected void startActivityForResultWithParcelable(String act, Uri uri, String type, HashMap<String, Parcelable> map, int requestCode) {
         Intent intent = new Intent();
         intent.setAction(act);
         if (map != null) {
@@ -399,8 +395,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 intent.putExtra(key, map.get(key));
             }
         }
-        if (data != null && !TextUtils.isEmpty(type)) {
-            intent.setDataAndType(data, type);
+        if (uri != null && !TextUtils.isEmpty(type)) {
+            intent.setDataAndType(uri, type);
         }
         startActivityForResult(intent, requestCode);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
@@ -410,7 +406,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivityForResultWithSerializable(act, null, null, map, requestCode);
     }
 
-    protected void startActivityForResultWithSerializable(String act, Uri data, String type, HashMap<String, Serializable> map, int requestCode) {
+    protected void startActivityForResultWithSerializable(String act, Uri uri, String type, HashMap<String, Serializable> map, int requestCode) {
         Intent intent = new Intent();
         intent.setAction(act);
         if (map != null) {
@@ -418,29 +414,29 @@ public abstract class BaseActivity extends AppCompatActivity {
                 intent.putExtra(key, map.get(key));
             }
         }
-        if (data != null && !TextUtils.isEmpty(type)) {
-            intent.setDataAndType(data, type);
+        if (uri != null && !TextUtils.isEmpty(type)) {
+            intent.setDataAndType(uri, type);
         }
         startActivityForResult(intent, requestCode);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResult(String act, Uri data, String type, int requestCode, Bundle bundle) {
-        startActivityForResult(act, data, type, Constant.FileProvider.DEFAULT_FLAG, requestCode, bundle);
+    protected void startActivityForResult(String act, Uri uri, String type, int requestCode, Bundle bundle) {
+        startActivityForResult(act, uri, type, Constant.FileProvider.DEFAULT_FLAG, requestCode, bundle);
     }
 
-    protected void startActivityForResult(String act, Uri data, String type, int flags, int requestCode) {
-        startActivityForResult(act, data, type, flags, requestCode, null);
+    protected void startActivityForResult(String act, Uri uri, String type, int flags, int requestCode) {
+        startActivityForResult(act, uri, type, flags, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, Uri data, String type, int flags, int requestCode, Bundle bundle) {
+    protected void startActivityForResult(String act, Uri uri, String type, int flags, int requestCode, Bundle bundle) {
         Intent intent = new Intent();
         intent.setAction(act);
         if (flags != Constant.FileProvider.DEFAULT_FLAG) {
             intent.addFlags(flags);
         }
-        if (data != null && !TextUtils.isEmpty(type)) {
-            intent.setDataAndType(data, type);
+        if (uri != null && !TextUtils.isEmpty(type)) {
+            intent.setDataAndType(uri, type);
         }
         if (bundle != null) {
             intent.putExtras(bundle);

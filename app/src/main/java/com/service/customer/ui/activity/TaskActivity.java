@@ -132,7 +132,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
         taskPresenter.initialize();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            taskPresenter.checkPermission(this);
+            taskPresenter.checkPermission(this,this);
         } else {
             if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
                 ViewUtil.getInstance().setViewVisible(tvLocation);
@@ -224,7 +224,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    taskPresenter.checkPermission(this);
+                    taskPresenter.checkPermission(this,this);
                 } else {
                     if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
                         ViewUtil.getInstance().setViewVisible(tvLocation);

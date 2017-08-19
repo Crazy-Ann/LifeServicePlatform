@@ -107,7 +107,7 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
         switch (view.getId()) {
             case R.id.btnSubmit:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    evaluatePresenter.checkPermission(this);
+                    evaluatePresenter.checkPermission(this,this);
                 } else {
                     if (taskInfo != null) {
                         if (rbEvaluate.getSelectedCount() > 0) {

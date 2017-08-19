@@ -13,6 +13,8 @@ import android.webkit.WebView;
 
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
+import com.service.customer.base.constant.net.RequestParameterKey;
+import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.entity.LoginInfo;
@@ -68,7 +70,7 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
         }
         //        wvHomePage.getSettings().setUserAgentString(wvHomePage.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
         if (BaseApplication.getInstance().isRemotePage()) {
-            wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl());
+            wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl()+ Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
         } else {
             if (TextUtils.equals((((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()), "1")) {
                 wvHomePage.loadUrl(Constant.ASSET_URL.VOLUNTEER_INDEX);
@@ -88,7 +90,7 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (BaseApplication.getInstance().isRemotePage()) {
-            wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl());
+            wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl()+ Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
         } else {
             if (TextUtils.equals((((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()), "1")) {
                 wvHomePage.loadUrl(Constant.ASSET_URL.VOLUNTEER_INDEX);
@@ -110,7 +112,7 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    homePagePresenter.checkPermission(getActivity());
+                    homePagePresenter.checkPermission(getActivity(),this);
                 }
                 break;
             default:

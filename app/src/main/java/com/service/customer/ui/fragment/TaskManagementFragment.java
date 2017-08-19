@@ -12,6 +12,8 @@ import android.webkit.WebView;
 
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
+import com.service.customer.base.constant.net.RequestParameterKey;
+import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.entity.LoginInfo;
@@ -69,7 +71,7 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
         }
 //        wvTaskManagement.getSettings().setUserAgentString(wvTaskManagement.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
         if (BaseApplication.getInstance().isRemotePage()) {
-            wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl());
+            wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl()+ Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
         } else {
             wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
         }
@@ -85,7 +87,7 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (BaseApplication.getInstance().isRemotePage()) {
-            wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl());
+            wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl()+ Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
         } else {
             wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
         }
@@ -103,7 +105,7 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    taskManagementPresenter.checkPermission(BaseApplication.getInstance());
+                    taskManagementPresenter.checkPermission(getActivity(),this);
                 }
                 break;
             default:

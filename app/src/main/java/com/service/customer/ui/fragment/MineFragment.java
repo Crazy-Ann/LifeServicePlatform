@@ -204,7 +204,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    minePresenter.checkPermission(getActivity());
+                    minePresenter.checkPermission(getActivity(),this);
                 }
                 break;
             case Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:

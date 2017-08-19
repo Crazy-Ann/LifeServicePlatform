@@ -118,7 +118,7 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
             case R.id.btnLogin:
                 if (editTextValidator.validate(this)) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        loginPresenter.checkPermission(this);
+                        loginPresenter.checkPermission(this,this);
                     } else {
                         loginPresenter.login(etAccount.getText().toString(), etPassword.getText().toString());
                     }
@@ -136,7 +136,7 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    loginPresenter.checkPermission(this);
+                    loginPresenter.checkPermission(this,this);
                 }
                 break;
             default:

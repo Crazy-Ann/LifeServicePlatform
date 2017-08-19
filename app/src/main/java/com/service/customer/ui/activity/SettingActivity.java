@@ -90,7 +90,7 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
                 break;
             case R.id.btnLogout:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    settingPresenter.checkPermission(this);
+                    settingPresenter.checkPermission(this,this);
                 } else {
                     settingPresenter.logout();
                 }

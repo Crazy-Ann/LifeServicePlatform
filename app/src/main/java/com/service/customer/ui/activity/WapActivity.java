@@ -9,6 +9,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.service.customer.R;
+import com.service.customer.base.application.BaseApplication;
+import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.BundleUtil;
@@ -16,6 +18,7 @@ import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
+import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.contract.WapContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.presenter.WapPresenter;
@@ -52,7 +55,7 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
 
         presenter = new WapPresenter(this, this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            presenter.checkPermission(this);
+            presenter.checkPermission(this,this);
         }
         presenter.initialize();
 
@@ -72,7 +75,7 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
             wvContent.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 //        wvContent.getSettings().setUserAgentString(wvContent.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
-        wvContent.loadUrl(BundleUtil.getInstance().getStringData(this, Temp.URL.getContent()));
+        wvContent.loadUrl(BundleUtil.getInstance().getStringData(this, Temp.URL.getContent())+ Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
     }
 
     @Override
@@ -175,7 +178,7 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
             case Constant.RequestCode.PREMISSION_SETTING:
                 // 重新执行getVersion
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    presenter.checkPermission(this);
+                    presenter.checkPermission(this,this);
                 }
                 break;
             default:

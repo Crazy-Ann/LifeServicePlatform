@@ -128,7 +128,7 @@ public class ModifyPasswordActivity extends ActivityViewImplement<ModifyPassword
                 if (editTextValidator.validate(this)) {
                     if (TextUtils.equals(etNewPassword.getText(), etNewPasswordAgain.getText())) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            modifyPasswordPresenter.checkPermission(this);
+                            modifyPasswordPresenter.checkPermission(this,this);
                         } else {
                             modifyPasswordPresenter.modifyPassword(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getPhone(), etNewPassword.getText().toString());
                         }

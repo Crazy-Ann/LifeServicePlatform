@@ -5,6 +5,7 @@ import android.content.Context;
 import com.service.customer.base.permission.Permission;
 import com.service.customer.base.presenter.BasePresenter;
 import com.service.customer.base.view.BaseView;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.constant.Constant;
 
@@ -25,7 +26,7 @@ public abstract class BasePresenterImplement implements BasePresenter {
     }
 
     @Override
-    public void checkPermission(Context context, String... permissions) {
+    public void checkPermission(Context context, PermissionCallback permissionCallback, String... permissions) {
         LogUtil.getInstance().print("checkPermission");
         if (context != null) {
             if (permissions == null || permissions.length == 0) {
@@ -35,7 +36,7 @@ public abstract class BasePresenterImplement implements BasePresenter {
                 Permission.getInstance().with(context)
                         .requestCode(com.service.customer.base.constant.Constant.RequestCode.PERMISSION)
                         .permission(permissions)
-                        .callback(baseView)
+                        .callback(permissionCallback)
                         .start();
             } else {
                 baseView.onSuccess(com.service.customer.base.constant.Constant.RequestCode.PERMISSION, Arrays.asList(permissions));

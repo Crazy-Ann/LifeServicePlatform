@@ -67,7 +67,7 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
         welcomePresenter = new WelcomePresenter(this, this);
         welcomePresenter.initialize();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            welcomePresenter.checkPermission(this);
+            welcomePresenter.checkPermission(this,this);
         } else {
             welcomePresenter.getConfig();
         }
@@ -95,7 +95,7 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
             case Constant.RequestCode.PREMISSION_SETTING:
             case Constant.RequestCode.INSTALL_APK:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    welcomePresenter.checkPermission(this);
+                    welcomePresenter.checkPermission(this,this);
                 } else {
                     welcomePresenter.getConfig();
                 }

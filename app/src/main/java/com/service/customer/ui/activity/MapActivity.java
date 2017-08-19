@@ -81,7 +81,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
         mapPresenter = new MapPresenter(this, this);
         mapPresenter.initialize();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mapPresenter.checkPermission(this);
+            mapPresenter.checkPermission(this,this);
         } else {
             mapPresenter.getTaskInfos();
         }
@@ -149,7 +149,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    mapPresenter.checkPermission(this);
+                    mapPresenter.checkPermission(this,this);
                 } else {
                     mapPresenter.getTaskInfos();
                 }
