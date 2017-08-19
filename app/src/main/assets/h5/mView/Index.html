@@ -125,10 +125,14 @@
 <div class="mask"></div>
 <div class="showdiv">
     <ul>
-        <li><a href="tel://110">110 匪警</a></li>
-        <li><a href="tel://119">119 火警</a></li>
-        <li><a href="tel://120">120 急救</a></li>
-        <li><a href="tel://122">122 交通事故</a></li>
+        <li><a href="tel://110"
+               onclick="callNative({'tag':'securety_police_call', 'parameter':{'phone':'110', 'title':'匪警', 'url':''}})">110 匪警</a></li>
+        <li><a href="tel://119"
+               onclick="callNative({'tag':'fire_control_call', 'parameter':{'phone':''119, 'title':'火警', 'url':''}})">119 火警</a></li>
+        <li><a href="tel://120"
+               onclick="callNative({'tag':'hospital_call', 'parameter':{'phone':''120, 'title':'急救', 'url':''}})">120 急救</a></li>
+        <li><a href="tel://122"
+               onclick="callNative({'tag':'traffic_police_call', 'parameter':{'phone':''122, 'title':'交通事故', 'url':''}})">122 交通事故</a></li>
     </ul>
     <a class="btn-cancel">取消</a>
 

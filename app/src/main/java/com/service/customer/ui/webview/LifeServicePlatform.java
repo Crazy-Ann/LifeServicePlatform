@@ -1,6 +1,7 @@
 package com.service.customer.ui.webview;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.webkit.WebView;
@@ -173,6 +174,18 @@ public class LifeServicePlatform {
 //                        intent.putExtras(bundle);
 //                        webView.getContext().startActivity(intent, bundle);
                         webView.getContext().startActivity(intent);
+                    }
+                    break;
+                //電話
+                case Constant.JavaScript.SECURETY_POLICE_CALL:
+                case Constant.JavaScript.HOSPITAL_CALL:
+                case Constant.JavaScript.TRAFFIC_POLICE_CALL:
+                case Constant.JavaScript.FIRE_CONTROL_CALL:
+                    if (!TextUtils.isEmpty(parameter)) {
+                        String phone = JSONObject.parseObject(parameter).getString(Constant.JavaScript.PHONE);
+                        if (!TextUtils.isEmpty(phone)) {
+                            webView.getContext().startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone)));
+                        }
                     }
                     break;
                 default:

@@ -128,6 +128,7 @@ public final class Constant {
         public static final String LOCATION = "location";
         public static final String TITLE = "title";
         public static final String URL = "url";
+        public static final String PHONE = "phone";
 
         public static final String EMERGENCY_CALL_FOR_HELP = "emergency_call_for_help";
         public static final String APPLIANCE_MAINTENANCE = "appliance_maintenance";
@@ -137,6 +138,10 @@ public final class Constant {
         public static final String DOCTOR_MEDICINE = "doctor_medicine";
         public static final String OTHER = "other";
         public static final String IMMEDIATE_EVALUATION = "immediate_evaluation";
+        public static final String SECURETY_POLICE_CALL = "securety_police_call";
+        public static final String FIRE_CONTROL_CALL = "fire_control_call";
+        public static final String HOSPITAL_CALL = "hospital_call";
+        public static final String TRAFFIC_POLICE_CALL = "traffic_police_call";
 
         public static final String POLICIES_REGULATIONS = "policies_regulations";
         public static final String QUERY_ANALYSIS = "query_analysis";

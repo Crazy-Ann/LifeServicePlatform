@@ -59,6 +59,10 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
         setBasePresenterImplement(mainPresenter);
         getSavedInstanceState(savedInstanceState);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mainPresenter.checkPermission(this);
+        }
+
         tlMenu.setTabMode(TabLayout.MODE_FIXED);
         tlMenu.setBackgroundColor(Color.WHITE);
         tlMenu.setSelectedTabIndicatorHeight(0);
