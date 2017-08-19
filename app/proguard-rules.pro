@@ -104,5 +104,12 @@
 -keep class com.tencent.stat.**  {* ;}
 -keep class com.tencent.mid.**  {* ;}
 
+-keep class com.tencent.stat.**  {* ;}
+
 #语音播放
 -keep class com.iflytek.**{*;}
+
+#高德地图
+-keep class com.amap.api.**{*;} 
+-keep class com.autonavi.**{*;} 
+-keep class com.loc.**{*;} 

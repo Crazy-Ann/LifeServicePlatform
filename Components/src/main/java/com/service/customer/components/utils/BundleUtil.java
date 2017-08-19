@@ -142,21 +142,21 @@ public class BundleUtil {
         return null;
     }
 
-    public <T extends Serializable> T getSerializableData(Activity activity, String key) {
+    public <T extends Serializable> T getSerializableBundleData(Activity activity, String key) {
         if (activity.getIntent() != null) {
             return (T) activity.getIntent().getExtras().getSerializable(key);
         }
         return null;
     }
 
-    public <T extends Serializable> T getSerializableData(Bundle bundle, String key) {
+    public <T extends Serializable> T getSerializableBundleData(Bundle bundle, String key) {
         if (bundle != null) {
             return (T) bundle.getSerializable(key);
         }
         return null;
     }
 
-    public <T extends Parcelable> T getParcelableData(Activity activity, String key) {
+    public <T extends Parcelable> T getParcelableBundleData(Activity activity, String key) {
         if (activity.getIntent() != null) {
             if (activity.getIntent().hasExtra(key)) {
                 return (T) activity.getIntent().getExtras().getParcelable(key);
@@ -165,16 +165,25 @@ public class BundleUtil {
         return null;
     }
 
-    public <T extends Parcelable> T getParcelableData(Bundle bundle, String key) {
+    public <T extends Parcelable> T getParcelableBundleData(Bundle bundle, String key) {
         if (bundle != null) {
             return (T) bundle.getParcelable(key);
         }
         return null;
     }
 
-    public <T extends Collection<? extends Parcelable>> T getParcelableArrayListData(Bundle bundle, String key) {
+    public <T extends Collection<? extends Parcelable>> T getParcelableArrayListBundleData(Bundle bundle, String key) {
         if (bundle != null) {
             return (T) bundle.getParcelableArrayList(key);
+        }
+        return null;
+    }
+
+    public <T extends Parcelable> T getParcelableIntentData(Activity activity, String key) {
+        if (activity.getIntent() != null) {
+            if (activity.getIntent().hasExtra(key)) {
+                return (T) activity.getIntent().getParcelableExtra(key);
+            }
         }
         return null;
     }

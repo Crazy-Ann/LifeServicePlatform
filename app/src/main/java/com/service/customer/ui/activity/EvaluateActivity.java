@@ -27,7 +27,7 @@ import com.service.customer.components.validation.EditTextValidator;
 import com.service.customer.components.validation.Validation;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
-import com.service.customer.net.entity.TaskInfo;
+import com.service.customer.net.entity.EvaluateInfo;
 import com.service.customer.net.entity.validation.TaskValidation;
 import com.service.customer.ui.contract.EvaluateContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
@@ -46,7 +46,7 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
     private VoiceEdittext vetEvaluate;
     private Button btnSubmit;
     private EditTextValidator editTextValidator;
-    private TaskInfo taskInfo;
+    private EvaluateInfo evaluateInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +87,10 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);
 
-        taskInfo = BundleUtil.getInstance().getParcelableData(this, (Temp.TASK_INFO.getContent()));
-        if (taskInfo != null) {
-            GlideUtil.getInstance().with(this, taskInfo.getAccountAvatar(), null, getResources().getDrawable(R.mipmap.ic_launcher_round), DiskCacheStrategy.NONE, ivHeadImage);
-            tvRealName.setText(taskInfo.getRealName());
+        evaluateInfo = BundleUtil.getInstance().getParcelableIntentData(this, Temp.EVALUATE_INFO.getContent());
+        if (evaluateInfo != null) {
+            GlideUtil.getInstance().with(this, evaluateInfo.getAccountAvatar(), null, getResources().getDrawable(R.mipmap.ic_launcher_round), DiskCacheStrategy.NONE, ivHeadImage);
+            tvRealName.setText(evaluateInfo.getRealName());
         }
     }
 
@@ -109,16 +109,16 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     evaluatePresenter.checkPermission(this,this);
                 } else {
-                    if (taskInfo != null) {
+                    if (evaluateInfo != null) {
                         if (rbEvaluate.getSelectedCount() > 0) {
                             if (editTextValidator.validate(this)) {
-                                evaluatePresenter.evaluate(taskInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                                evaluatePresenter.evaluate(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
                             }
                         } else {
                             ToastUtil.getInstance().showToast(this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
                         }
                     } else {
-                        showPromptDialog(R.string.dialog_prompt_task_infos_error, Constant.RequestCode.DIALOG_PROMPT_TASK_INFO_ERROR);
+                        showPromptDialog(R.string.dialog_prompt_evaluate_info_error, Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_ERROR);
                     }
                 }
                 break;
@@ -183,16 +183,16 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
 
     @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        if (taskInfo != null) {
+        if (evaluateInfo != null) {
             if (rbEvaluate.getSelectedCount() > 0) {
                 if (editTextValidator.validate(this)) {
-                    evaluatePresenter.evaluate(taskInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                    evaluatePresenter.evaluate(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
                 }
             } else {
                 ToastUtil.getInstance().showToast(this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
             }
         } else {
-            showPromptDialog(R.string.dialog_prompt_task_infos_error, Constant.RequestCode.DIALOG_PROMPT_TASK_INFO_ERROR);
+            showPromptDialog(R.string.dialog_prompt_evaluate_info_error, Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_ERROR);
         }
     }
 

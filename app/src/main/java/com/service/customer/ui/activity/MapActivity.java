@@ -33,7 +33,6 @@ import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
-import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.TaskInfo;
 import com.service.customer.net.entity.TaskInfos;
 import com.service.customer.ui.contract.MapContract;
@@ -127,12 +126,12 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
         switch (view.getId()) {
             case R.id.llTaskInfo:
                 //todo 被求助角色
-                TaskInfo taskInfo = (TaskInfo) llTaskInfo.getTag();
-                if (taskInfo != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(Temp.TASK_INFO.getContent(), taskInfo);
-                    startActivity(EvaluateActivity.class, bundle);
-                }
+                //TaskInfo taskInfo = (TaskInfo) llTaskInfo.getTag();
+                //if (taskInfo != null) {
+                //    Bundle bundle = new Bundle();
+                //   bundle.putParcelable(Temp.TASK_INFO.getContent(), taskInfo);
+                //   startActivity(EvaluateActivity.class, bundle);
+                //}
                 break;
             case R.id.ivClose:
                 AnimationUtil.getInstance().fadeOutByAlphaAnimation(llTaskInfo, 100, 100);

@@ -49,7 +49,7 @@ public class DownloadDialog extends BaseDialogFragment implements OnDownloadList
         CharSequence title = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
         CharSequence prompt = BundleUtil.getInstance().getStringData(getArguments(), Temp.DIALOG_PROMPT.getContent());
         url = BundleUtil.getInstance().getStringData(getArguments(), Temp.DIALOG_DOWNLOAD_URL.getContent());
-        derectory = BundleUtil.getInstance().getSerializableData(getArguments(), Temp.DIALOG_DOWNLOAD_FILE.getContent());
+        derectory = BundleUtil.getInstance().getSerializableBundleData(getArguments(), Temp.DIALOG_DOWNLOAD_FILE.getContent());
         positive = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
         negative = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
         View view = builder.getLayoutInflater().inflate(R.layout.dialog_download, null);

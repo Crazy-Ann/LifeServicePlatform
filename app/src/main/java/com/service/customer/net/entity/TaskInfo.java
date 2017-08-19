@@ -60,22 +60,22 @@ public class TaskInfo implements Serializable, Parcelable, OnGroupListener {
 
     public TaskInfo parse(JSONObject object) {
         if (object != null) {
-//            this.realName = object.getString(ResponseParameterKey.REAL_NAME);
-//            this.tasNote = object.getString(ResponseParameterKey.TASK_NOTE);
-//            this.latitude = object.getDoubleValue(ResponseParameterKey.LATITUDE);
-//            this.longitude = object.getDoubleValue(ResponseParameterKey.LONGITUDE);
-//            this.address = object.getDoubleValue(ResponseParameterKey.ADDRESS);
-//            this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR);
-//            this.billNo = object.getString(ResponseParameterKey.TITLE);
-//            this.status = object.getIntValue(ResponseParameterKey.STATUS);
-            this.realName = "卫计委2号";
-            this.tasNote = "一二三四五六七八九十";
-            this.latitude = 40.375265;
-            this.longitude = 116.846052;
-            this.address = "北京市海淀区海淀西街8号靠近中国农业银行(北京北四环支行)";
+            this.realName = object.getString(ResponseParameterKey.REAL_NAME);
+            this.tasNote = object.getString(ResponseParameterKey.TASK_NOTE);
+            this.latitude = object.getDoubleValue(ResponseParameterKey.LATITUDE);
+            this.longitude = object.getDoubleValue(ResponseParameterKey.LONGITUDE);
+            this.address = object.getString(ResponseParameterKey.ADDRESS);
             this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR);
-            this.billNo = "T170816000007811";
-            this.status = 0;
+            this.billNo = object.getString(ResponseParameterKey.BILL_NO);
+            this.status = object.getIntValue(ResponseParameterKey.STATUS);
+            //this.realName = "卫计委2号";
+            //this.tasNote = "一二三四五六七八九十";
+            //this.latitude = 40.375265;
+            //this.longitude = 116.846052;
+            //this.address = "北京市海淀区海淀西街8号靠近中国农业银行(北京北四环支行)";
+            //this.accountAvatar = "https://b-ssl.duitang.com/uploads/item/201309/23/20130923215650_vNNcH.jpeg";
+            //this.billNo = "T170816000007811";
+            //this.status = 0;
             return this;
         } else {
             return null;

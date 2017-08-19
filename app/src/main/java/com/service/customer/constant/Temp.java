@@ -8,6 +8,7 @@ public enum Temp {
     NEED_LOCATION("need_location"),
     URL("url"),
     TASK_INFO("task_info"),
+    EVALUATE_INFO("evaluate_info"),
     TAB("tab");
 
     private String content;

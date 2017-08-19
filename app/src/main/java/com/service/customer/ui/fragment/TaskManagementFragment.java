@@ -11,13 +11,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.service.customer.R;
-import com.service.customer.base.application.BaseApplication;
-import com.service.customer.base.constant.net.RequestParameterKey;
-import com.service.customer.components.constant.Regex;
-import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
-import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.contract.TaskManagementContract;
 import com.service.customer.ui.contract.implement.FragmentViewImplement;
 import com.service.customer.ui.presenter.TaskManagementPresenter;
@@ -71,9 +66,9 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
             wvTaskManagement.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 //        wvTaskManagement.getSettings().setUserAgentString(wvTaskManagement.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
-        LogUtil.getInstance().print("url:" + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
-        wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
-        //wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
+        //LogUtil.getInstance().print("url:" + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+        //wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+        wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
     }
 
     @Override

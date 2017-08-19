@@ -1,6 +1,5 @@
 package com.service.customer.ui.webview;
 
-import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -8,14 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.LogUtil;
-import com.service.customer.components.utils.ToastUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
+import com.service.customer.net.entity.EvaluateInfo;
+import com.service.customer.net.entity.TaskInfos;
 import com.service.customer.ui.activity.EvaluateActivity;
 import com.service.customer.ui.activity.TaskActivity;
 import com.service.customer.ui.activity.WapActivity;
@@ -23,7 +22,7 @@ import com.service.customer.ui.contract.implement.ActivityViewImplement;
 
 import java.util.List;
 
-public class LifeServicePlatform{
+public class LifeServicePlatform {
 
     public static void call(final WebView webView, String data) {
         final ActivityViewImplement activityViewImplement = (ActivityViewImplement) webView.getContext();
@@ -172,13 +171,13 @@ public class LifeServicePlatform{
                 case Constant.JavaScript.IMMEDIATE_EVALUATION:
                     if (!TextUtils.isEmpty(parameter)) {
                         Intent intent = new Intent(activityViewImplement, EvaluateActivity.class);
-                        //TODO 模拟数据
-                        bundle = new Bundle();
-//                        TaskInfos taskInfo = new TaskInfos().parse(JSONObject.parseObject("{\"list\":[{\"accountavatar\":\"\",\"address\":\"测试地址\",\"billno\":\"N170806000004611\",\"latitude\":101,\"longitude\":101,\"realname\":\"志愿者A号\",\"status\":0,\"tasknote\":\"notes\"}],\"pagecount\":1,\"pageindex\":1,\"result\":true,\"totalrecord\":1}"));
-//                        bundle.putParcelable(Temp.TASK_INFO.getContent(), taskInfo);
-//                        intent.putExtras(bundle);
-//                        webView.getContext().startActivity(intent, bundle);
-                        activityViewImplement.startActivity(EvaluateActivity.class);
+                        intent.putExtra(Temp.EVALUATE_INFO.getContent(), new EvaluateInfo().parse(JSONObject.parseObject(parameter)));
+                        //bundle = new Bundle();
+                        //bundle.putParcelable(Temp.EVALUATE_INFO.getContent(), new EvaluateInfo().parse(JSONObject.parseObject(parameter)));
+                        //bundle.setClassLoader(EvaluateInfo.class.getClassLoader());
+                        intent.setExtrasClassLoader(EvaluateInfo.class.getClassLoader());
+                        //intent.putExtras(bundle);
+                        activityViewImplement.startActivity(intent);
                     }
                     break;
                 //電話
