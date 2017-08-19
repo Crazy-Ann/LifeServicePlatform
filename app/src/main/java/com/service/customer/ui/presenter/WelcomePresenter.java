@@ -27,6 +27,7 @@ import java.io.IOException;
 
 public class WelcomePresenter extends BasePresenterImplement implements WelcomeContract.Presenter {
 
+    private Context context;
     private WelcomeContract.View view;
     private boolean isForceUpdate;
     private String filePath;
@@ -44,7 +45,6 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
     }
 
     public WelcomePresenter(Context context, WelcomeContract.View view) {
-        super(context, view);
         this.context = context;
         this.view = view;
     }

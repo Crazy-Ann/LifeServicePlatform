@@ -23,6 +23,7 @@ import java.util.List;
 
 public class TaskPresenter extends BasePresenterImplement implements TaskContract.Presenter {
 
+    private Context context;
     private TaskContract.View view;
     private AMapLocationClient aMapLocationClient;
     private AMapLocationClientOption aMapLocationClientOption;
@@ -36,7 +37,6 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
     }
 
     public TaskPresenter(Context context, TaskContract.View view) {
-        super(context, view);
         this.context = context;
         this.view = view;
     }

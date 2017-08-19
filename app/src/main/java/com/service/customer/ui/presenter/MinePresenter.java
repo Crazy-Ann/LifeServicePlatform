@@ -21,10 +21,10 @@ import java.io.File;
 
 public class MinePresenter extends BasePresenterImplement implements MineContract.Presenter {
 
+    private Context context;
     private MineContract.View view;
 
     public MinePresenter(Context context, MineContract.View view) {
-        super(context, view);
         this.context = context;
         this.view = view;
     }

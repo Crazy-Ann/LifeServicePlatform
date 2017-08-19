@@ -24,6 +24,7 @@ import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
 public class MapPresenter extends BasePresenterImplement implements MapContract.Presenter {
 
+    private Context context;
     private MapContract.View view;
     private AMap aMap;
     private DistrictSearch districtSearch;
@@ -38,7 +39,6 @@ public class MapPresenter extends BasePresenterImplement implements MapContract.
     }
 
     public MapPresenter(Context context, MapContract.View view) {
-        super(context, view);
         this.context = context;
         this.view = view;
     }

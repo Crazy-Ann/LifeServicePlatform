@@ -13,11 +13,11 @@ import com.service.customer.ui.contract.EvaluateContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
 public class EvaluatePresenter extends BasePresenterImplement implements EvaluateContract.Presenter {
-
+    
+    private Context context;
     private EvaluateContract.View view;
 
     public EvaluatePresenter(Context context, EvaluateContract.View view) {
-        super(context, view);
         this.context = context;
         this.view = view;
     }

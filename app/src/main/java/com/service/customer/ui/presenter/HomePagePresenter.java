@@ -15,10 +15,10 @@ import java.io.IOException;
 
 public class HomePagePresenter extends BasePresenterImplement implements HomePageContract.Presenter {
 
+    private Context context;
     private HomePageContract.View view;
 
     public HomePagePresenter(Context context, HomePageContract.View view) {
-        super(context, view);
         this.context = context;
         this.view = view;
     }

@@ -63,8 +63,7 @@
 -keepattributes *Annotation*
 -keepattributes *JavascriptInterface*
 -keepclassmembers class *{
-    public void call(java.lang.String);
-    public java.lang.String call(java.lang.String);
+    public static void call(android.webkit.WebView, java.lang.String);
 }
 -keep public class com.tencent.bugly.**{*;}
 
@@ -77,12 +76,12 @@
 -keepclasseswithmembernames class * { @butterknife.* <methods>; }
 -keepclasseswithmembernames class * { @butterknife.* <fields>; }
 
-#-keepclassmembers class ** {
-#    @com.com.service.customer.components.permission.annotation.PermissionGrant <methods>;
-#}
-#-keepclassmembers class ** {
-#    @com.com.service.customer.components.permission.annotation.PermissioDenied <methods>;
-#}
+-keepclassmembers class ** {
+    @com.com.service.customer.components.permission.annotation.PermissionGrant <methods>;
+}
+-keepclassmembers class ** {
+    @com.com.service.customer.components.permission.annotation.PermissioDenied <methods>;
+}
 
 -dontwarn com.squareup.okhttp3.**
 -keep class com.squareup.okhttp3.** { *;}

@@ -7,10 +7,10 @@ import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
 public class WapPresenter extends BasePresenterImplement implements WapContract.Presenter {
 
+    private Context context;
     private WapContract.View view;
 
     public WapPresenter(Context context, WapContract.View view) {
-        super(context, view);
         this.context = context;
         this.view = view;
     }

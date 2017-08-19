@@ -42,17 +42,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
     private BaseEntity configInfo;
     private BaseEntity loginInfo;
 
-    //TODO
-    private boolean isRemotePage;
-
-    public boolean isRemotePage() {
-        return isRemotePage;
-    }
-
-    public void setRemotePage(boolean remotePage) {
-        isRemotePage = remotePage;
-    }
-
     public BaseEntity getConfigInfo() {
         return configInfo;
     }

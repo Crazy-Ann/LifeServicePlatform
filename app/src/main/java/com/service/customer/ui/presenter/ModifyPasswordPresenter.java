@@ -16,10 +16,10 @@ import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
 public class ModifyPasswordPresenter extends BasePresenterImplement implements ModifyPasswordContract.Presenter {
 
+    private Context context;
     private ModifyPasswordContract.View view;
 
     public ModifyPasswordPresenter(Context context, ModifyPasswordContract.View view) {
-        super(context, view);
         this.context = context;
         this.view = view;
     }

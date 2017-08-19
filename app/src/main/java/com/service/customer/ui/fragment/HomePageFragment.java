@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.entity.LoginInfo;
@@ -69,15 +69,13 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
             wvHomePage.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         //        wvHomePage.getSettings().setUserAgentString(wvHomePage.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
-        if (BaseApplication.getInstance().isRemotePage()) {
-            wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl()+ Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
-        } else {
-            if (TextUtils.equals((((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()), "1")) {
-                wvHomePage.loadUrl(Constant.ASSET_URL.VOLUNTEER_INDEX);
-            } else {
-                wvHomePage.loadUrl(Constant.ASSET_URL.DEMANDER_INDEX);
-            }
-        }
+        LogUtil.getInstance().print("url:" + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+        wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+        //if (TextUtils.equals((((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()), "1")) {
+        //    wvHomePage.loadUrl(Constant.ASSET_URL.VOLUNTEER_INDEX);
+        //} else {
+        //   wvHomePage.loadUrl(Constant.ASSET_URL.DEMANDER_INDEX);
+        //}
     }
 
     @Override
@@ -89,15 +87,11 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (BaseApplication.getInstance().isRemotePage()) {
-            wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl()+ Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
-        } else {
-            if (TextUtils.equals((((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()), "1")) {
-                wvHomePage.loadUrl(Constant.ASSET_URL.VOLUNTEER_INDEX);
-            } else {
-                wvHomePage.loadUrl(Constant.ASSET_URL.DEMANDER_INDEX);
-            }
-        }
+        //if (TextUtils.equals((((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()), "1")) {
+        //    wvHomePage.loadUrl(Constant.ASSET_URL.VOLUNTEER_INDEX);
+        //} else {
+        //   wvHomePage.loadUrl(Constant.ASSET_URL.DEMANDER_INDEX);
+        //}
     }
 
     @Override
@@ -112,7 +106,7 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    homePagePresenter.checkPermission(getActivity(),this);
+                    homePagePresenter.checkPermission(getActivity(), this);
                 }
                 break;
             default:

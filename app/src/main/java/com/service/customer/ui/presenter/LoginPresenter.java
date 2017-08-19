@@ -27,10 +27,10 @@ import javax.crypto.NoSuchPaddingException;
 
 public class LoginPresenter extends BasePresenterImplement implements LoginContract.Presenter {
 
+    private Context context;
     private LoginContract.View view;
 
     public LoginPresenter(Context context, LoginContract.View view) {
-        super(context, view);
         this.context = context;
         this.view = view;
     }

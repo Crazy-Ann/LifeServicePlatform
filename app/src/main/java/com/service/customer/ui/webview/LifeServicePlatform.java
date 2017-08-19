@@ -8,16 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
-import com.service.customer.base.application.BaseApplication;
-import com.service.customer.base.constant.net.RequestParameterKey;
-import com.service.customer.components.constant.Regex;
 import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.LogUtil;
+import com.service.customer.components.utils.ToastUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
-import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.activity.EvaluateActivity;
 import com.service.customer.ui.activity.TaskActivity;
 import com.service.customer.ui.activity.WapActivity;
@@ -202,7 +200,7 @@ public class LifeServicePlatform{
                                     public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
                                         activityViewImplement.showPermissionPromptDialog();
                                     }
-                                }, Manifest.permission.CALL_PHONE);
+                                });
                             } else {
                                 activityViewImplement.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone)));
                             }

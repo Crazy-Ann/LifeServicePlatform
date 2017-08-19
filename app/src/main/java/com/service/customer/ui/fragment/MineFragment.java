@@ -162,8 +162,9 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                         .showAllowingStateLoss(getActivity());
                 break;
             case R.id.rlWorkLog:
+                LogUtil.getInstance().print("url:" + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
                 bundle = new Bundle();
-                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl());
+                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
                 startActivity(WapActivity.class, bundle);
                 break;
             case R.id.rlAddWorkLog:
@@ -176,12 +177,10 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                 startActivity(MapActivity.class);
                 break;
             case R.id.rlGreetingCard:
+                LogUtil.getInstance().print("url:" + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getCardUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
                 bundle = new Bundle();
-                if (BaseApplication.getInstance().isRemotePage()) {
-                    bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getCardUrl());
-                } else {
-                    bundle.putString(Temp.URL.getContent(), Constant.ASSET_URL.GREETING_CARD_LIST);
-                }
+                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getCardUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+                //bundle.putString(Temp.URL.getContent(), Constant.ASSET_URL.GREETING_CARD_LIST);
                 startActivity(WapActivity.class, bundle);
                 break;
             case R.id.rlSetting:
@@ -204,7 +203,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    minePresenter.checkPermission(getActivity(),this);
+                    minePresenter.checkPermission(getActivity(), this);
                 }
                 break;
             case Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:
