@@ -33,7 +33,7 @@ public class FragmentUtil {
     }
 
     public boolean isShowing(String tag) {
-        return operationInfo.mTag.equals(tag);
+        return operationInfo.tag.equals(tag);
     }
 
     public Fragment show(String tag, boolean hasAnimate) {
@@ -46,7 +46,7 @@ public class FragmentUtil {
 
     public Fragment show(String tag, Bundle args, boolean hasAnimate) {
         OperationInfo info = items.get(tag);
-        info.mBundle = args;
+        info.bundle = args;
         return show(info, hasAnimate);
     }
 
@@ -56,38 +56,39 @@ public class FragmentUtil {
             transaction.setCustomAnimations(animations[0], animations[1]);
         }
         if (operationInfo != info) {
-            if (operationInfo != null && operationInfo.mFragment != null) {
-                transaction.hide(operationInfo.mFragment);
+            if (operationInfo != null && operationInfo.fragment != null) {
+                transaction.hide(operationInfo.fragment);
             }
             operationInfo = info;
             if (operationInfo != null) {
-                if (operationInfo.mFragment == null) {
-                    operationInfo.mFragment = Fragment.instantiate(operationInfo.mContext, operationInfo.mClass.getName(), operationInfo.mBundle);
-                    if (info.mBundle != null) {
-                        operationInfo.mFragment.setArguments(info.mBundle);
+                if (operationInfo.fragment == null) {
+                    operationInfo.fragment = Fragment.instantiate(operationInfo.context, operationInfo.clazz.getName(), operationInfo.bundle);
+                    if (info.bundle != null) {
+                        operationInfo.fragment.setArguments(info.bundle);
                     }
-                    transaction.add(resource, operationInfo.mFragment, operationInfo.mTag);
+                    transaction.add(resource, operationInfo.fragment, operationInfo.tag);
                 } else {
-                    transaction.show(operationInfo.mFragment);
+                    transaction.show(operationInfo.fragment);
                 }
             }
         } else {
             //已经显示
+            LogUtil.getInstance().print(operationInfo.fragment.toString() + "has displayed");
         }
         transaction.commitAllowingStateLoss();
         if (operationInfo == null) {
             return null;
         } else {
-            return operationInfo.mFragment;
+            return operationInfo.fragment;
         }
     }
 
     public static class OperationInfo {
-        protected Context mContext;
-        protected String mTag;
-        protected Class<?> mClass;
-        protected Bundle mBundle;
-        protected Fragment mFragment;
+        protected Context context;
+        protected String tag;
+        protected Class<?> clazz;
+        protected Bundle bundle;
+        protected Fragment fragment;
 
         public OperationInfo(Context context, String tag, Class<?> cls) {
             this(context, tag, cls, null);
@@ -98,22 +99,21 @@ public class FragmentUtil {
         }
 
         public OperationInfo(Context context, String tag, Class<?> cls, Bundle args) {
-            this.mContext = context;
-            this.mTag = tag;
-            this.mClass = cls;
-            this.mBundle = args;
+            this.context = context;
+            this.tag = tag;
+            this.clazz = cls;
+            this.bundle = args;
         }
 
         public OperationInfo(Context context, int viewId, Class<?> cls, Bundle args) {
-            this.mContext = context;
-            this.mTag = String.valueOf(viewId);
-            this.mClass = cls;
-            this.mBundle = args;
+            this.context = context;
+            this.tag = String.valueOf(viewId);
+            this.clazz = cls;
+            this.bundle = args;
         }
 
-
         public String getTag() {
-            return mTag;
+            return tag;
         }
     }
 }

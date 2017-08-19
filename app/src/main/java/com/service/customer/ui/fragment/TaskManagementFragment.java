@@ -11,18 +11,23 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.service.customer.R;
+import com.service.customer.base.application.BaseApplication;
+import com.service.customer.base.constant.net.RequestParameterKey;
+import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
+import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.contract.TaskManagementContract;
 import com.service.customer.ui.contract.implement.FragmentViewImplement;
 import com.service.customer.ui.presenter.TaskManagementPresenter;
 import com.service.customer.ui.webview.CustomChromeClient;
 import com.service.customer.ui.webview.LifeServicePlatform;
+import com.service.customer.ui.webview.listener.OnReceivedTitleListener;
 import com.yjt.bridge.InjectedWebviewClient;
 
 import java.util.List;
 
-public class TaskManagementFragment extends FragmentViewImplement<TaskManagementContract.Presenter> implements TaskManagementContract.View {
+public class TaskManagementFragment extends FragmentViewImplement<TaskManagementContract.Presenter> implements TaskManagementContract.View, OnReceivedTitleListener {
 
 
     private TaskManagementPresenter taskManagementPresenter;
@@ -54,7 +59,7 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
         getSavedInstanceState(savedInstanceState);
 
         wvTaskManagement.setWebViewClient(new InjectedWebviewClient(getActivity()));
-        wvTaskManagement.setWebChromeClient(new CustomChromeClient(Constant.JavaScript.INJECTED_NAME, LifeServicePlatform.class));
+        wvTaskManagement.setWebChromeClient(new CustomChromeClient(Constant.JavaScript.INJECTED_NAME, LifeServicePlatform.class, this));
         wvTaskManagement.getSettings().setJavaScriptEnabled(true);
         wvTaskManagement.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         wvTaskManagement.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
@@ -66,9 +71,8 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
             wvTaskManagement.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 //        wvTaskManagement.getSettings().setUserAgentString(wvTaskManagement.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
-        //LogUtil.getInstance().print("url:" + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
-        //wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
-        wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
+        wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+        //wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
     }
 
     @Override
@@ -80,6 +84,7 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
         //wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
     }
 
@@ -111,6 +116,11 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
             wvTaskManagement.clearCache(true);
             wvTaskManagement.destroy();
         }
+    }
+
+    @Override
+    public void receivedTitle(WebView view, String title) {
+        initializeToolbar(R.color.color_383857, android.R.color.white, false, title, null);
     }
 
     @Override

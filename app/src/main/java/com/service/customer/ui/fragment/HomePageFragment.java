@@ -14,7 +14,6 @@ import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.components.constant.Regex;
-import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.entity.LoginInfo;
@@ -23,11 +22,12 @@ import com.service.customer.ui.contract.implement.FragmentViewImplement;
 import com.service.customer.ui.presenter.HomePagePresenter;
 import com.service.customer.ui.webview.CustomChromeClient;
 import com.service.customer.ui.webview.LifeServicePlatform;
+import com.service.customer.ui.webview.listener.OnReceivedTitleListener;
 import com.yjt.bridge.InjectedWebviewClient;
 
 import java.util.List;
 
-public class HomePageFragment extends FragmentViewImplement<HomePageContract.Presenter> implements HomePageContract.View {
+public class HomePageFragment extends FragmentViewImplement<HomePageContract.Presenter> implements HomePageContract.View, OnReceivedTitleListener {
 
     private HomePagePresenter homePagePresenter;
     private WebView wvHomePage;
@@ -57,7 +57,7 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
         getSavedInstanceState(savedInstanceState);
 
         wvHomePage.setWebViewClient(new InjectedWebviewClient(getActivity()));
-        wvHomePage.setWebChromeClient(new CustomChromeClient(Constant.JavaScript.INJECTED_NAME, LifeServicePlatform.class));
+        wvHomePage.setWebChromeClient(new CustomChromeClient(Constant.JavaScript.INJECTED_NAME, LifeServicePlatform.class, this));
         wvHomePage.getSettings().setJavaScriptEnabled(true);
         wvHomePage.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         wvHomePage.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
@@ -69,7 +69,6 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
             wvHomePage.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         //        wvHomePage.getSettings().setUserAgentString(wvHomePage.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
-        LogUtil.getInstance().print("url:" + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
         wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
         //if (TextUtils.equals((((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()), "1")) {
         //    wvHomePage.loadUrl(Constant.ASSET_URL.VOLUNTEER_INDEX);
@@ -87,6 +86,7 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        wvHomePage.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
         //if (TextUtils.equals((((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()), "1")) {
         //    wvHomePage.loadUrl(Constant.ASSET_URL.VOLUNTEER_INDEX);
         //} else {
@@ -122,6 +122,11 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
             wvHomePage.clearCache(true);
             wvHomePage.destroy();
         }
+    }
+
+    @Override
+    public void receivedTitle(WebView view, String title) {
+        initializeToolbar(R.color.color_383857, android.R.color.white, false, title, null);
     }
 
     @Override

@@ -2,9 +2,11 @@ package com.service.customer.ui.presenter;
 
 import android.content.Context;
 
+import com.service.customer.R;
 import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.net.model.BaseEntity;
+import com.service.customer.constant.Constant;
 import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
 import com.service.customer.net.entity.LoginInfo;
@@ -42,7 +44,7 @@ public class EvaluatePresenter extends BasePresenterImplement implements Evaluat
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-                        
+                        view.showPromptDialog(R.string.evaluate_prompt3, Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_SUCCESS);
                     }
 
                     @Override

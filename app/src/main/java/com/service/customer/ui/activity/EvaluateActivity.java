@@ -161,6 +161,10 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
                 startLoginActivity(true);
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_SUCCESS:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_EVALUATE_INFO_SUCCESS");
+                onFinish("DIALOG_PROMPT_EVALUATE_INFO_SUCCESS");
+                break;
             default:
                 break;
         }

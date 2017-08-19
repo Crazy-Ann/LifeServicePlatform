@@ -61,7 +61,8 @@ public final class Constant {
         public static final int DIALOG_PROMPT_SCORE_TASK_INFO_ERROR = 0x5035;
         public static final int DIALOG_PROGRESS_TASK_INFOS = 0x5036;
         public static final int DIALOG_PROMPT_TASK_INFOS_ERROR = 0x5037;
-        public static final int DIALOG_PROMPT_EVALUATE_INFO_ERROR = 0x5038;
+        public static final int DIALOG_PROMPT_EVALUATE_INFO_SUCCESS = 0x5038;
+        public static final int DIALOG_PROMPT_EVALUATE_INFO_ERROR = 0x5039;
         public static final int INSTALL_APK = 0x5097;
         public static final int REQUEST_CODE_PHOTOGRAPH = 0x5098;
         public static final int REQUEST_CODE_ALBUM = 0x5099;
