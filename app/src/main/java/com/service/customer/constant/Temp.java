@@ -9,7 +9,8 @@ public enum Temp {
     URL("url"),
     TASK_INFO("task_info"),
     EVALUATE_INFO("evaluate_info"),
-    TAB("tab");
+    TAB("tab"),
+    RAMDOM("ramdom");
 
     private String content;
 

@@ -53,14 +53,14 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
     protected void initialize(Bundle savedInstanceState) {
         mainPresenter = new MainPresenter(this, this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainPresenter.checkPermission(this,this);
+            mainPresenter.checkPermission(this, this);
         }
         mainPresenter.initialize();
         setBasePresenterImplement(mainPresenter);
         getSavedInstanceState(savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainPresenter.checkPermission(this,this);
+            mainPresenter.checkPermission(this, this);
         }
 
         tlMenu.setTabMode(TabLayout.MODE_FIXED);
@@ -77,15 +77,15 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
 
         switch (BundleUtil.getInstance().getIntData(this, Temp.TAB.getContent())) {
             case Constant.Tab.HOME_PAGE:
-                fragmentUtil.show(getString(R.string.home_page), true);
+                fragmentUtil.show(getString(R.string.home_page), true, false);
                 tlMenu.getTabAt(Constant.Tab.HOME_PAGE).select();
                 break;
             case Constant.Tab.TASK_MANAGEMENT:
-                fragmentUtil.show(getString(R.string.task_management), true);
+                fragmentUtil.show(getString(R.string.task_management), true, false);
                 tlMenu.getTabAt(Constant.Tab.TASK_MANAGEMENT).select();
                 break;
             case Constant.Tab.MINE:
-                fragmentUtil.show(getString(R.string.mine), true);
+                fragmentUtil.show(getString(R.string.mine), true, false);
                 tlMenu.getTabAt(Constant.Tab.MINE).select();
                 break;
         }
@@ -104,7 +104,7 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    mainPresenter.checkPermission(this,this);
+                    mainPresenter.checkPermission(this, this);
                 }
                 break;
             default:
@@ -190,13 +190,13 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
         LogUtil.getInstance().print("onTabSelected," + tab.getPosition());
         switch (tab.getPosition()) {
             case Constant.Tab.HOME_PAGE:
-                fragmentUtil.show(getString(R.string.home_page), true);
+                fragmentUtil.show(getString(R.string.home_page), true, false);
                 break;
             case Constant.Tab.TASK_MANAGEMENT:
-                fragmentUtil.show(getString(R.string.task_management), true);
+                fragmentUtil.show(getString(R.string.task_management), true, false);
                 break;
             case Constant.Tab.MINE:
-                fragmentUtil.show(getString(R.string.mine), true);
+                fragmentUtil.show(getString(R.string.mine), true, false);
                 break;
         }
     }
@@ -209,6 +209,17 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
         LogUtil.getInstance().print("onTabReselected," + tab.getPosition());
+        switch (tab.getPosition()) {
+            case Constant.Tab.HOME_PAGE:
+                fragmentUtil.show(getString(R.string.home_page), true, true);
+                break;
+            case Constant.Tab.TASK_MANAGEMENT:
+                fragmentUtil.show(getString(R.string.task_management), true, true);
+                break;
+            case Constant.Tab.MINE:
+                fragmentUtil.show(getString(R.string.mine), true, false);
+                break;
+        }
     }
 
     @Override

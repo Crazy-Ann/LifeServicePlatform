@@ -36,50 +36,58 @@ public class FragmentUtil {
         return operationInfo.tag.equals(tag);
     }
 
-    public Fragment show(String tag, boolean hasAnimate) {
-        return show(items.get(tag), hasAnimate);
+    public Fragment show(String tag, boolean hasAnimate, boolean isRefresh) {
+        return show(items.get(tag), hasAnimate, isRefresh);
     }
 
-    public Fragment show(int id, boolean hasAnimate) {
-        return show(items.get(String.valueOf(id)), hasAnimate);
+    public Fragment show(int id, boolean hasAnimate, boolean isRefresh) {
+        return show(items.get(String.valueOf(id)), hasAnimate, isRefresh);
     }
 
-    public Fragment show(String tag, Bundle args, boolean hasAnimate) {
+    public Fragment show(String tag, Bundle args, boolean hasAnimate, boolean isRefresh) {
         OperationInfo info = items.get(tag);
         info.bundle = args;
-        return show(info, hasAnimate);
+        return show(info, hasAnimate, isRefresh);
     }
 
-    private Fragment show(OperationInfo info, boolean hasAnimate) {
+    private Fragment show(OperationInfo operationInfo, boolean hasAnimate, boolean isRefresh) {
         FragmentTransaction transaction = fragmentManager.beginTransaction().disallowAddToBackStack();
         if (hasAnimate) {
             transaction.setCustomAnimations(animations[0], animations[1]);
         }
-        if (operationInfo != info) {
-            if (operationInfo != null && operationInfo.fragment != null) {
-                transaction.hide(operationInfo.fragment);
+        if (this.operationInfo != operationInfo) {
+            if (this.operationInfo != null && this.operationInfo.fragment != null) {
+                transaction.hide(this.operationInfo.fragment);
             }
-            operationInfo = info;
-            if (operationInfo != null) {
-                if (operationInfo.fragment == null) {
-                    operationInfo.fragment = Fragment.instantiate(operationInfo.context, operationInfo.clazz.getName(), operationInfo.bundle);
-                    if (info.bundle != null) {
-                        operationInfo.fragment.setArguments(info.bundle);
+            this.operationInfo = operationInfo;
+            if (this.operationInfo != null) {
+                if (this.operationInfo.fragment == null) {
+                    this.operationInfo.fragment = Fragment.instantiate(this.operationInfo.context, this.operationInfo.clazz.getName(), this.operationInfo.bundle);
+                    if (operationInfo.bundle != null) {
+                        this.operationInfo.fragment.setArguments(operationInfo.bundle);
                     }
-                    transaction.add(resource, operationInfo.fragment, operationInfo.tag);
+                    transaction.add(resource, this.operationInfo.fragment, this.operationInfo.tag);
                 } else {
-                    transaction.show(operationInfo.fragment);
+                    transaction.show(this.operationInfo.fragment);
                 }
             }
         } else {
-            //已经显示
-            LogUtil.getInstance().print(operationInfo.fragment.toString() + "has displayed");
+            if(isRefresh){
+                transaction.remove(this.operationInfo.fragment);
+                this.operationInfo.fragment = Fragment.instantiate(this.operationInfo.context, this.operationInfo.clazz.getName(), this.operationInfo.bundle);
+                if (operationInfo.bundle != null) {
+                    this.operationInfo.fragment.setArguments(operationInfo.bundle);
+                }
+                transaction.add(resource, this.operationInfo.fragment, this.operationInfo.tag);
+            }else{
+                LogUtil.getInstance().print(operationInfo.fragment + " has displayed");
+            }
         }
         transaction.commitAllowingStateLoss();
-        if (operationInfo == null) {
+        if (this.operationInfo == null) {
             return null;
         } else {
-            return operationInfo.fragment;
+            return this.operationInfo.fragment;
         }
     }
 
@@ -114,6 +122,17 @@ public class FragmentUtil {
 
         public String getTag() {
             return tag;
+        }
+
+        @Override
+        public String toString() {
+            return "OperationInfo{" +
+                    "context:" + context + '\'' +
+                    ", tag:" + tag + '\'' +
+                    ", clazz:" + clazz + '\'' +
+                    ", bundle:" + bundle + '\'' +
+                    ", fragment:" + fragment + '\'' +
+                    '}';
         }
     }
 }
