@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -295,8 +296,8 @@ public abstract class BaseFragment extends Fragment {
         startActivity(cls, null);
     }
 
-    protected void startActivity(String act) {
-        startActivity(act, null);
+    protected void startActivity(String action) {
+        startActivity(action, null);
     }
 
     protected void startActivity(Class<?> cls, int flag) {
@@ -307,9 +308,9 @@ public abstract class BaseFragment extends Fragment {
         getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivity(String act, Bundle bundle) {
+    protected void startActivity(String action, Bundle bundle) {
         Intent intent = new Intent();
-        intent.setAction(act);
+        intent.setAction(action);
         if (bundle != null) {
             intent.putExtras(bundle);
         }
@@ -331,61 +332,76 @@ public abstract class BaseFragment extends Fragment {
         startActivityForResult(cls, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, int requestCode) {
-        startActivityForResult(act, requestCode, null);
+    protected void startActivityForResult(String action, int requestCode) {
+        startActivityForResult(action, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, int requestCode, Bundle bundle) {
-        startActivityForResult(act, null, null, requestCode, bundle);
+    protected void startActivityForResult(String action, int requestCode, Bundle bundle) {
+        startActivityForResult(action, null, null, requestCode, bundle);
     }
 
-    protected void startActivityForResult(String act, Uri data, int requestCode) {
-        startActivityForResult(act, data, null, requestCode, null);
+    protected void startActivityForResult(String action, Uri uri, int requestCode) {
+        startActivityForResult(action, uri, null, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, String type, int requestCode, Bundle bundle) {
-        startActivityForResult(act, null, type, requestCode, bundle);
+    protected void startActivityForResult(String action, String type, int requestCode, Bundle bundle) {
+        startActivityForResult(action, null, type, requestCode, bundle);
     }
 
-    protected void startActivityForResultWithParcelable(String act, HashMap<String, Parcelable> map, int requestCode) {
-        startActivityForResultWithParcelable(act, null, null, map, requestCode);
+    protected void startActivityForResultWithParcelable(String action, int flags, HashMap<String, Parcelable> map, int requestCode) {
+        startActivityForResultWithParcelable(action, null, flags, null, map, requestCode);
     }
 
-    protected void startActivityForResultWithParcelable(String act, Uri data, String type, HashMap<String, Parcelable> map, int requestCode) {
+    protected void startActivityForResultWithParcelable(String action, Uri uri, int flags, String type, HashMap<String, Parcelable> map, int requestCode) {
         Intent intent = new Intent();
-        intent.setAction(act);
+        if (!TextUtils.isEmpty(action)) {
+            intent.setAction(action);
+        }
+        if (flags != Constant.FileProvider.DEFAULT_FLAG) {
+            intent.addFlags(flags);
+        }
         if (map != null) {
             for (String key : map.keySet()) {
                 intent.putExtra(key, map.get(key));
             }
         }
-        intent.setDataAndType(data, type);
+        if (uri != null && !TextUtils.isEmpty(type)) {
+            intent.setDataAndType(uri, type);
+        }
         startActivityForResult(intent, requestCode);
         getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResultWithSerializable(String act, HashMap<String, Serializable> map, int requestCode) {
-        startActivityForResultWithSerializable(act, null, null, map, requestCode);
+    protected void startActivityForResultWithSerializable(String action, HashMap<String, Serializable> map, int requestCode) {
+        startActivityForResultWithSerializable(action, null, null, map, requestCode);
         getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResultWithSerializable(String act, Uri data, String type, HashMap<String, Serializable> map, int requestCode) {
+    protected void startActivityForResultWithSerializable(String action, Uri uri, String type, HashMap<String, Serializable> map, int requestCode) {
         Intent intent = new Intent();
-        intent.setAction(act);
+        if (!TextUtils.isEmpty(action)) {
+            intent.setAction(action);
+        }
         if (map != null) {
             for (String key : map.keySet()) {
                 intent.putExtra(key, map.get(key));
             }
         }
-        intent.setDataAndType(data, type);
+        if (uri != null && !TextUtils.isEmpty(type)) {
+            intent.setDataAndType(uri, type);
+        }
         startActivityForResult(intent, requestCode);
         getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResult(String act, Uri data, String type, int requestCode, Bundle bundle) {
+    protected void startActivityForResult(String action, Uri uri, String type, int requestCode, Bundle bundle) {
         Intent intent = new Intent();
-        intent.setAction(act);
-        intent.setDataAndType(data, type);
+        if (!TextUtils.isEmpty(action)) {
+            intent.setAction(action);
+        }
+        if (uri != null && !TextUtils.isEmpty(type)) {
+            intent.setDataAndType(uri, type);
+        }
         if (bundle != null) {
             intent.putExtras(bundle);
         }

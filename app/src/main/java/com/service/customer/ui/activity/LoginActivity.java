@@ -82,7 +82,7 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
         editTextValidator = new EditTextValidator();
         editTextValidator.add(new Validation(null, etAccount, true, ibAccountEmpty, new AccountValidation()));
         editTextValidator.add(new Validation(null, etPassword, true, ibPasswordEmpty, new PasswordValidation()));
-        editTextValidator.execute(this, btnLogin, R.drawable.frame_fillet_e4e4e4, R.drawable.frame_fillet_f40046, android.R.color.white, android.R.color.white, null, null, false);
+        editTextValidator.execute(this, btnLogin, R.drawable.frame_fillet_e4e4e4, R.drawable.frame_fillet_015293, android.R.color.white, android.R.color.white, null, null, false);
 
         etAccount.setText(SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.ACCOUNT, null, true));
         etPassword.setText(SharedPreferenceUtil.getInstance().getString(this, Constant.Profile.LOGIN_PROFILE, Context.MODE_PRIVATE, Constant.Profile.PASSWORD, null, true));

@@ -29,15 +29,13 @@
 
             <Button
                 android:id="@+id/btnVoice"
-                android:layout_width="@dimen/dp_120"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
                 android:layout_centerInParent="true"
-                android:layout_marginEnd="@dimen/dp_20"
-                android:layout_marginStart="@dimen/dp_20"
-                android:background="@drawable/frame_fillet_383857"
+                android:layout_marginEnd="@dimen/dp_40"
+                android:layout_marginStart="@dimen/dp_40"
+                android:background="@mipmap/btn_voice"
                 android:gravity="center"
-                android:text="Voice"
-                android:textColor="@android:color/holo_blue_dark"
                 android:textSize="@dimen/sp_14"/>
 
             <TextView

@@ -36,6 +36,7 @@ public class MinePresenter extends BasePresenterImplement implements MineContrac
 
     @Override
     public void saveHeadImage(File file) {
+        LogUtil.getInstance().print("file:" + file.getTotalSpace());
         LogUtil.getInstance().print("file:" + file.getAbsolutePath());
         Api.getInstance().saveHeadImage(
                 context,

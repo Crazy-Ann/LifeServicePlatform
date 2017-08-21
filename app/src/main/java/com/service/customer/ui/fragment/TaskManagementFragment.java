@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.RequestParameterKey;
+import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
@@ -21,13 +22,13 @@ import com.service.customer.ui.contract.TaskManagementContract;
 import com.service.customer.ui.contract.implement.FragmentViewImplement;
 import com.service.customer.ui.presenter.TaskManagementPresenter;
 import com.service.customer.ui.webview.CustomChromeClient;
+import com.service.customer.ui.webview.CustomWebviewClient;
 import com.service.customer.ui.webview.LifeServicePlatform;
 import com.service.customer.ui.webview.listener.OnReceivedTitleListener;
-import com.yjt.bridge.InjectedWebviewClient;
 
 import java.util.List;
 
-public class TaskManagementFragment extends FragmentViewImplement<TaskManagementContract.Presenter> implements TaskManagementContract.View, OnReceivedTitleListener {
+public class TaskManagementFragment extends FragmentViewImplement<TaskManagementContract.Presenter> implements TaskManagementContract.View, OnReceivedTitleListener, OnLeftIconEventListener {
 
 
     private TaskManagementPresenter taskManagementPresenter;
@@ -50,7 +51,7 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_383857, android.R.color.white, false, getString(R.string.task_management), null);
+//        initializeToolbar(R.color.color_015293, android.R.color.white, false, getString(R.string.task_management), null);
 
         taskManagementPresenter = new TaskManagementPresenter(getActivity(), this);
         taskManagementPresenter.initialize();
@@ -58,7 +59,7 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
         setBasePresenterImplement(taskManagementPresenter);
         getSavedInstanceState(savedInstanceState);
 
-        wvTaskManagement.setWebViewClient(new InjectedWebviewClient(getActivity()));
+        wvTaskManagement.setWebViewClient(new CustomWebviewClient(getActivity()));
         wvTaskManagement.setWebChromeClient(new CustomChromeClient(Constant.JavaScript.INJECTED_NAME, LifeServicePlatform.class, this));
         wvTaskManagement.getSettings().setJavaScriptEnabled(true);
         wvTaskManagement.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -78,14 +79,6 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
     @Override
     protected void setListener() {
 
-    }
-
-    //TODO
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
-        //wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
     }
 
     @Override
@@ -120,7 +113,16 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
 
     @Override
     public void receivedTitle(WebView view, String title) {
-        initializeToolbar(R.color.color_383857, android.R.color.white, false, title, null);
+        if (view.canGoBack()) {
+            initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, title);
+        } else {
+            initializeToolbar(R.color.color_015293, android.R.color.white, false, title, null);
+        }
+    }
+
+    @Override
+    public void OnLeftIconEvent() {
+        wvTaskManagement.goBack();
     }
 
     @Override

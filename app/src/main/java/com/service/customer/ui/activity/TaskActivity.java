@@ -22,7 +22,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
-import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.base.handler.ActivityHandler;
 import com.service.customer.base.sticky.adapter.FixedStickyViewAdapter;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
@@ -122,7 +121,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
+        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
         TTSUtil.getInstance(this).initializeSpeechRecognizer();
 
         vetDescreption.setHint(getString(R.string.text_descreption_prompt));
@@ -132,7 +131,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
         taskPresenter.initialize();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            taskPresenter.checkPermission(this,this);
+            taskPresenter.checkPermission(this, this);
         } else {
             if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
                 ViewUtil.getInstance().setViewVisible(tvLocation);
@@ -224,7 +223,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    taskPresenter.checkPermission(this,this);
+                    taskPresenter.checkPermission(this, this);
                 } else {
                     if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
                         ViewUtil.getInstance().setViewVisible(tvLocation);
@@ -235,19 +234,21 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                 }
                 break;
             case Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:
+                showLoadingPromptDialog(R.string.get_image_prompt, Constant.RequestCode.DIALOG_PROGRESS_GET_IMAGE);
                 ThreadPoolUtil.execute(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
-                            if (file != null) {
+                            File file = IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
+                            Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), IOUtil.getInstance().getFileUri(BaseApplication.getInstance(), true, file), 0.5f);
+                            if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
                                 TaskImageInfo taskImageInfo = new TaskImageInfo();
                                 taskImageInfo.setFile(file);
                                 taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
                             } else {
                                 taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                             }
-                        } catch (IOException e) {
+                        } catch (IOException | InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                             taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                         }
@@ -262,7 +263,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                         @Override
                         public void run() {
                             try {
-                                File file = IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
+                                File file = IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
                                 Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), uri, 0.5f);
                                 if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
                                     TaskImageInfo taskImageInfo = new TaskImageInfo();
@@ -332,6 +333,10 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
                 startLoginActivity(true);
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS");
+                onFinish("DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS");
+                break;
             default:
                 break;
         }
@@ -355,8 +360,8 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                 LogUtil.getInstance().print("onNeutralButtonClicked_DIALOG_PROMPT_SELECT_IMAGE");
                 try {
                     HashMap<String, Parcelable> map = new HashMap<>();
-                    map.put(MediaStore.EXTRA_OUTPUT, Uri.parse(IOUtil.getInstance().getExternalStoragePublicDirectory(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext()).getAbsolutePath()));
-                    startActivityForResultWithParcelable(MediaStore.ACTION_IMAGE_CAPTURE, map, Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH);
+                    map.put(MediaStore.EXTRA_OUTPUT, IOUtil.getInstance().getFileUri(this, true, IOUtil.getInstance().getExternalFilesDir(this, Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext()).getAbsolutePath()));
+                    startActivityForResultWithParcelable(MediaStore.ACTION_IMAGE_CAPTURE, Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? Intent.FLAG_GRANT_READ_URI_PERMISSION : com.service.customer.components.constant.Constant.FileProvider.DEFAULT_FLAG, map, Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

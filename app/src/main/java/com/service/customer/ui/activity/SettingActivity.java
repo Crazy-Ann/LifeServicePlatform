@@ -46,7 +46,7 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.setting));
+        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.setting));
 
         settingPresenter = new SettingPresenter(this, this);
         settingPresenter.initialize();

@@ -69,7 +69,7 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.service_evaluate));
+        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.service_evaluate));
 
         evaluatePresenter = new EvaluatePresenter(this, this);
         evaluatePresenter.initialize();

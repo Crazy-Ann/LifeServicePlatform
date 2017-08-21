@@ -221,14 +221,7 @@ public class ImageUtil {
     public static Bitmap getNarrowBitmap(Context context, Uri uri, float f) throws InterruptedException, ExecutionException, IOException {
         final Bitmap original = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
         LogUtil.getInstance().print("图片压缩前大小，" + "w:" + original.getWidth() + "h:" + original.getHeight());
-        Bitmap bitmap = Glide
-                .with(context)
-                .load(uri)
-                .asBitmap()
-                .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into((int) (original.getWidth() * f), (int) (original.getHeight() * f))
-                .get();
+        Bitmap bitmap = GlideUtil.getInstance().get(context,uri,(int) (original.getWidth() * f),(int) (original.getHeight() * f));
         LogUtil.getInstance().print("图片压缩后大小，" + "w:" + bitmap.getWidth() + "h:" + bitmap.getHeight());
         return bitmap;
     }

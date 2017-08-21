@@ -15,19 +15,21 @@ import com.bumptech.glide.request.target.BaseTarget;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.service.customer.components.constant.Constant;
 
+import java.util.concurrent.ExecutionException;
+
 public class GlideUtil {
 
-    private static GlideUtil mGlideUtil;
+    private static GlideUtil glideUtil;
 
     private GlideUtil() {
         // cannot be instantiated
     }
 
     public static synchronized GlideUtil getInstance() {
-        if (mGlideUtil == null) {
-            mGlideUtil = new GlideUtil();
+        if (glideUtil == null) {
+            glideUtil = new GlideUtil();
         }
-        return mGlideUtil;
+        return glideUtil;
     }
 
     /**
@@ -685,28 +687,39 @@ public class GlideUtil {
                      DiskCacheStrategy strategy,
                      ImageView view) {
         with(ctx,
-                originalSource,
-                null,
-                Constant.View.DEFAULT_SIZE,
-                null,
-                true,
-                Constant.View.GLIDE_BITMAP,
-                0,
-                false,
-                false,
-                null,
-                true,
-                Constant.View.DEFAULT_RESOURCE,
-                null,
-                width,
-                height,
-                Constant.View.DEFAULT_RESOURCE,
-                null,
-                Constant.View.DEFAULT_RESOURCE,
-                null,
-                Constant.View.GLIDE_CENTER_CROP,
-                strategy,
-                view,
-                null);
+             originalSource,
+             null,
+             Constant.View.DEFAULT_SIZE,
+             null,
+             true,
+             Constant.View.GLIDE_BITMAP,
+             0,
+             false,
+             false,
+             null,
+             true,
+             Constant.View.DEFAULT_RESOURCE,
+             null,
+             width,
+             height,
+             Constant.View.DEFAULT_RESOURCE,
+             null,
+             Constant.View.DEFAULT_RESOURCE,
+             null,
+             Constant.View.GLIDE_CENTER_CROP,
+             strategy,
+             view,
+             null);
+    }
+
+    public Bitmap get(Context ctx, Object originalSource, int width, int height) throws ExecutionException, InterruptedException {
+        return Glide
+                .with(ctx)
+                .load(originalSource)
+                .asBitmap()
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(width, height)
+                .get();
     }
 }

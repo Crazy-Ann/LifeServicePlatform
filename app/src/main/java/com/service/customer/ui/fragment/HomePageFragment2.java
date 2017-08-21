@@ -115,7 +115,7 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract.Pr
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_383857, android.R.color.white, false, getString(R.string.home_page), null);
+        initializeToolbar(R.color.color_015293, android.R.color.white, false, getString(R.string.home_page), null);
         homePageHandler = new HomePageHandler(this);
         homePagePresenter = new HomePagePresenter(getActivity(), this);
         homePagePresenter.initialize();

@@ -456,52 +456,52 @@ public class Api {
                     @Override
                     public void onStart() {
                         super.onStart();
-                        LogUtil.getInstance().print("提交任务开始");
-                        view.showLoadingPromptDialog(R.string.save_task_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SAVE_TASK_INFO);
+                        LogUtil.getInstance().print("提交工作日志开始");
+                        view.showLoadingPromptDialog(R.string.save_work_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SAVE_WORK_INFO);
                     }
 
                     @Override
                     public void onResponseSuccess(JSONObject object) {
                         super.onResponseSuccess(object);
-                        LogUtil.getInstance().print("提交任务成功:" + object.toString());
+                        LogUtil.getInstance().print("提交工作日志成功:" + object.toString());
                         if (headImageInfo != null) {
                             apiListener.success(headImageInfo);
                         } else {
-                            view.showPromptDialog(R.string.dialog_prompt_save_task_info_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                            view.showPromptDialog(R.string.dialog_prompt_save_work_info_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_ERROR);
                         }
                     }
 
                     @Override
                     public void onResponseFailed(String code, String message) {
                         super.onResponseFailed(code, message);
-                        LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                        LogUtil.getInstance().print("提交工作日志失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_ERROR);
                         apiListener.failed(null, code, message);
                     }
 
                     @Override
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
-                        LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
-                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR, object);
+                        LogUtil.getInstance().print("提交工作日志失败,code:" + code + ",message:" + message);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_ERROR, object);
                     }
 
                     @Override
                     public void onEnd() {
                         super.onEnd();
-                        LogUtil.getInstance().print("提交任务结束");
+                        LogUtil.getInstance().print("提交工作日志结束");
                         view.hideLoadingPromptDialog();
                     }
 
                     @Override
                     public void onFailed(int code, String message) {
                         super.onFailed(code, message);
-                        LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                        LogUtil.getInstance().print("提交工作日志失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_ERROR);
                     }
                 });
             } else {
-                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
+                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_ERROR);
             }
         } else {
             view.showNetWorkPromptDialog();

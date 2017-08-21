@@ -23,9 +23,9 @@ import com.service.customer.ui.contract.WapContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.presenter.WapPresenter;
 import com.service.customer.ui.webview.CustomChromeClient;
+import com.service.customer.ui.webview.CustomWebviewClient;
 import com.service.customer.ui.webview.LifeServicePlatform;
 import com.service.customer.ui.webview.listener.OnReceivedTitleListener;
-import com.yjt.bridge.InjectedWebviewClient;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, null);
+        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, null);
 
         presenter = new WapPresenter(this, this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -62,7 +62,7 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
         setBasePresenterImplement(presenter);
         getSavedInstanceState(savedInstanceState);
 
-        wvContent.setWebViewClient(new InjectedWebviewClient(this));
+        wvContent.setWebViewClient(new CustomWebviewClient(this));
         wvContent.setWebChromeClient(new CustomChromeClient(Constant.JavaScript.INJECTED_NAME, LifeServicePlatform.class, this));
         wvContent.getSettings().setJavaScriptEnabled(true);
         wvContent.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -105,7 +105,7 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
 
     @Override
     public void receivedTitle(WebView view, String title) {
-        initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, title);
+        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, title);
     }
 
     @Override

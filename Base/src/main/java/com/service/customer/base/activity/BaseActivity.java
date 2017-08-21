@@ -322,7 +322,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
-    
+
     protected void startActivity(String action, Bundle bundle) {
         Intent intent = new Intent();
         intent.setAction(action);
@@ -362,34 +362,39 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivityForResult(cls, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, int requestCode) {
-        startActivityForResult(act, requestCode, null);
+    protected void startActivityForResult(String action, int requestCode) {
+        startActivityForResult(action, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, int requestCode, Bundle bundle) {
-        startActivityForResult(act, null, null, requestCode, bundle);
+    protected void startActivityForResult(String action, int requestCode, Bundle bundle) {
+        startActivityForResult(action, null, null, requestCode, bundle);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResult(String act, Uri uri, int requestCode) {
-        startActivityForResult(act, uri, null, requestCode, null);
+    protected void startActivityForResult(String action, Uri uri, int requestCode) {
+        startActivityForResult(action, uri, null, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, String type, int requestCode, Bundle bundle) {
-        startActivityForResult(act, null, type, requestCode, bundle);
+    protected void startActivityForResult(String action, String type, int requestCode, Bundle bundle) {
+        startActivityForResult(action, null, type, requestCode, bundle);
     }
 
-    protected void startActivityForResult(String act, Uri uri, String type, int requestCode) {
-        startActivityForResult(act, uri, type, requestCode, null);
+    protected void startActivityForResult(String action, Uri uri, String type, int requestCode) {
+        startActivityForResult(action, uri, type, requestCode, null);
     }
 
-    protected void startActivityForResultWithParcelable(String act, HashMap<String, Parcelable> map, int requestCode) {
-        startActivityForResultWithParcelable(act, null, null, map, requestCode);
+    protected void startActivityForResultWithParcelable(String action, int flags, HashMap<String, Parcelable> map, int requestCode) {
+        startActivityForResultWithParcelable(action, null, flags, null, map, requestCode);
     }
 
-    protected void startActivityForResultWithParcelable(String act, Uri uri, String type, HashMap<String, Parcelable> map, int requestCode) {
+    protected void startActivityForResultWithParcelable(String action, Uri uri, int flags, String type, HashMap<String, Parcelable> map, int requestCode) {
         Intent intent = new Intent();
-        intent.setAction(act);
+        if (!TextUtils.isEmpty(action)) {
+            intent.setAction(action);
+        }
+        if (flags != Constant.FileProvider.DEFAULT_FLAG) {
+            intent.addFlags(flags);
+        }
         if (map != null) {
             for (String key : map.keySet()) {
                 intent.putExtra(key, map.get(key));
@@ -402,13 +407,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResultWithSerializable(String act, HashMap<String, Serializable> map, int requestCode) {
-        startActivityForResultWithSerializable(act, null, null, map, requestCode);
+    protected void startActivityForResultWithSerializable(String action, HashMap<String, Serializable> map, int requestCode) {
+        startActivityForResultWithSerializable(action, null, null, map, requestCode);
     }
 
-    protected void startActivityForResultWithSerializable(String act, Uri uri, String type, HashMap<String, Serializable> map, int requestCode) {
+    protected void startActivityForResultWithSerializable(String action, Uri uri, String type, HashMap<String, Serializable> map, int requestCode) {
         Intent intent = new Intent();
-        intent.setAction(act);
+        if (!TextUtils.isEmpty(action)) {
+            intent.setAction(action);
+        }
         if (map != null) {
             for (String key : map.keySet()) {
                 intent.putExtra(key, map.get(key));
@@ -421,17 +428,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    protected void startActivityForResult(String act, Uri uri, String type, int requestCode, Bundle bundle) {
-        startActivityForResult(act, uri, type, Constant.FileProvider.DEFAULT_FLAG, requestCode, bundle);
+    protected void startActivityForResult(String action, Uri uri, String type, int requestCode, Bundle bundle) {
+        startActivityForResult(action, uri, type, Constant.FileProvider.DEFAULT_FLAG, requestCode, bundle);
     }
 
-    protected void startActivityForResult(String act, Uri uri, String type, int flags, int requestCode) {
-        startActivityForResult(act, uri, type, flags, requestCode, null);
+    protected void startActivityForResult(String action, Uri uri, String type, int flags, int requestCode) {
+        startActivityForResult(action, uri, type, flags, requestCode, null);
     }
 
-    protected void startActivityForResult(String act, Uri uri, String type, int flags, int requestCode, Bundle bundle) {
+    protected void startActivityForResult(String action, Uri uri, String type, int flags, int requestCode, Bundle bundle) {
         Intent intent = new Intent();
-        intent.setAction(act);
+        if (!TextUtils.isEmpty(action)) {
+            intent.setAction(action);
+        }
         if (flags != Constant.FileProvider.DEFAULT_FLAG) {
             intent.addFlags(flags);
         }

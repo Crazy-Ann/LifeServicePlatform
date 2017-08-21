@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import com.google.common.collect.Lists;
@@ -46,7 +47,7 @@ public class IOUtil {
     private File getFilePath(Context ctx) {
         File path;
         if (isSDCardExsist()) {
-//            Cache = getExternalStoragePublicDirectory(ctx, Regex.LOG.getRegext());
+//            Cache = getExternalFilesDir(ctx, Regex.LOG.getRegext());
             path = ctx.getExternalFilesDir(Regex.LOG.getRegext());
 
         } else {
@@ -122,6 +123,7 @@ public class IOUtil {
 
     public File forceMkdir(File directory) throws IOException {
         if (directory != null) {
+            LogUtil.getInstance().print("directory:" + directory.getAbsolutePath());
             if (directory.exists()) {
                 if (!directory.isDirectory()) {
                     throw new IOException("File " + directory + " exists and is not a directory. Unable to create directory.");
@@ -420,14 +422,6 @@ public class IOUtil {
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
 
-    public File getExternalStoragePublicDirectory(Context context, String directoryName, String fileName) throws IOException {
-        if (isSDCardExsist()) {
-            return new File(IOUtil.getInstance().forceMkdir(Environment.getExternalStoragePublicDirectory(directoryName)).getAbsolutePath() + fileName);
-        } else {
-            return new File(context.getExternalFilesDir(directoryName).getAbsolutePath() + fileName);
-        }
-    }
-
     public File getExternalStorageDirectory(Context ctx, String dirName) {
         return new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                                 + "/android/data/"
@@ -436,15 +430,35 @@ public class IOUtil {
                                 + dirName + File.separator);
     }
 
+    public File getExternalFilesDir(Context context, String directoryName, String fileName) throws IOException {
+        if (isSDCardExsist()) {
+            if (!TextUtils.isEmpty(fileName)) {
+                return new File(forceMkdir(Environment.getExternalStoragePublicDirectory(directoryName)).getAbsolutePath() + Regex.LEFT_SLASH.getRegext() + fileName);
+            } else {
+                return Environment.getExternalStoragePublicDirectory(directoryName);
+            }
+        } else {
+            if (!TextUtils.isEmpty(fileName)) {
+                return new File(context.getExternalFilesDir(directoryName).getAbsolutePath() + Regex.LEFT_SLASH.getRegext() + fileName);
+            } else {
+                return context.getExternalFilesDir(directoryName);
+            }
+        }
+    }
+
     public Uri getFileUri(Context context, boolean isProvider, String path) {
         return getFileUri(context, isProvider, new File(path));
     }
 
     public Uri getFileUri(Context context, boolean isProvider, File file) {
-        if (isProvider) {
-            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? FileProvider.getUriForFile(context, Constant.FileProvider.AUTHORITY, file) : Uri.fromFile(file);
-        } else {
-            return Uri.fromFile(file);
+        if(file!=null) {
+            if (isProvider) {
+                return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? FileProvider.getUriForFile(context, Constant.FileProvider.AUTHORITY, file) : Uri.fromFile(file);
+            } else {
+                return Uri.fromFile(file);
+            }
+        }else {
+            return null;
         }
     }
 }

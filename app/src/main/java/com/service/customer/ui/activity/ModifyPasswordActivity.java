@@ -73,7 +73,7 @@ public class ModifyPasswordActivity extends ActivityViewImplement<ModifyPassword
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.modify_password));
+        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.modify_password));
 
         modifyPasswordPresenter = new ModifyPasswordPresenter(this, this);
         modifyPasswordPresenter.initialize();
@@ -84,7 +84,7 @@ public class ModifyPasswordActivity extends ActivityViewImplement<ModifyPassword
         editTextValidator = new EditTextValidator();
         editTextValidator.add(new Validation(null, etNewPassword, true, ibNewPasswordEmpty, new NewPasswordValidation()));
         editTextValidator.add(new Validation(null, etNewPasswordAgain, true, ibNewPasswordAgainEmpty, new NewPasswordValidation()));
-        editTextValidator.execute(this, btnModifyPassword, R.drawable.frame_fillet_e4e4e4, R.drawable.frame_fillet_f40046, android.R.color.white, android.R.color.white, null, null, false);
+        editTextValidator.execute(this, btnModifyPassword, R.drawable.frame_fillet_e4e4e4, R.drawable.frame_fillet_015293, android.R.color.white, android.R.color.white, null, null, false);
     }
 
     @Override

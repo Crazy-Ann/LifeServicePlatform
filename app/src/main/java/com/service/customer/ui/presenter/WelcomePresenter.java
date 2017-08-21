@@ -97,7 +97,7 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             ConfigInfo configInfo = (ConfigInfo) BaseApplication.getInstance().getConfigInfo();
             try {
-                File derectory = IOUtil.getInstance().getExternalStoragePublicDirectory(context, Constant.FILE_NAME, null);
+                File derectory = IOUtil.getInstance().getExternalFilesDir(context, Constant.FILE_NAME, null);
                 if (configInfo != null) {
                     String url = configInfo.getDownloadUrl();
                     if (!TextUtils.isEmpty(url)) {

@@ -112,7 +112,7 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-
+                        view.showPromptDialog(R.string.dialog_prompt_save_work_info_success, Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS);
                     }
 
                     @Override

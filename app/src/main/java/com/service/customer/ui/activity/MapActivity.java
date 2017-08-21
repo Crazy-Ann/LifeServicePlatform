@@ -25,12 +25,14 @@ import com.amap.api.services.district.DistrictResult;
 import com.amap.api.services.district.DistrictSearch;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.service.customer.R;
+import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.AnimationUtil;
 import com.service.customer.components.utils.GlideUtil;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
+import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.entity.TaskInfo;
@@ -41,6 +43,7 @@ import com.service.customer.ui.dialog.PromptDialog;
 import com.service.customer.ui.presenter.MapPresenter;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MapActivity extends ActivityViewImplement<MapContract.Presenter> implements MapContract.View, View.OnClickListener, OnLeftIconEventListener, AMap.OnMarkerClickListener, DistrictSearch.OnDistrictSearchListener {
 
@@ -74,13 +77,13 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_383857, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.map_event));
+        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.map_event));
         mapView.onCreate(savedInstanceState);
 
         mapPresenter = new MapPresenter(this, this);
         mapPresenter.initialize();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mapPresenter.checkPermission(this,this);
+            mapPresenter.checkPermission(this, this);
         } else {
             mapPresenter.getTaskInfos();
         }
@@ -148,7 +151,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    mapPresenter.checkPermission(this,this);
+                    mapPresenter.checkPermission(this, this);
                 } else {
                     mapPresenter.getTaskInfos();
                 }
@@ -246,15 +249,24 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     }
 
     @Override
-    public void setEventMarker(TaskInfos taskInfos) {
-        if (taskInfos != null) {
-            for (TaskInfo taskInfo : taskInfos.getTaskInfos()) {
-                mapPresenter.getAMap().addMarker(new MarkerOptions()
-                                                         .position(new LatLng(taskInfo.getLatitude(), taskInfo.getLongitude()))
-                                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                                                         .draggable(false)).setObject(taskInfo);
+    public void setEventMarker(final TaskInfos taskInfos) {
+        ThreadPoolUtil.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (taskInfos != null) {
+                        for (TaskInfo taskInfo : taskInfos.getTaskInfos()) {
+                            mapPresenter.getAMap().addMarker(new MarkerOptions()
+                                                                     .position(new LatLng(taskInfo.getLatitude(), taskInfo.getLongitude()))
+                                                                     .icon(BitmapDescriptorFactory.fromBitmap(GlideUtil.getInstance().get(BaseApplication.getInstance(), R.mipmap.icon_mark, ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24), ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24))))
+                                                                     .draggable(false)).setObject(taskInfo);
+                        }
+                    }
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }
+        });
     }
 
     @Override

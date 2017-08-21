@@ -44,7 +44,7 @@ public class EvaluatePresenter extends BasePresenterImplement implements Evaluat
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-                        view.showPromptDialog(R.string.evaluate_prompt3, Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_SUCCESS);
+                        view.showPromptDialog(R.string.dialog_prompt_evaluate_info_success, Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_SUCCESS);
                     }
 
                     @Override
