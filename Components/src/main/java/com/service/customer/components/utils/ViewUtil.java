@@ -422,7 +422,7 @@ public class ViewUtil {
     }
 
     public void hideDialog(DialogFragment dialog) {
-        if (dialog != null && dialog.getFragmentManager().isDestroyed()) {
+        if (dialog != null && !dialog.getFragmentManager().isDestroyed()) {
             dialog.dismissAllowingStateLoss();
         }
     }
