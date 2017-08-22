@@ -36,21 +36,21 @@ public class FragmentUtil {
         return operationInfo.tag.equals(tag);
     }
 
-    public Fragment show(String tag, boolean hasAnimate, boolean isRefresh) {
-        return show(items.get(tag), hasAnimate, isRefresh);
+    public Fragment show(String tag, boolean hasAnimate, boolean hasRefresh) {
+        return show(items.get(tag), hasAnimate, hasRefresh);
     }
 
-    public Fragment show(int id, boolean hasAnimate, boolean isRefresh) {
-        return show(items.get(String.valueOf(id)), hasAnimate, isRefresh);
+    public Fragment show(int id, boolean hasAnimate, boolean hasRefresh) {
+        return show(items.get(String.valueOf(id)), hasAnimate, hasRefresh);
     }
 
-    public Fragment show(String tag, Bundle args, boolean hasAnimate, boolean isRefresh) {
+    public Fragment show(String tag, Bundle args, boolean hasAnimate, boolean hasRefresh) {
         OperationInfo info = items.get(tag);
         info.bundle = args;
-        return show(info, hasAnimate, isRefresh);
+        return show(info, hasAnimate, hasRefresh);
     }
 
-    private Fragment show(OperationInfo operationInfo, boolean hasAnimate, boolean isRefresh) {
+    private Fragment show(OperationInfo operationInfo, boolean hasAnimate, boolean hasRefresh) {
         FragmentTransaction transaction = fragmentManager.beginTransaction().disallowAddToBackStack();
         if (hasAnimate) {
             transaction.setCustomAnimations(animations[0], animations[1]);
@@ -72,7 +72,7 @@ public class FragmentUtil {
                 }
             }
         } else {
-            if(isRefresh){
+            if(hasRefresh){
                 transaction.remove(this.operationInfo.fragment);
                 this.operationInfo.fragment = Fragment.instantiate(this.operationInfo.context, this.operationInfo.clazz.getName(), this.operationInfo.bundle);
                 if (operationInfo.bundle != null) {
