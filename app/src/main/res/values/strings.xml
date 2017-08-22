@@ -59,6 +59,7 @@
     <string name="task_prompt">请输入相关描述信息</string>
     <string name="save_task_info_prompt">正在提交任务，请稍后…</string>
     <string name="dialog_prompt_save_task_info_error">提交任务异常</string>
+    <string name="dialog_prompt_save_task_info_success">提交任务成功</string>
     <string name="save_work_info_prompt">正在提交工作日志，请稍后…</string>
     <string name="dialog_prompt_save_work_info_error">提交工作日志异常</string>
     <string name="dialog_prompt_save_work_info_success">提交工作日志成功</string>
@@ -93,12 +94,14 @@
     <string name="notification_announcement_list">通知公告列表</string>
     <string name="task_management">任务管理</string>
     <string name="mine">我的</string>
+    <string name="processing_completed">处理完成</string>
+    <string name="cannot_handle">无法处理(移交上级)</string>
     <string name="submit">提交</string>
     <string name="get_evnet_infos">正在事件信息,请稍后…</string>
     <string name="related_description">相关描述</string>
     <string name="text_descreption_prompt">请输入相关描述</string>
     <string name="piture_description_prompt">请提供相关问题的截图或照片</string>
-    <string name="my_work_log">我的工作日志</string>
+    <string name="work_log">工作日志</string>
     <string name="add_work_log">添加工作日志</string>
     <string name="map_event">地图事件</string>
     <string name="my_greeting_card">我的贺卡</string>
@@ -107,6 +110,9 @@
     <string name="evaluate_prompt2">请选择服务评价星级</string>
     <string name="dialog_prompt_evaluate_info_success">服务评价成功</string>
     <string name="dialog_prompt_evaluate_info_error">获取评价信息异常</string>
+    <string name="deal_task_info_prompt">正在提交任务处理信息，请稍后…</string>
+    <string name="dialog_prompt_deal_task_info_success">提交任务处理信息成功</string>
+    <string name="dialog_prompt_deal_task_info_error">提交任务处理信息异常</string>
 
     <!--图片获取相关-->
     <string name="get_image_error">图片获取失败</string>

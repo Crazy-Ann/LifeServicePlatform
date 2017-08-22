@@ -9,22 +9,24 @@ import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.net.model.BaseEntity;
 import com.service.customer.components.http.model.FileWrapper;
-import com.service.customer.components.utils.LogUtil;
+import com.service.customer.components.tts.TTSUtil;
+import com.service.customer.components.utils.IOUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
 import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.net.listener.ApiListener;
-import com.service.customer.ui.contract.TaskContract;
+import com.service.customer.ui.contract.TaskSubmitContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
+import java.io.IOException;
 import java.util.List;
 
 
-public class TaskPresenter extends BasePresenterImplement implements TaskContract.Presenter {
+public class TaskSubmitPresenter extends BasePresenterImplement implements TaskSubmitContract.Presenter {
 
     private Context context;
-    private TaskContract.View view;
+    private TaskSubmitContract.View view;
     private AMapLocationClient aMapLocationClient;
     private AMapLocationClientOption aMapLocationClientOption;
 
@@ -36,7 +38,7 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
         return aMapLocationClientOption;
     }
 
-    public TaskPresenter(Context context, TaskContract.View view) {
+    public TaskSubmitPresenter(Context context, TaskSubmitContract.View view) {
         this.context = context;
         this.view = view;
     }
@@ -44,6 +46,7 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
     @Override
     public void initialize() {
         super.initialize();
+        TTSUtil.getInstance().initializeSpeechRecognizer(context);
         aMapLocationClient = new AMapLocationClient(BaseApplication.getInstance());
         aMapLocationClientOption = new AMapLocationClientOption();
         aMapLocationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
@@ -68,7 +71,6 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
 
     @Override
     public void saveTaskInfo(String longitude, String latitude, String address, int taskType, String taskNote, List<FileWrapper> fileWrappers) {
-        LogUtil.getInstance().print("saveTaskInfo");
         Api.getInstance().saveTaskInfo(
                 context,
                 view,
@@ -85,7 +87,8 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-                        view.startMainActivity(Constant.Tab.TASK_MANAGEMENT);
+                        view.showPromptDialog(R.string.dialog_prompt_save_task_info_success, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_SUCCESS);
+                        deleteFile();
                     }
 
                     @Override
@@ -97,29 +100,11 @@ public class TaskPresenter extends BasePresenterImplement implements TaskContrac
     }
 
     @Override
-    public void saveWrokInfo(int workType, String workNote, List<FileWrapper> fileWrappers) {
-        LogUtil.getInstance().print("saveWrokInfo");
-        Api.getInstance().saveWrokInfo(
-                context,
-                view,
-//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
-                BuildConfig.SERVICE_URL + ServiceMethod.SAVE_WOORK_INFO,
-                ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
-                workType,
-                workNote,
-                fileWrappers,
-                new ApiListener() {
-
-                    @Override
-                    public void success(BaseEntity baseEntity) {
-                        view.showPromptDialog(R.string.dialog_prompt_save_work_info_success, Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS);
-                    }
-
-                    @Override
-                    public void failed(BaseEntity entity, String errorCode, String errorMessage) {
-
-                    }
-                }
-        );
+    public void deleteFile() {
+        try {
+            IOUtil.getInstance().deleteFile(IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, null));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -34,32 +34,35 @@
     <img src="../images/banner_index.png" alt="密云生活服务平台">
 </div>
 <nav class="nav-btn">
+    <!--phone_call 拨打'phone'-->
     <a targe="_blank" class="btn-sos">
         <img src="../images/icon/nav_01.png" alt="紧急求助">
         <p>紧急求助</p>
     </a>
+    <!--new_wap_page 新开页面显示'url'-->
+    <!--submit_page 跳转提交页面-->
     <a targe="_blank"
-       onclick="callNative({'tag':'doctor_medicine', 'parameter':{'location':true, 'title':'寻医问药', 'url':''}})">
+       onclick="callNative({'tag':'task_submit', 'parameter':{'title':'寻医问药', 'tasktype':1}})">
         <img src="../images/icon/nav_02.png" alt="寻医问药">
         <p>寻医问药</p>
     </a>
     <a targe="_blank"
-       onclick="callNative({'tag':'appliance_maintenance', 'parameter':{'location':true, 'title':'家电维修', 'url':''}})">
+       onclick="callNative({'tag':'task_submit', 'parameter':{'title':'家电维修', 'tasktype':1}})">
         <img src="../images/icon/nav_03.png" alt="家电维修">
         <p>家电维修</p>
     </a>
     <a targe="_blank"
-       onclick="callNative({'tag':'living_facilities_maintenance', 'parameter':{'location':true, 'title':'生活设施维修', 'url':''}})">
+       onclick="callNative({'tag':'task_submit', 'parameter':{'title':'生活设施维修', 'tasktype':1}})">
         <img src="../images/icon/nav_04.png" alt="生活设施维修">
         <p>生活设施维修</p>
     </a>
     <a targe="_blank"
-       onclick="callNative({'tag':'other_life_events', 'parameter':{'location':true, 'title':'其他生活事件', 'url':''}})">
+       onclick="callNative({'tag':'task_submit', 'parameter':{'title':'其他生活事件', 'tasktype':1}})">
         <img src="../images/icon/nav_05.png" alt="其他生活事件">
         <p>其他生活事件</p>
     </a>
     <a targe="_blank"
-       onclick="callNative({'tag':'psychological_counseling', 'parameter':{'location':true, 'title':'心理咨询', 'url':''}})">
+       onclick="callNative({'tag':'task_submit', 'parameter':{'title':'心理咨询', 'tasktype':1}})">
         <img src="../images/icon/nav_06.png" alt="心理咨询">
         <p>心理咨询</p>
     </a>
@@ -123,10 +126,10 @@
 <div class="mask"></div>
 <div class="showdiv">
     <ul>
-        <li><a onclick="callNative({'tag':'securety_police_call', 'parameter':{'phone':'110', 'title':'匪警', 'url':''}})">110 匪警</a></li>
-        <li><a onclick="callNative({'tag':'fire_control_call', 'parameter':{'phone':'119', 'title':'火警', 'url':''}})">119 火警</a></li>
-        <li><a onclick="callNative({'tag':'hospital_call', 'parameter':{'phone':'120', 'title':'急救', 'url':''}})">120 急救</a></li>
-        <li><a onclick="callNative({'tag':'traffic_police_call', 'parameter':{'phone':'122', 'title':'交通事故', 'url':''}})">122 交通事故</a></li>
+        <li><a onclick="callNative({'tag':'phone_call', 'parameter':{'phone':'110', 'title':'匪警'}})">110 匪警</a></li>
+        <li><a onclick="callNative({'tag':'phone_call', 'parameter':{'phone':'119', 'title':'火警'}})">119 火警</a></li>
+        <li><a onclick="callNative({'tag':'phone_call', 'parameter':{'phone':'120', 'title':'急救'}})">120 急救</a></li>
+        <li><a onclick="callNative({'tag':'phone_call', 'parameter':{'phone':'122', 'title':'交通事故'}})">122 交通事故</a></li>
     </ul>
     <a class="btn-cancel">取消</a>
 </div>

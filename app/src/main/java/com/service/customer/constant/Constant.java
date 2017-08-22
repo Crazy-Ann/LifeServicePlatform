@@ -51,21 +51,27 @@ public final class Constant {
         public static final int DIALOG_PROMPT_GET_EVENT_INFOS = 0x5025;
         public static final int DIALOG_PROGRESS_SAVE_TASK_INFO = 0x5026;
         public static final int DIALOG_PROMPT_SAVE_TASK_INFO_ERROR = 0x5027;
-        public static final int DIALOG_PROGRESS_LOCATION = 0x5028;
-        public static final int DIALOG_PROMPT_LOCATION_ERROR = 0x5029;
-        public static final int DIALOG_PROGRESS_GET_BOUNDARY = 0x5030;
-        public static final int DIALOG_PROMPT_GET_BOUNDARY_ERROR = 0x5031;
-        public static final int DIALOG_PROMPT_TOKEN_ERROR = 0x5032;
-        public static final int DIALOG_PROMPT_MODIFY_PASSWORD_SUCCESS = 0x5033;
-        public static final int DIALOG_PROGRESS_SCORE_TASK_INFO = 0x5034;
-        public static final int DIALOG_PROMPT_SCORE_TASK_INFO_ERROR = 0x5035;
-        public static final int DIALOG_PROGRESS_TASK_INFOS = 0x5036;
-        public static final int DIALOG_PROMPT_TASK_INFOS_ERROR = 0x5037;
-        public static final int DIALOG_PROMPT_EVALUATE_INFO_SUCCESS = 0x5038;
-        public static final int DIALOG_PROMPT_EVALUATE_INFO_ERROR = 0x5039;
-        public static final int DIALOG_PROGRESS_SAVE_WORK_INFO = 0x5040;
-        public static final int DIALOG_PROMPT_SAVE_WORK_INFO_ERROR = 0x5041;
-        public static final int DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS = 0x5042;
+        public static final int DIALOG_PROMPT_SAVE_TASK_INFO_SUCCESS = 0x5028;
+        public static final int DIALOG_PROGRESS_LOCATION = 0x5029;
+        public static final int DIALOG_PROMPT_LOCATION_ERROR = 0x5030;
+        public static final int DIALOG_PROGRESS_GET_BOUNDARY = 0x5031;
+        public static final int DIALOG_PROMPT_GET_BOUNDARY_ERROR = 0x5032;
+        public static final int DIALOG_PROMPT_TOKEN_ERROR = 0x5033;
+        public static final int DIALOG_PROMPT_MODIFY_PASSWORD_SUCCESS = 0x5034;
+        public static final int DIALOG_PROGRESS_SCORE_TASK_INFO = 0x5035;
+        public static final int DIALOG_PROMPT_SCORE_TASK_INFO_ERROR = 0x5036;
+        public static final int DIALOG_PROGRESS_TASK_INFOS = 0x5037;
+        public static final int DIALOG_PROMPT_TASK_INFOS_ERROR = 0x5038;
+        public static final int DIALOG_PROMPT_EVALUATE_INFO_SUCCESS = 0x5039;
+        public static final int DIALOG_PROMPT_EVALUATE_INFO_ERROR = 0x5040;
+        public static final int DIALOG_PROGRESS_SAVE_WORK_INFO = 0x5041;
+        public static final int DIALOG_PROMPT_SAVE_WORK_INFO_ERROR = 0x5042;
+        public static final int DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS = 0x5043;
+        public static final int DIALOG_PROMPT_SUBMIT_PICTURE_ERROR = 0x5044;
+        public static final int DIALOG_PROGRESS_DEAL_TASK_INFO = 0x5045;
+        public static final int DIALOG_PROMPT_DEAL_TASK_INFO_ERROR = 0x5046;
+        public static final int DIALOG_PROMPT_DEAL_TASK_INFO_SUCCESS = 0x5047;
+        public static final int DIALOG_PROMPT_TTS_INTIALIZED_ERROR = 0x5048;
         public static final int INSTALL_APK = 0x5097;
         public static final int REQUEST_CODE_PHOTOGRAPH = 0x5098;
         public static final int REQUEST_CODE_ALBUM = 0x5099;
@@ -129,10 +135,11 @@ public final class Constant {
         public static final String INJECTED_NAME = "LifeServicePlatform";
         public static final String TAG = "tag";
         public static final String PARAMETER = "parameter";
-        public static final String LOCATION = "location";
         public static final String TITLE = "title";
         public static final String URL = "url";
         public static final String PHONE = "phone";
+        public static final String TASK_TYPE = "tasktype";
+        public static final String BILL_NO = "billno";
 
         public static final String EMERGENCY_CALL_FOR_HELP = "emergency_call_for_help";
         public static final String APPLIANCE_MAINTENANCE = "appliance_maintenance";
@@ -152,9 +159,20 @@ public final class Constant {
         public static final String INFORMATION_MANAGEMENT = "information_management";
         public static final String EVENT_QUERY = "event_query";
         public static final String MAP_QUERY = "map_query";
+        public static final String WORK_LOG = "work_log";
+
+        public static final String NEW_WAP_PAGE = "new_wap_page";
+        public static final String TASK_PROCESSING = "task_processing";
+        public static final String TASK_SUBMIT = "task_submit";
+        public static final String PHONE_CALL = "phone_call";
     }
-    
-    public static class ASSET_URL{
+
+    public static class DEAL_STATUS {
+        public static final int PROCESSING_COMPLETED = 2;
+        public static final int DEMANDER_INDEX = 4;
+    }
+
+    public static class ASSET_URL {
         public static final String VOLUNTEER_INDEX = "file:///android_asset/h5/zView/Index.html";
         public static final String DEMANDER_INDEX = "file:///android_asset/h5/mView/Index.html";
         public static final String GREETING_CARD_LIST = "file:///android_asset/h5/mView/GreetingCardList.html";

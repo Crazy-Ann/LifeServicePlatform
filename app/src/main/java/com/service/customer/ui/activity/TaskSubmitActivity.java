@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
+import com.iflytek.cloud.ErrorCode;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.handler.ActivityHandler;
@@ -27,8 +28,9 @@ import com.service.customer.base.sticky.adapter.FixedStickyViewAdapter;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.http.model.FileWrapper;
-import com.service.customer.components.tts.OnDictationListener;
+import com.service.customer.components.tts.listener.OnDictationListener;
 import com.service.customer.components.tts.TTSUtil;
+import com.service.customer.components.tts.listener.OnIntializeListener;
 import com.service.customer.components.utils.BitmapUtil;
 import com.service.customer.components.utils.BundleUtil;
 import com.service.customer.components.utils.IOUtil;
@@ -48,11 +50,12 @@ import com.service.customer.net.entity.TaskImageInfo;
 import com.service.customer.net.entity.validation.TaskValidation;
 import com.service.customer.ui.adapter.TaskImageAdapter;
 import com.service.customer.ui.binder.TaskImageBinder;
-import com.service.customer.ui.contract.TaskContract;
+import com.service.customer.ui.contract.TaskSubmitContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
-import com.service.customer.ui.presenter.TaskPresenter;
+import com.service.customer.ui.presenter.TaskSubmitPresenter;
 import com.service.customer.ui.widget.edittext.VoiceEdittext;
+import com.service.customer.ui.widget.edittext.listener.OnVoiceClickListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,9 +64,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> implements TaskContract.View, View.OnClickListener, OnDictationListener, OnLeftIconEventListener, AMapLocationListener, FixedStickyViewAdapter.OnItemClickListener {
+public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract.Presenter> implements TaskSubmitContract.View, View.OnClickListener, OnDictationListener, OnLeftIconEventListener, AMapLocationListener, FixedStickyViewAdapter.OnItemClickListener, OnVoiceClickListener, OnIntializeListener {
 
-    private TaskPresenter taskPresenter;
+    private TaskSubmitPresenter taskSubmitPresenter;
     private TextView tvLocation;
     private VoiceEdittext vetDescreption;
     private RecyclerView rvTaskImage;
@@ -77,14 +80,14 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
 
     private TaskHandler taskHandler;
 
-    private class TaskHandler extends ActivityHandler<TaskActivity> {
+    private class TaskHandler extends ActivityHandler<TaskSubmitActivity> {
 
-        public TaskHandler(TaskActivity activity) {
+        public TaskHandler(TaskSubmitActivity activity) {
             super(activity);
         }
 
         @Override
-        protected void handleMessage(TaskActivity activity, Message msg) {
+        protected void handleMessage(TaskSubmitActivity activity, Message msg) {
             switch (msg.what) {
                 case Constant.Message.GET_IMAGE_SUCCESS:
                     hideLoadingPromptDialog();
@@ -104,7 +107,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task);
+        setContentView(R.layout.activity_task_submit);
         findViewById();
         initialize(savedInstanceState);
         setListener();
@@ -122,26 +125,20 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
     @Override
     protected void initialize(Bundle savedInstanceState) {
         initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
-        TTSUtil.getInstance(this).initializeSpeechRecognizer();
 
         vetDescreption.setHint(getString(R.string.text_descreption_prompt));
         vetDescreption.setTextCount(0);
         taskHandler = new TaskHandler(this);
-        taskPresenter = new TaskPresenter(this, this);
-        taskPresenter.initialize();
+        taskSubmitPresenter = new TaskSubmitPresenter(this, this);
+        taskSubmitPresenter.initialize();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            taskPresenter.checkPermission(this, this);
+            taskSubmitPresenter.checkPermission(this, this);
         } else {
-            if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
-                ViewUtil.getInstance().setViewVisible(tvLocation);
-                taskPresenter.location();
-            } else {
-                ViewUtil.getInstance().setViewGone(tvLocation);
-            }
+            taskSubmitPresenter.location();
         }
 
-        setBasePresenterImplement(taskPresenter);
+        setBasePresenterImplement(taskSubmitPresenter);
         getSavedInstanceState(savedInstanceState);
 
         editTextValidator = new EditTextValidator();
@@ -168,8 +165,10 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
 
     @Override
     protected void setListener() {
-        TTSUtil.getInstance(this).setOnDictationListener(this);
-        taskPresenter.getAMapLocationClient().setLocationListener(this);
+        TTSUtil.getInstance().setOnIntializeListener(this);
+        vetDescreption.setOnVoiceClickListener(this);
+        TTSUtil.getInstance().setOnDictationListener(this);
+        taskSubmitPresenter.getAMapLocationClient().setLocationListener(this);
         taskImageAdapter.setOnItemClickListener(this);
     }
 
@@ -180,24 +179,8 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
         }
         switch (view.getId()) {
             case R.id.btnSubmit:
-                if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
-                    if (aMapLocation != null) {
-                        if (editTextValidator.validate(this)) {
-                            List<FileWrapper> fileWrappers = new ArrayList<>();
-                            for (TaskImageInfo taskImageInfo : taskImageInfos) {
-                                File file = taskImageInfo.getFile();
-                                if (file != null) {
-                                    fileWrappers.add(new FileWrapper(file));
-                                }
-                            }
-                            taskPresenter.saveTaskInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), String.valueOf(aMapLocation.getAddress()), 1, vetDescreption.getText().trim(), fileWrappers);
-                        }
-                    } else {
-                        showLocationPromptDialog(R.string.dialog_prompt_location_error, Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
-                    }
-                } else {
+                if (aMapLocation != null) {
                     if (editTextValidator.validate(this)) {
-//                        if (taskImageInfos != null && taskImageInfos.size() > 2) {
                         List<FileWrapper> fileWrappers = new ArrayList<>();
                         for (TaskImageInfo taskImageInfo : taskImageInfos) {
                             File file = taskImageInfo.getFile();
@@ -205,10 +188,10 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                                 fileWrappers.add(new FileWrapper(file));
                             }
                         }
-                        taskPresenter.saveWrokInfo(1, vetDescreption.getText().trim(), fileWrappers);
-//                        }else{
-//                        }
+                        taskSubmitPresenter.saveTaskInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), String.valueOf(aMapLocation.getAddress()), BundleUtil.getInstance().getIntData(this, Temp.TASK_TYPE.getContent()), vetDescreption.getText().trim(), fileWrappers);
                     }
+                } else {
+                    showLocationPromptDialog(R.string.dialog_prompt_location_error, Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
                 }
                 break;
             default:
@@ -223,14 +206,9 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    taskPresenter.checkPermission(this, this);
+                    taskSubmitPresenter.checkPermission(this, this);
                 } else {
-                    if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
-                        ViewUtil.getInstance().setViewVisible(tvLocation);
-                        taskPresenter.location();
-                    } else {
-                        ViewUtil.getInstance().setViewGone(tvLocation);
-                    }
+                    taskSubmitPresenter.location();
                 }
                 break;
             case Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:
@@ -240,8 +218,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                     public void run() {
                         try {
                             File file = IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
-                            Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), IOUtil.getInstance().getFileUri(BaseApplication.getInstance(), true, file), 0.5f);
-                            if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
+                            if (file != null && BitmapUtil.getInstance().saveBitmap(ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), IOUtil.getInstance().getFileUri(BaseApplication.getInstance(), true, file), 0.5f), file.getAbsolutePath())) {
                                 TaskImageInfo taskImageInfo = new TaskImageInfo();
                                 taskImageInfo.setFile(file);
                                 taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
@@ -294,7 +271,13 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
     @Override
     protected void onPause() {
         super.onPause();
-        TTSUtil.getInstance(this).stopListening();
+        TTSUtil.getInstance().stopListening();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        taskSubmitPresenter.deleteFile();
     }
 
     @Override
@@ -323,7 +306,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_LOCATION_ERROR");
-                taskPresenter.location();
+                taskSubmitPresenter.location();
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_SELECT_IMAGE:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SELECT_IMAGE");
@@ -333,9 +316,20 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
                 startLoginActivity(true);
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_SUCCESS:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SAVE_TASK_INFO_SUCCESS");
+                startMainActivity(Constant.Tab.TASK_MANAGEMENT);
+                break;
             case Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS");
                 onFinish("DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS");
+                break;
+            case Constant.RequestCode.DIALOG_PROMPT_DEAL_TASK_INFO_SUCCESS:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_DEAL_TASK_INFO_SUCCESS");
+                startMainActivity(Constant.Tab.TASK_MANAGEMENT);
+                break;
+            case Constant.RequestCode.DIALOG_PROMPT_TTS_INTIALIZED_ERROR:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TTS_INTIALIZED_ERROR");
                 break;
             default:
                 break;
@@ -373,12 +367,7 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
 
     @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        if (BundleUtil.getInstance().getBooleanData(this, Temp.NEED_LOCATION.getContent())) {
-            ViewUtil.getInstance().setViewVisible(tvLocation);
-            taskPresenter.location();
-        } else {
-            ViewUtil.getInstance().setViewGone(tvLocation);
-        }
+        taskSubmitPresenter.location();
     }
 
     @Override
@@ -449,6 +438,22 @@ public class TaskActivity extends ActivityViewImplement<TaskContract.Presenter> 
                     .show(this);
         } else {
             ToastUtil.getInstance().showToast(this, R.string.get_task_image_prompt, Toast.LENGTH_SHORT);
+        }
+    }
+
+    @Override
+    public void onVoiceClick() {
+        if (!isFinishing()) {
+            TTSUtil.getInstance().startListening(this);
+        }
+    }
+
+    @Override
+    public void onIntialize(int resultCode) {
+        if (resultCode == ErrorCode.SUCCESS) {
+            TTSUtil.getInstance().startPlaying(this, null);
+        } else {
+            showPromptDialog(R.string.tts_intialized_error_prompt, Constant.RequestCode.DIALOG_PROMPT_TTS_INTIALIZED_ERROR);
         }
     }
 }

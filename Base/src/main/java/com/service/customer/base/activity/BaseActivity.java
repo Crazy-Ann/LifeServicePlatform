@@ -296,7 +296,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(cls, null);
     }
 
-    protected void startActivity(Class<?> cls, Bundle bundle) {
+    public void startActivity(Class<?> cls, Bundle bundle) {
         Intent intent = new Intent();
         intent.setClass(this, cls);
         if (bundle != null) {
@@ -331,6 +331,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+    }
+
+    public void startActivity(String action, Uri uri) {
+        if (!TextUtils.isEmpty(action) && uri != null) {
+            startActivity(new Intent(action, uri));
+            overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+        }
     }
 
     protected void startActivity(Class<?> cls, int flag) {

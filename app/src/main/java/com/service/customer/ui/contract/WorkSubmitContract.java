@@ -6,21 +6,17 @@ import com.service.customer.components.http.model.FileWrapper;
 
 import java.util.List;
 
-public interface TaskContract {
+public interface WorkSubmitContract {
 
     interface View extends BaseView<Presenter> {
 
         boolean isActive();
-
-        void showLocationPromptDialog(int resoutId, int requestCode);
     }
 
     interface Presenter extends BasePresenter {
 
-        void location();
-
-        void saveTaskInfo(String longitude, String latitude, String address, int taskType, String taskNote, List<FileWrapper> fileWrappers);
-
         void saveWrokInfo(int workType, String workNote, List<FileWrapper> fileWrappers);
+
+        void deleteFile();
     }
 }

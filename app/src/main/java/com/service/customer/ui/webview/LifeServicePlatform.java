@@ -9,14 +9,19 @@ import android.text.TextUtils;
 import android.webkit.WebView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.service.customer.base.application.BaseApplication;
+import com.service.customer.base.constant.net.RequestParameterKey;
+import com.service.customer.components.constant.Regex;
 import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.EvaluateInfo;
-import com.service.customer.net.entity.TaskInfos;
+import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.activity.EvaluateActivity;
-import com.service.customer.ui.activity.TaskActivity;
+import com.service.customer.ui.activity.MapActivity;
+import com.service.customer.ui.activity.TaskProcessingActivity;
+import com.service.customer.ui.activity.TaskSubmitActivity;
 import com.service.customer.ui.activity.WapActivity;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 
@@ -26,183 +31,78 @@ public class LifeServicePlatform {
 
     public static void call(final WebView webView, String data) {
         final ActivityViewImplement activityViewImplement = (ActivityViewImplement) webView.getContext();
-        JSONObject jsonObject = JSONObject.parseObject(data);
-        String tag = jsonObject.getString(Constant.JavaScript.TAG);
-        String parameter = jsonObject.getString(Constant.JavaScript.PARAMETER);
-        LogUtil.getInstance().print("object:" + jsonObject.toString());
+        String tag = JSONObject.parseObject(data).getString(Constant.JavaScript.TAG);
+        final String parameter = JSONObject.parseObject(data).getString(Constant.JavaScript.PARAMETER);
+        LogUtil.getInstance().print("object:" + JSONObject.parseObject(data).toString());
         LogUtil.getInstance().print("tag:" + tag);
         LogUtil.getInstance().print("parameter:" + parameter);
         if (!TextUtils.isEmpty(tag)) {
             Bundle bundle;
             switch (tag) {
                 //Volunteer.html
-                case Constant.JavaScript.POLICIES_REGULATIONS:
+                case Constant.JavaScript.NEW_WAP_PAGE:
                     if (!TextUtils.isEmpty(parameter)) {
-                        String url = JSONObject.parseObject(parameter).getString(Constant.JavaScript.URL);
-                        if (!TextUtils.isEmpty(url)) {
-                            Intent intent = new Intent(activityViewImplement, WapActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString(Temp.URL.getContent(), url);
-                            intent.putExtras(bundle);
-                            activityViewImplement.startActivity(intent, bundle);
-                        } else {
-                            activityViewImplement.startActivity(WapActivity.class);
-                        }
+                        bundle = new Bundle();
+                        bundle.putString(Temp.TITLE.getContent(), JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE));
+                        bundle.putString(Temp.URL.getContent(), JSONObject.parseObject(parameter).getString(Constant.JavaScript.URL));
+                        activityViewImplement.startActivity(WapActivity.class, bundle);
                     }
                     break;
-                case Constant.JavaScript.QUERY_ANALYSIS:
-                    activityViewImplement.startActivity(WapActivity.class);
-                    break;
-                case Constant.JavaScript.INFORMATION_MANAGEMENT:
-                    activityViewImplement.startActivity(WapActivity.class);
-                    break;
-                case Constant.JavaScript.EVENT_QUERY:
-                    activityViewImplement.startActivity(WapActivity.class);
-                    break;
+//                case Constant.JavaScript.EVENT_QUERY:
+//                    //todo 应该通过url字段获取跳转地址
+//                    bundle = new Bundle();
+//                    bundle.putInt(Temp.TAB.getContent(), Constant.Tab.TASK_MANAGEMENT);
+//                    activityViewImplement.startActivity(MainActivity.class, bundle);
+//                    break;
                 case Constant.JavaScript.MAP_QUERY:
-                    activityViewImplement.startActivity(WapActivity.class);
+                    activityViewImplement.startActivity(MapActivity.class);
                     break;
-                //Demander.html
-                case Constant.JavaScript.EMERGENCY_CALL_FOR_HELP:
-                    if (!TextUtils.isEmpty(parameter)) {
-                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
-                        if (!TextUtils.isEmpty(title)) {
-                            Intent intent = new Intent(activityViewImplement, TaskActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString(Temp.TITLE.getContent(), title);
-                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
-                            intent.putExtras(bundle);
-                            activityViewImplement.startActivity(intent, bundle);
-                        } else {
-                            activityViewImplement.startActivity(TaskActivity.class);
-                        }
-                    }
+                case Constant.JavaScript.WORK_LOG:
+                    //todo 应该通过url字段获取跳转地址且不应该新开页面
+                    bundle = new Bundle();
+                    bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+                    activityViewImplement.startActivity(WapActivity.class, bundle);
                     break;
-                case Constant.JavaScript.APPLIANCE_MAINTENANCE:
-                    if (!TextUtils.isEmpty(parameter)) {
-                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
-                        if (!TextUtils.isEmpty(title)) {
-                            Intent intent = new Intent(activityViewImplement, TaskActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString(Temp.TITLE.getContent(), title);
-                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
-                            intent.putExtras(bundle);
-                            activityViewImplement.startActivity(intent, bundle);
-                        } else {
-                            activityViewImplement.startActivity(TaskActivity.class);
-                        }
-                    }
+                case Constant.JavaScript.TASK_PROCESSING:
+                    bundle = new Bundle();
+                    bundle.putString(Temp.TITLE.getContent(), JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE));
+                    bundle.putString(Temp.BILL_NO.getContent(), JSONObject.parseObject(parameter).getString(Constant.JavaScript.BILL_NO));
+                    activityViewImplement.startActivity(TaskProcessingActivity.class, bundle);
                     break;
-                case Constant.JavaScript.LIVING_FACILITIES_MAINTENANCE:
+                case Constant.JavaScript.TASK_SUBMIT:
                     if (!TextUtils.isEmpty(parameter)) {
-                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
-                        if (!TextUtils.isEmpty(title)) {
-                            Intent intent = new Intent(activityViewImplement, TaskActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString(Temp.TITLE.getContent(), title);
-                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
-                            intent.putExtras(bundle);
-                            activityViewImplement.startActivity(intent, bundle);
-                        } else {
-                            activityViewImplement.startActivity(TaskActivity.class);
-                        }
-                    }
-                    break;
-                case Constant.JavaScript.OTHER_LIFE_EVENTS:
-                    if (!TextUtils.isEmpty(parameter)) {
-                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
-                        if (!TextUtils.isEmpty(title)) {
-                            Intent intent = new Intent(activityViewImplement, TaskActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString(Temp.TITLE.getContent(), title);
-                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
-                            intent.putExtras(bundle);
-                            activityViewImplement.startActivity(intent, bundle);
-                        } else {
-                            activityViewImplement.startActivity(TaskActivity.class);
-                        }
-                    }
-                    break;
-                case Constant.JavaScript.PSYCHOLOGICAL_COUNSELING:
-                    if (!TextUtils.isEmpty(parameter)) {
-                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
-                        if (!TextUtils.isEmpty(title)) {
-                            Intent intent = new Intent(activityViewImplement, TaskActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString(Temp.TITLE.getContent(), title);
-                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
-                            intent.putExtras(bundle);
-                            activityViewImplement.startActivity(intent, bundle);
-                        } else {
-                            activityViewImplement.startActivity(TaskActivity.class);
-                        }
-                    }
-                    break;
-                case Constant.JavaScript.DOCTOR_MEDICINE:
-                    if (!TextUtils.isEmpty(parameter)) {
-                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
-                        if (!TextUtils.isEmpty(title)) {
-                            Intent intent = new Intent(activityViewImplement, TaskActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString(Temp.TITLE.getContent(), title);
-                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
-                            intent.putExtras(bundle);
-                            activityViewImplement.startActivity(intent, bundle);
-                        } else {
-                            activityViewImplement.startActivity(TaskActivity.class);
-                        }
-                    }
-                    break;
-                case Constant.JavaScript.OTHER:
-                    if (!TextUtils.isEmpty(parameter)) {
-                        String title = JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE);
-                        if (!TextUtils.isEmpty(title)) {
-                            Intent intent = new Intent(activityViewImplement, TaskActivity.class);
-                            bundle = new Bundle();
-                            bundle.putString(Temp.TITLE.getContent(), title);
-                            bundle.putBoolean(Temp.NEED_LOCATION.getContent(), JSONObject.parseObject(parameter).getBooleanValue(Constant.JavaScript.LOCATION));
-                            intent.putExtras(bundle);
-                            activityViewImplement.startActivity(intent, bundle);
-                        } else {
-                            activityViewImplement.startActivity(TaskActivity.class);
-                        }
+                        bundle = new Bundle();
+                        bundle.putString(Temp.TITLE.getContent(), JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE));
+                        bundle.putInt(Temp.TASK_TYPE.getContent(), JSONObject.parseObject(parameter).getIntValue(Constant.JavaScript.TASK_TYPE));
+                        bundle.putString(Temp.BILL_NO.getContent(), JSONObject.parseObject(parameter).getString(Constant.JavaScript.BILL_NO));
+                        activityViewImplement.startActivity(TaskSubmitActivity.class, bundle);
                     }
                     break;
                 case Constant.JavaScript.IMMEDIATE_EVALUATION:
                     if (!TextUtils.isEmpty(parameter)) {
                         Intent intent = new Intent(activityViewImplement, EvaluateActivity.class);
                         intent.putExtra(Temp.EVALUATE_INFO.getContent(), new EvaluateInfo().parse(JSONObject.parseObject(parameter)));
-                        //bundle = new Bundle();
-                        //bundle.putParcelable(Temp.EVALUATE_INFO.getContent(), new EvaluateInfo().parse(JSONObject.parseObject(parameter)));
-                        //bundle.setClassLoader(EvaluateInfo.class.getClassLoader());
                         intent.setExtrasClassLoader(EvaluateInfo.class.getClassLoader());
-                        //intent.putExtras(bundle);
                         activityViewImplement.startActivity(intent);
                     }
                     break;
                 //電話
-                case Constant.JavaScript.SECURETY_POLICE_CALL:
-                case Constant.JavaScript.HOSPITAL_CALL:
-                case Constant.JavaScript.TRAFFIC_POLICE_CALL:
-                case Constant.JavaScript.FIRE_CONTROL_CALL:
+                case Constant.JavaScript.PHONE_CALL:
                     if (!TextUtils.isEmpty(parameter)) {
-                        final String phone = JSONObject.parseObject(parameter).getString(Constant.JavaScript.PHONE);
-                        if (!TextUtils.isEmpty(phone)) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                activityViewImplement.getBasePresenterImplement().checkPermission(activityViewImplement, new PermissionCallback() {
-                                    @Override
-                                    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-                                        activityViewImplement.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone)));
-                                    }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            activityViewImplement.getBasePresenterImplement().checkPermission(activityViewImplement, new PermissionCallback() {
+                                @Override
+                                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                    activityViewImplement.startActivity(Intent.ACTION_CALL, Uri.parse("tel:" + JSONObject.parseObject(parameter).getString(Constant.JavaScript.PHONE)));
+                                }
 
-                                    @Override
-                                    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-                                        activityViewImplement.showPermissionPromptDialog();
-                                    }
-                                });
-                            } else {
-                                activityViewImplement.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone)));
-                            }
+                                @Override
+                                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                                    activityViewImplement.showPermissionPromptDialog();
+                                }
+                            });
+                        } else {
+                            activityViewImplement.startActivity(Intent.ACTION_CALL, Uri.parse("tel:" + JSONObject.parseObject(parameter).getString(Constant.JavaScript.PHONE)));
                         }
                     }
                     break;

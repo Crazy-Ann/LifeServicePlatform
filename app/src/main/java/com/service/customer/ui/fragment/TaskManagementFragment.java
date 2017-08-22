@@ -73,7 +73,7 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
         }
 //        wvTaskManagement.getSettings().setUserAgentString(wvTaskManagement.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
         wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
-        //wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
+//        wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
     }
 
     @Override

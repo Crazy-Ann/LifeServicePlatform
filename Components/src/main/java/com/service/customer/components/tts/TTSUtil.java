@@ -1,11 +1,10 @@
 package com.service.customer.components.tts;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.Toast;
 
-import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
@@ -15,10 +14,10 @@ import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
-import com.service.customer.components.R;
 import com.service.customer.components.constant.Constant;
+import com.service.customer.components.tts.listener.OnDictationListener;
+import com.service.customer.components.tts.listener.OnIntializeListener;
 import com.service.customer.components.utils.LogUtil;
-import com.service.customer.components.utils.ToastUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,20 +27,19 @@ import org.json.JSONTokener;
 public class TTSUtil implements SynthesizerListener, InitListener, RecognizerDialogListener {
 
     public static TTSUtil ttsUtil;
-    private Context context;
     private SpeechSynthesizer speechSynthesizer;
     private SpeechRecognizer speechRecognizer;
     private RecognizerDialog recognizerDialog;
     private OnDictationListener onDictationListener;
+    private OnIntializeListener onIntializeListener;
 
-    private TTSUtil(Context context) {
+    private TTSUtil() {
         // cannot be instantiated
-        this.context = context;
     }
 
-    public static synchronized TTSUtil getInstance(Context context) {
+    public static synchronized TTSUtil getInstance() {
         if (ttsUtil == null) {
-            ttsUtil = new TTSUtil(context);
+            ttsUtil = new TTSUtil();
         }
         return ttsUtil;
     }
@@ -56,20 +54,24 @@ public class TTSUtil implements SynthesizerListener, InitListener, RecognizerDia
         this.onDictationListener = onDictationListener;
     }
 
-    public void initializeSpeechSynthesizer() {
+    public void setOnIntializeListener(OnIntializeListener onIntializeListener) {
+        this.onIntializeListener = onIntializeListener;
+    }
+
+    public void initializeSpeechSynthesizer(Context context) {
         speechSynthesizer = SpeechSynthesizer.createSynthesizer(context, this);
         setSpeechSynthesizerParameter();
     }
 
-    public void initializeSpeechRecognizer() {
+    public void initializeSpeechRecognizer(Context context) {
         speechRecognizer = SpeechRecognizer.createRecognizer(context, this);
         LogUtil.getInstance().print("SpeechConstant:" + speechRecognizer);
         setSpeechRecognizerParameter();
     }
 
-    public synchronized void startPlaying(String content) {
+    public synchronized void startPlaying(Context context, String content) {
         if (speechSynthesizer == null) {
-            initializeSpeechSynthesizer();
+            initializeSpeechSynthesizer(context);
         }
         speechSynthesizer.startSpeaking(content, this);
     }
@@ -80,11 +82,11 @@ public class TTSUtil implements SynthesizerListener, InitListener, RecognizerDia
         }
     }
 
-    public synchronized void startListening() {
+    public synchronized void startListening(Activity activity) {
         if (speechRecognizer == null) {
-            initializeSpeechRecognizer();
+            initializeSpeechRecognizer(activity);
         }
-        recognizerDialog = new RecognizerDialog(context, this);
+        recognizerDialog = new RecognizerDialog(activity, this);
         recognizerDialog.setListener(this);
         recognizerDialog.show();
 //        speechRecognizer.startListening(this);
@@ -174,11 +176,7 @@ public class TTSUtil implements SynthesizerListener, InitListener, RecognizerDia
     @Override
     public void onInit(int resultCode) {
         LogUtil.getInstance().print("TTS onInit");
-        if (resultCode != ErrorCode.SUCCESS) {
-            ToastUtil.getInstance().showToast(context, context.getString(R.string.tts_intialized_error_prompt), Toast.LENGTH_SHORT);
-        } else {
-            startPlaying(null);
-        }
+        onIntializeListener.onIntialize(resultCode);
     }
 
     @Override
@@ -201,7 +199,6 @@ public class TTSUtil implements SynthesizerListener, InitListener, RecognizerDia
     @Override
     public void onError(SpeechError speechError) {
         LogUtil.getInstance().print("TTS onError");
-        ToastUtil.getInstance().showToast(context, speechError.getPlainDescription(true), Toast.LENGTH_SHORT);
         recognizerDialog.dismiss();
     }
 }

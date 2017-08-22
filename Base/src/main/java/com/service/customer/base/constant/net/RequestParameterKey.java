@@ -10,6 +10,7 @@ public class RequestParameterKey {
     public final static String WROK_INFO = "workinfo";
     public final static String SCORE_INFO = "scoreinfo";
     public final static String SAVE_HEAD_IMAGE = "headimage";
+    public final static String DEAL_TASK_INFO = "dealtaskInfo";
     public final static String TASK_LIST = "tasklist";
     public final static String WORK_LIST = "workList";
 
@@ -40,4 +41,7 @@ public class RequestParameterKey {
     public static final String NOTE = "note";
     
     public static final String PAGE_INDEX = "pageindex";
+
+    public static final String DEAL_STATUS = "dealstatus";
+    public static final String DEAL_NOTE = "dealnote";
 }

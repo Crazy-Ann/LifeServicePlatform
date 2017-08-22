@@ -10,6 +10,7 @@ public final class ServiceMethod {
     public final static String MODIFY_NAME     = "/ModifyRealName";
     public final static String SAVE_TASK_INFO  = "/SaveTaskInfo";
     public final static String SAVE_WOORK_INFO  = "/SaveWorkInfo";
+    public final static String DEAL_TASK_INFO  = "/DealTaskInfo";
     public final static String SCORE_TASK_INFO = "/ScoreTaskInfo";
     public final static String SAVE_HEAD_IMAGE = "/SaveHeadImage";
     public final static String TASK_LIST  = "/TaskList";

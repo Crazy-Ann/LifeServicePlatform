@@ -38,8 +38,8 @@ import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.activity.MapActivity;
 import com.service.customer.ui.activity.SettingActivity;
-import com.service.customer.ui.activity.TaskActivity;
 import com.service.customer.ui.activity.WapActivity;
+import com.service.customer.ui.activity.WorkSubmitActivity;
 import com.service.customer.ui.contract.MineContract;
 import com.service.customer.ui.contract.implement.FragmentViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
@@ -166,10 +166,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                 startActivity(WapActivity.class, bundle);
                 break;
             case R.id.rlAddWorkLog:
-                bundle = new Bundle();
-                bundle.putString(Temp.TITLE.getContent(), getString(R.string.add_work_log));
-                bundle.putBoolean(Temp.NEED_LOCATION.getContent(), false);
-                startActivity(TaskActivity.class, bundle);
+                startActivity(WorkSubmitActivity.class);
                 break;
             case R.id.rlMapEvent:
                 startActivity(MapActivity.class);
@@ -211,8 +208,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                     public void run() {
                         try {
                             File file = IOUtil.getInstance().getExternalFilesDir(getActivity(), Constant.FILE_NAME, RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext());
-                            Bitmap photo = ImageUtil.getNarrowBitmap(getActivity(), IOUtil.getInstance().getFileUri(getActivity(), true, file), 0.5f);
-                            if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
+                            if (file != null && BitmapUtil.getInstance().saveBitmap(ImageUtil.getNarrowBitmap(getActivity(), IOUtil.getInstance().getFileUri(getActivity(), true, file), 0.5f), file.getAbsolutePath())) {
                                 mineHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, file));
                             } else {
                                 mineHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
@@ -249,6 +245,12 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        minePresenter.deleteFile();
     }
 
     @Override

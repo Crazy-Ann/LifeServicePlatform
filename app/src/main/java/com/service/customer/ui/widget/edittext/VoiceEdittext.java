@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.service.customer.R;
 import com.service.customer.components.utils.InputUtil;
-import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.ViewUtil;
+import com.service.customer.ui.widget.edittext.listener.OnVoiceClickListener;
 
 import java.lang.reflect.Field;
 
@@ -27,6 +27,7 @@ public class VoiceEdittext extends LinearLayout implements View.OnClickListener,
     private EditText etContent;
     private Button btnVoice;
     private TextView tvTextCount;
+    private OnVoiceClickListener onVoiceClickListener;
 
     private StringBuilder stringBuilder;
 
@@ -48,13 +49,17 @@ public class VoiceEdittext extends LinearLayout implements View.OnClickListener,
         super(context, attrs, defStyleAttr);
     }
 
+    public void setOnVoiceClickListener(OnVoiceClickListener onVoiceClickListener) {
+        this.onVoiceClickListener = onVoiceClickListener;
+    }
+
     @Override
     public void onClick(View view) {
         if (InputUtil.getInstance().isDoubleClick()) {
             return;
         }
         if (view.getId() == R.id.btnVoice) {
-            TTSUtil.getInstance(getContext()).startListening();
+            onVoiceClickListener.onVoiceClick();
         }
     }
 

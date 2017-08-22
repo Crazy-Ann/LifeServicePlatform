@@ -5,23 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.activity.TaskActivity">
+    tools:context=".ui.activity.TaskSubmitActivity">
 
     <include
         android:id="@+id/inToolbar"
         layout="@layout/view_toolbar"/>
-
-    <TextView
-        android:id="@+id/tvLocation"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_48"
-        android:layout_marginTop="@dimen/dp_8"
-        android:background="@android:color/white"
-        android:clickable="false"
-        android:gravity="center_vertical"
-        android:paddingStart="@dimen/dp_5"
-        android:textColor="@color/color_7a7a7a"
-        android:visibility="gone"/>
 
     <TextView
         android:layout_width="wrap_content"

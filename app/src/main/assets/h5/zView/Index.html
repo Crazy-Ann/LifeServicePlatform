@@ -26,21 +26,24 @@
                 console.log(e)
             }
         }
+    </script>
 </head>
 <body>
     <div class="bannerbox">
         <img src="../images/banner_index.png" alt="密云生活服务平台">
     </div>
+    <!--new_wap_page 新开页面显示'url'-->
+    <!--submit_page 跳转提交页面-->
     <nav class="nav-btn">
-        <a onclick="callNative({'tag':'policies_regulations', 'parameter':{'title':'政策法规', 'url':'http://www.gov.cn/zhengce/index.htm'}})">
+        <a onclick="callNative({'tag':'new_wap_page', 'parameter':{'title':'政策法规', 'url':''}})">
             <img src="../images/icon/nav_07.png" alt="政策法规">
             <p>政策法规</p>
         </a>
-        <a onclick="callNative({'tag':'query_analysis', 'parameter':{'title':'查询分析', 'url':''}})">
+        <a onclick="callNative({'tag':'new_wap_page', 'parameter':{'title':'查询分析', 'url':''}})">
             <img src="../images/icon/nav_08.png" alt="查询分析">
             <p>查询分析</p>
         </a>
-        <a onclick="callNative({'tag':'information_management', 'parameter':{'title':'信息管理', 'url':''}})">
+        <a onclick="callNative({'tag':'new_wap_page', 'parameter':{'title':'信息管理', 'url':''}})">
             <img src="../images/icon/nav_09.png" alt="信息管理">
             <p>信息管理</p>
         </a>
@@ -48,14 +51,21 @@
             <img src="../images/icon/nav_10.png" alt="事件查询">
             <p>事件查询</p>
         </a>
-        <a onclick="callNative({'tag':'map_query', 'parameter':{'title':'地图查询', ''}})">
+        <a onclick="callNative({'tag':'map_query', 'parameter':{'title':'地图查询', 'url':''}})">
             <img src="../images/icon/nav_11.png" alt="地图查询">
             <p>地图查询</p>
         </a>
-
-        <a targe="_blank">
+        <a onclick="callNative({'tag':'work_log', 'parameter':{'title':'工作日志', 'url':''}})">
+            <img src="../images/icon/nav_11.png" alt="工作日志">
+            <p>工作日志</p>
+        </a>
+        <a onclick="callNative({'tag':'new_wap_page', 'parameter':{'title':'消息通知', 'url':''}})">
             <img src="../images/icon/nav_12.png" alt="消息通知">
             <p>消息通知</p>
+        </a>
+        <a onclick="callNative({'tag':'task_processing', 'parameter':{'title':'任务处理', 'billno':'N170806000004611'}})">
+            <img src="../images/icon/nav_12.png" alt="任务处理">
+            <p>任务处理</p>
         </a>
     </nav>
 

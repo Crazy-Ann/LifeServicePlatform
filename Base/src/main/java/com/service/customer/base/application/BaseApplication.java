@@ -80,7 +80,7 @@ public class BaseApplication extends MultiDexApplication implements Application.
         NetworkUtil.releaseInstance();
         TypefaceUtil.releaseInstance();
         ViewUtil.releaseInstance();
-        TTSUtil.getInstance(null).destroy();
+        TTSUtil.getInstance().destroy();
         ApplicationUtil.releaseInstance();
         application = null;
     }

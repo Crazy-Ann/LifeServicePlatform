@@ -3,21 +3,15 @@ package com.service.customer.ui.contract;
 import com.service.customer.base.presenter.BasePresenter;
 import com.service.customer.base.view.BaseView;
 
-import java.io.File;
-
-public interface MineContract {
+public interface TaskProcessingContract {
 
     interface View extends BaseView<Presenter> {
 
         boolean isActive();
-
-        void setHeadImage(String url);
     }
 
     interface Presenter extends BasePresenter {
 
-        void saveHeadImage(File file);
-
-        void deleteFile();
+        void dealTaskInfo(String billNo, int dealStatus, String dealNote);
     }
 }

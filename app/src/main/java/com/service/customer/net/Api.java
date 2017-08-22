@@ -570,6 +570,69 @@ public class Api {
         }
     }
 
+    public void dealTaskInfo(final Context context, final BaseView view, String url, String token, String billNo, int dealStatus, String dealNote, final ApiListener apiListener) {
+        LogUtil.getInstance().print("dealTaskInfo");
+        if (NetworkUtil.getInstance().isInternetConnecting(context)) {
+            HashMap<String, String> parameters = new HashMap<>();
+            parameters.put(RequestParameterKey.BILL_NO, billNo);
+            parameters.put(RequestParameterKey.DEAL_STATUS, String.valueOf(dealStatus));
+            parameters.put(RequestParameterKey.DEAL_NOTE, dealNote);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.DEAL_TASK_INFO, parameters, null, token, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new TaskInfosResponse() {
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        LogUtil.getInstance().print("提交任务处理信息开始");
+                        view.showLoadingPromptDialog(R.string.deal_task_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_DEAL_TASK_INFO);
+                    }
+
+                    @Override
+                    public void onResponseSuccess(JSONObject object) {
+                        super.onResponseSuccess(object);
+                        LogUtil.getInstance().print("提交任务处理信息成功:" + object.toString());
+                        apiListener.success(null);
+//                        view.showPromptDialog(R.string.dialog_prompt_deal_task_info_error, Constant.RequestCode.DIALOG_PROMPT_DEAL_TASK_INFO_ERROR);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message) {
+                        super.onResponseFailed(code, message);
+                        LogUtil.getInstance().print("提交任务处理信息失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_DEAL_TASK_INFO_ERROR);
+                        apiListener.failed(null, code, message);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message, JSONObject object) {
+                        super.onResponseFailed(code, message, object);
+                        LogUtil.getInstance().print("提交任务处理信息失败,code:" + code + ",message:" + message);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_DEAL_TASK_INFO_ERROR, object);
+                    }
+
+                    @Override
+                    public void onEnd() {
+                        super.onEnd();
+                        LogUtil.getInstance().print("提交任务处理信息结束");
+                        view.hideLoadingPromptDialog();
+                    }
+
+                    @Override
+                    public void onFailed(int code, String message) {
+                        super.onFailed(code, message);
+                        LogUtil.getInstance().print("提交任务处理信息失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_DEAL_TASK_INFO_ERROR);
+                    }
+                });
+            } else {
+                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_DEAL_TASK_INFO_ERROR);
+            }
+        } else {
+            view.showNetWorkPromptDialog();
+        }
+    }
+
     public void taskList(final Context context, final BaseView view, String url, String token, int pageindex, final ApiListener apiListener) {
         LogUtil.getInstance().print("scoreTaskInfo");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {

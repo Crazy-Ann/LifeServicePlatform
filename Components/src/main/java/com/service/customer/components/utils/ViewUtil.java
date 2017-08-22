@@ -81,7 +81,7 @@ public class ViewUtil {
         final float scale = ctx.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
-    
+
     public float sp2px(Resources resources, float sp) {
         final float scale = resources.getDisplayMetrics().scaledDensity;
         return sp * scale;
@@ -422,7 +422,7 @@ public class ViewUtil {
     }
 
     public void hideDialog(DialogFragment dialog) {
-        if (dialog != null && !dialog.getFragmentManager().isDestroyed()) {
+        if (dialog != null && dialog.getFragmentManager() != null && !dialog.getFragmentManager().isDestroyed()) {
             dialog.dismissAllowingStateLoss();
         }
     }
