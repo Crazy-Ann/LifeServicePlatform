@@ -75,7 +75,7 @@ public class MapPresenter extends BasePresenterImplement implements MapContract.
         Api.getInstance().taskList(
                 context,
                 view,
-//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
+//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl() + ServiceMethod.TASK_LIST,
                 BuildConfig.SERVICE_URL + ServiceMethod.TASK_LIST,
                 ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
                 1,

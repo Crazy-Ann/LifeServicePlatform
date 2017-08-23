@@ -34,7 +34,7 @@ public class ModifyPasswordPresenter extends BasePresenterImplement implements M
         Api.getInstance().modifyPassword(
                 context,
                 view,
-//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
+//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl() + ServiceMethod.MODIFY_PASSWORD,
                 BuildConfig.SERVICE_URL + ServiceMethod.MODIFY_PASSWORD,
                 account,
                 password,

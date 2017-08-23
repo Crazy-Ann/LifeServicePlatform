@@ -31,15 +31,15 @@ import com.service.customer.ui.adapter.NotificationAnnouncementAdapter;
 import com.service.customer.ui.adapter.ServiceAdapter;
 import com.service.customer.ui.binder.NotificationAnnouncementBinder;
 import com.service.customer.ui.binder.ServiceBinder;
-import com.service.customer.ui.contract.HomePageContract;
+import com.service.customer.ui.contract.HomePageContract2;
 import com.service.customer.ui.contract.implement.FragmentViewImplement;
-import com.service.customer.ui.presenter.HomePagePresenter;
+import com.service.customer.ui.presenter.HomePagePresenter2;
 
 import java.util.List;
 
-public class HomePageFragment2 extends FragmentViewImplement<HomePageContract.Presenter> implements HomePageContract.View {
+public class HomePageFragment2 extends FragmentViewImplement<HomePageContract2.Presenter> implements HomePageContract2.View {
 
-    private HomePagePresenter homePagePresenter;
+    private HomePagePresenter2 homePagePresenter2;
     private RecyclerView rvService;
     private RecyclerView rvNotificationAnnouncement;
     private ServiceAdapter serviceAdapter;
@@ -71,7 +71,7 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract.Pr
                     ThreadPoolUtil.execute(new Runnable() {
                         @Override
                         public void run() {
-                            NotificationAnnouncementInfos notificationAnnouncementInfos = homePagePresenter.generateNotificationAnnouncementInfos();
+                            NotificationAnnouncementInfos notificationAnnouncementInfos = homePagePresenter2.generateNotificationAnnouncementInfos();
                             if (notificationAnnouncementInfos != null) {
                                 sendMessage(MessageUtil.getMessage(com.service.customer.constant.Constant.Message.GET_NOTIFICATION_ANNOUNCEMENT_INFOS_SUCCESS, notificationAnnouncementInfos));
                             } else {
@@ -117,9 +117,9 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract.Pr
     protected void initialize(Bundle savedInstanceState) {
         initializeToolbar(R.color.color_015293, android.R.color.white, false, getString(R.string.home_page), null);
         homePageHandler = new HomePageHandler(this);
-        homePagePresenter = new HomePagePresenter(getActivity(), this);
-        homePagePresenter.initialize();
-        setBasePresenterImplement(homePagePresenter);
+        homePagePresenter2 = new HomePagePresenter2(getActivity(), this);
+        homePagePresenter2.initialize();
+        setBasePresenterImplement(homePagePresenter2);
         getSavedInstanceState(savedInstanceState);
 
         serviceAdapter = new ServiceAdapter(getActivity(), new ServiceBinder(getActivity(), rvService), true);
@@ -137,7 +137,7 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract.Pr
         ThreadPoolUtil.execute(new Runnable() {
             @Override
             public void run() {
-                ServiceInfos serviceInfos = homePagePresenter.generateServiceInfos();
+                ServiceInfos serviceInfos = homePagePresenter2.generateServiceInfos();
                 if (serviceInfos != null) {
                     homePageHandler.sendMessage(MessageUtil.getMessage(com.service.customer.constant.Constant.Message.GET_SERVICE_INFOS_SUCCESS, serviceInfos));
                 } else {
@@ -213,7 +213,7 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract.Pr
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    homePagePresenter.checkPermission(getActivity(),this);
+                    homePagePresenter2.checkPermission(getActivity(), this);
                 }
                 break;
             default:

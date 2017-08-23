@@ -48,6 +48,7 @@ public class ConfigInfo extends BaseEntity {
     public String getWorkUrl() {
         return workUrl;
     }
+
     public ConfigInfo parse(JSONObject object) {
         if (object != null) {
 //            this.version = object.getIntValue(ResponseParameterKey.VERSION);
@@ -57,11 +58,8 @@ public class ConfigInfo extends BaseEntity {
             this.downloadUrl = object.getString(ResponseParameterKey.DOWNLOAD_URL);
             this.updateMessage = object.getString(ResponseParameterKey.UPDATE_MESSAGE);
             //todo
-//            this.key = object.getString(ResponseParameterKey.KEY);
             if (object.containsKey(ResponseParameterKey.INTERFACE_URL)) {
-                this.cardUrl = object.getJSONObject(ResponseParameterKey.CARD_URL).getString(ResponseParameterKey.CARD_URL);
-                this.workUrl = object.getJSONObject(ResponseParameterKey.WORK_URL).getString(ResponseParameterKey.WORK_URL);
-                this.serverUrl = object.getJSONObject(ResponseParameterKey.SERVER_URL).getString(ResponseParameterKey.SERVER_URL);
+                this.serverUrl = object.getJSONObject(ResponseParameterKey.INTERFACE_URL).getString(ResponseParameterKey.SERVER_URL);
             }
             return this;
         } else {

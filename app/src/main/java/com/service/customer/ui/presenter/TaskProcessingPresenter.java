@@ -37,7 +37,7 @@ public class TaskProcessingPresenter extends BasePresenterImplement implements T
         Api.getInstance().dealTaskInfo(
                 context,
                 view,
-//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
+//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl() + ServiceMethod.DEAL_TASK_INFO,
                 BuildConfig.SERVICE_URL + ServiceMethod.DEAL_TASK_INFO,
                 ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
                 billNo,

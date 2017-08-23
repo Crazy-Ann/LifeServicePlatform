@@ -45,7 +45,7 @@ public class LoginPresenter extends BasePresenterImplement implements LoginContr
         Api.getInstance().login(
                 context,
                 view,
-//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
+//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl() + ServiceMethod.LOGIN,
                 BuildConfig.SERVICE_URL + ServiceMethod.LOGIN,
                 account,
                 password,

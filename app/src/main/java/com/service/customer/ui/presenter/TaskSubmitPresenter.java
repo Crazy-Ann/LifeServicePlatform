@@ -2,7 +2,6 @@ package com.service.customer.ui.presenter;
 
 import android.content.Context;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.service.customer.R;
@@ -86,7 +85,7 @@ public class TaskSubmitPresenter extends BasePresenterImplement implements TaskS
         Api.getInstance().saveTaskInfo(
                 context,
                 view,
-//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
+//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl() + ServiceMethod.SAVE_TASK_INFO,
                 BuildConfig.SERVICE_URL + ServiceMethod.SAVE_TASK_INFO,
                 ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
                 longitude,

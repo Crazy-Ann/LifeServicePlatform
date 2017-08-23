@@ -42,7 +42,7 @@ public class WorkSubmitPresenter extends BasePresenterImplement implements WorkS
         Api.getInstance().saveWrokInfo(
                 context,
                 view,
-//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
+//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl() + ServiceMethod.SAVE_WOORK_INFO,
                 BuildConfig.SERVICE_URL + ServiceMethod.SAVE_WOORK_INFO,
                 ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
                 workType,
