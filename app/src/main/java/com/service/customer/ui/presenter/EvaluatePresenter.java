@@ -36,7 +36,7 @@ public class EvaluatePresenter extends BasePresenterImplement implements Evaluat
         Api.getInstance().scoreTaskInfo(
                 context,
                 view,
-//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl(),
+//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl() + ServiceMethod.SCORE_TASK_INFO,
                 BuildConfig.SERVICE_URL + ServiceMethod.SCORE_TASK_INFO,
                 ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
                 billNo,

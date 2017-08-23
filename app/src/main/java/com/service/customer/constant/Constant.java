@@ -16,6 +16,7 @@ public final class Constant {
             , Manifest.permission.RECORD_AUDIO
             , Manifest.permission.ACCESS_FINE_LOCATION
             , Manifest.permission.ACCESS_COARSE_LOCATION
+            , Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS
             , Manifest.permission.CAMERA
             , Manifest.permission.READ_SMS
             , Manifest.permission.CALL_PHONE

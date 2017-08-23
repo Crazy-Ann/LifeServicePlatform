@@ -11,7 +11,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.service.customer.R;
+import com.service.customer.base.application.BaseApplication;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.utils.ActivityUtil;
 import com.service.customer.components.utils.ApplicationUtil;
 import com.service.customer.components.utils.IOUtil;
 import com.service.customer.components.utils.InputUtil;
@@ -66,13 +68,15 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
     protected void initialize(Bundle savedInstanceState) {
         welcomePresenter = new WelcomePresenter(this, this);
         welcomePresenter.initialize();
+       
+        setBasePresenterImplement(welcomePresenter);
+        getSavedInstanceState(savedInstanceState);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             welcomePresenter.checkPermission(this,this);
         } else {
             welcomePresenter.getConfig();
         }
-        setBasePresenterImplement(welcomePresenter);
-        getSavedInstanceState(savedInstanceState);
     }
 
     @Override
@@ -179,6 +183,11 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
                 startLoginActivity(true);
                 break;
+            case Constant.RequestCode.DIALOG_PROMPT_QUIT:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_QUIT");
+                BaseApplication.getInstance().releaseInstance();
+                ActivityUtil.removeAll();
+                break;
             default:
                 break;
         }
@@ -225,6 +234,9 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 } else {
                     startLoginActivity(false);
                 }
+                break;
+            case Constant.RequestCode.DIALOG_PROMPT_QUIT:
+                LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_QUIT");
                 break;
             default:
                 break;

@@ -45,13 +45,13 @@ public class BaseRequest {
 
     protected RequestParameter formatParameters(HashMap<String, String> parameters, HashMap<String, FileWrapper> fileWrappers, boolean isJson) {
         RequestParameter parameter = new RequestParameter();
-        parameter.setJsonType(isJson);
+        parameter.setJsonFormat(isJson);
 //        String requestData = SecurityUtil.getInstance().encryptAES(jsonObject.toString(), BuildConfig.DECRYPT_KEY);
         if (parameters != null) {
             for (String key : parameters.keySet()) {
                 String value = parameters.get(key);
                 if (!TextUtils.isEmpty(value)) {
-                    LogUtil.getInstance().print("parameters:" + key + " = " + value);
+                    LogUtil.getInstance().print("parameter:" + key + " = " + value);
                     parameter.addFormDataParameter(key, value);
                 }
             }

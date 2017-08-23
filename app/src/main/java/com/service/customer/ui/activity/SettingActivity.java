@@ -82,6 +82,23 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case Constant.RequestCode.NET_WORK_SETTING:
+            case Constant.RequestCode.PREMISSION_SETTING:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    settingPresenter.checkPermission(this,this);
+                } else {
+                    settingPresenter.logout();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void onNeutralButtonClicked(int requestCode) {
 
     }

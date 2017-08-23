@@ -136,5 +136,16 @@ public class HttpUtil {
             return null;
         }
     }
+
+
+    public String addParameter(String url, String key, String value) {
+        if (url.contains(Regex.QUESTION_MARK.getRegext())) {
+            url += Regex.AND.getRegext() + key + Regex.EQUALS.getRegext() + value;
+        } else {
+            url += Regex.QUESTION_MARK.getRegext() + key + Regex.EQUALS.getRegext() + value;
+        }
+        LogUtil.getInstance().print("addParameter:" + url);
+        return url;
+    }
 }
 

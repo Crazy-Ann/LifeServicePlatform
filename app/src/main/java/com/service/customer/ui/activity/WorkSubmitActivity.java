@@ -216,7 +216,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
                     public void run() {
                         try {
                             File file = IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
-                            if (file != null && BitmapUtil.getInstance().saveBitmap(ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), IOUtil.getInstance().getFileUri(BaseApplication.getInstance(), true, file), 0.5f), file.getAbsolutePath())) {
+                            if (file != null && BitmapUtil.getInstance().saveBitmap(ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), IOUtil.getInstance().getFileUri(BaseApplication.getInstance(), true, file), 0.25f), file.getAbsolutePath())) {
                                 TaskImageInfo taskImageInfo = new TaskImageInfo();
                                 taskImageInfo.setFile(file);
                                 taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
@@ -239,7 +239,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
                         public void run() {
                             try {
                                 File file = IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
-                                Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), uri, 0.5f);
+                                Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), uri, 0.25f);
                                 if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
                                     TaskImageInfo taskImageInfo = new TaskImageInfo();
                                     taskImageInfo.setFile(file);

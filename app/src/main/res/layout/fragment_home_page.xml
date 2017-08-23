@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<WebView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wvHomePage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <include
-        android:id="@+id/inToolbar"
-        layout="@layout/view_toolbar"/>
-
-    <WebView
-        android:id="@+id/wvHomePage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-</LinearLayout>
+    android:orientation="vertical"/>

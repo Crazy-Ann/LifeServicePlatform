@@ -65,7 +65,7 @@ public class Api {
                     public void onStart() {
                         super.onStart();
                         LogUtil.getInstance().print("获取配置信息开始");
-                        view.showLoadingPromptDialog(R.string.get_config, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG);
+//                        view.showLoadingPromptDialog(R.string.get_config, Constant.RequestCode.DIALOG_PROMPT_GET_CONFIG);
                     }
 
                     @Override
@@ -98,7 +98,7 @@ public class Api {
                     public void onEnd() {
                         super.onEnd();
                         LogUtil.getInstance().print("获取版本信息结束");
-                        view.hideLoadingPromptDialog();
+//                        view.hideLoadingPromptDialog();
                     }
 
                     @Override
@@ -377,11 +377,11 @@ public class Api {
             parameters.put(RequestParameterKey.TASK_NOTE, taskNote);
             HashMap<String, FileWrapper> fileParameters = new HashMap<>();
             for (FileWrapper fileWrapper : fileWrappers) {
-                LogUtil.getInstance().print("fileWrapper1:" + fileWrapper.getFileName());
-                fileParameters.put(RequestParameterKey.UPLOAD_IMAGE, fileWrapper);
+                fileParameters.put(fileWrapper.getFileName(), fileWrapper);
             }
             RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, fileParameters, token, false);
             if (requestParameter != null) {
+                requestParameter.setMultipart(true);
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveHeadImageResponse() {
 
                     @Override
@@ -447,10 +447,11 @@ public class Api {
             parameters.put(RequestParameterKey.WORK_NOTE, workNote);
             HashMap<String, FileWrapper> fileParameters = new HashMap<>();
             for (FileWrapper fileWrapper : fileWrappers) {
-                fileParameters.put(RequestParameterKey.UPLOAD_IMAGE, fileWrapper);
+                fileParameters.put(fileWrapper.getFileName(), fileWrapper);
             }
             RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.WROK_INFO, parameters, fileParameters, token, false);
             if (requestParameter != null) {
+                requestParameter.setMultipart(true);
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveHeadImageResponse() {
 
                     @Override

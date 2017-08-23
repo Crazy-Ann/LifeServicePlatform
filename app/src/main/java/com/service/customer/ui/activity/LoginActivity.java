@@ -137,6 +137,8 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     loginPresenter.checkPermission(this,this);
+                } else {
+                    loginPresenter.login(etAccount.getText().toString(), etPassword.getText().toString());
                 }
                 break;
             default:

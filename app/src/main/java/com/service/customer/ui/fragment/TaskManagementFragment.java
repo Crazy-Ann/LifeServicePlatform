@@ -14,7 +14,8 @@ import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
-import com.service.customer.components.constant.Regex;
+import com.service.customer.components.utils.HttpUtil;
+import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.entity.LoginInfo;
@@ -72,7 +73,7 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
             wvTaskManagement.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 //        wvTaskManagement.getSettings().setUserAgentString(wvTaskManagement.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
-        wvTaskManagement.loadUrl(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+        wvTaskManagement.loadUrl(HttpUtil.getInstance().addParameter(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getTaskUrl(), RequestParameterKey.TOKEN, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken()));
 //        wvTaskManagement.loadUrl(Constant.ASSET_URL.TASK_LIST);
     }
 
@@ -111,8 +112,10 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
         }
     }
 
+    //todo 頁面返回無刷新
     @Override
     public void receivedTitle(WebView view, String title) {
+        LogUtil.getInstance().print("title:" + title);
         if (view.canGoBack()) {
             initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, title);
         } else {

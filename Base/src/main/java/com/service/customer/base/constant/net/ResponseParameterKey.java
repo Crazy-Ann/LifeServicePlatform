@@ -24,6 +24,7 @@ public class ResponseParameterKey {
     public static final String INTERFACE_URL = "interfaceurl";
     public static final String CARD_URL = "cardurl";
     public static final String WORK_URL = "workurl";
+    public static final String SERVER_URL = "serverurl";
 
     public static final String INDEX_URL = "indexurl";
     public static final String TASK_URL = "taskurl";

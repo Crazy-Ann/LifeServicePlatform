@@ -1,11 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.service.customer.components">
+          package="com.service.customer.components">
 
     <application android:allowBackup="true"
                  android:supportsRtl="true">
 
         <meta-data android:name="com.amap.api.v2.apikey"
                    android:value="6f3972a34089b76e54016c20501b443a"/>
+
+        <service android:name="com.amap.api.location.APSService"/>
     </application>
 
 </manifest>

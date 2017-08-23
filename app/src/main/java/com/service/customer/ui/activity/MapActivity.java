@@ -82,13 +82,15 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
 
         mapPresenter = new MapPresenter(this, this);
         mapPresenter.initialize();
+       
+        setBasePresenterImplement(mapPresenter);
+        getSavedInstanceState(savedInstanceState);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mapPresenter.checkPermission(this, this);
         } else {
             mapPresenter.getTaskInfos();
         }
-        setBasePresenterImplement(mapPresenter);
-        getSavedInstanceState(savedInstanceState);
     }
 
     @Override

@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
 import com.iflytek.cloud.ErrorCode;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
@@ -28,8 +27,8 @@ import com.service.customer.base.sticky.adapter.FixedStickyViewAdapter;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.http.model.FileWrapper;
-import com.service.customer.components.tts.listener.OnDictationListener;
 import com.service.customer.components.tts.TTSUtil;
+import com.service.customer.components.tts.listener.OnDictationListener;
 import com.service.customer.components.tts.listener.OnIntializeListener;
 import com.service.customer.components.utils.BitmapUtil;
 import com.service.customer.components.utils.BundleUtil;
@@ -64,7 +63,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract.Presenter> implements TaskSubmitContract.View, View.OnClickListener, OnDictationListener, OnLeftIconEventListener, AMapLocationListener, FixedStickyViewAdapter.OnItemClickListener, OnVoiceClickListener, OnIntializeListener {
+public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract.Presenter> implements TaskSubmitContract.View, View.OnClickListener, OnDictationListener, OnLeftIconEventListener, FixedStickyViewAdapter.OnItemClickListener, OnVoiceClickListener, OnIntializeListener {
 
     private TaskSubmitPresenter taskSubmitPresenter;
     private TextView tvLocation;
@@ -125,18 +124,12 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
     @Override
     protected void initialize(Bundle savedInstanceState) {
         initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
-
         vetDescreption.setHint(getString(R.string.text_descreption_prompt));
         vetDescreption.setTextCount(0);
         taskHandler = new TaskHandler(this);
+
         taskSubmitPresenter = new TaskSubmitPresenter(this, this);
         taskSubmitPresenter.initialize();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            taskSubmitPresenter.checkPermission(this, this);
-        } else {
-            taskSubmitPresenter.location();
-        }
 
         setBasePresenterImplement(taskSubmitPresenter);
         getSavedInstanceState(savedInstanceState);
@@ -147,6 +140,12 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            taskSubmitPresenter.checkPermission(this, this);
+        } else {
+            taskSubmitPresenter.startLocation();
+        }
 
         taskImageInfos = new ArrayList<>();
         TaskImageInfo taskImageInfo = new TaskImageInfo();
@@ -168,7 +167,6 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
         TTSUtil.getInstance().setOnIntializeListener(this);
         vetDescreption.setOnVoiceClickListener(this);
         TTSUtil.getInstance().setOnDictationListener(this);
-        taskSubmitPresenter.getAMapLocationClient().setLocationListener(this);
         taskImageAdapter.setOnItemClickListener(this);
     }
 
@@ -191,7 +189,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                         taskSubmitPresenter.saveTaskInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), String.valueOf(aMapLocation.getAddress()), BundleUtil.getInstance().getIntData(this, Temp.TASK_TYPE.getContent()), vetDescreption.getText().trim(), fileWrappers);
                     }
                 } else {
-                    showLocationPromptDialog(R.string.dialog_prompt_location_error, Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
+                    showLocationPromptDialog(getString(R.string.dialog_prompt_location_error), Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
                 }
                 break;
             default:
@@ -208,7 +206,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     taskSubmitPresenter.checkPermission(this, this);
                 } else {
-                    taskSubmitPresenter.location();
+                    taskSubmitPresenter.startLocation();
                 }
                 break;
             case Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:
@@ -218,7 +216,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                     public void run() {
                         try {
                             File file = IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
-                            if (file != null && BitmapUtil.getInstance().saveBitmap(ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), IOUtil.getInstance().getFileUri(BaseApplication.getInstance(), true, file), 0.5f), file.getAbsolutePath())) {
+                            if (file != null && BitmapUtil.getInstance().saveBitmap(ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), IOUtil.getInstance().getFileUri(BaseApplication.getInstance(), true, file), 0.25f), file.getAbsolutePath())) {
                                 TaskImageInfo taskImageInfo = new TaskImageInfo();
                                 taskImageInfo.setFile(file);
                                 taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
@@ -241,7 +239,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                         public void run() {
                             try {
                                 File file = IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
-                                Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), uri, 0.5f);
+                                Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), uri, 0.25f);
                                 if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
                                     TaskImageInfo taskImageInfo = new TaskImageInfo();
                                     taskImageInfo.setFile(file);
@@ -277,6 +275,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
     @Override
     public void onDestroy() {
         super.onDestroy();
+        taskSubmitPresenter.destroyLocation();
         taskSubmitPresenter.deleteFile();
     }
 
@@ -306,7 +305,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_LOCATION_ERROR");
-                taskSubmitPresenter.location();
+                taskSubmitPresenter.startLocation();
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_SELECT_IMAGE:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SELECT_IMAGE");
@@ -367,7 +366,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
 
     @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        taskSubmitPresenter.location();
+        taskSubmitPresenter.startLocation();
     }
 
     @Override
@@ -381,10 +380,10 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
     }
 
     @Override
-    public void showLocationPromptDialog(int resoutId, int requestCode) {
+    public void showLocationPromptDialog(String prompt, int requestCode) {
         PromptDialog.createBuilder(getSupportFragmentManager())
                 .setTitle(getString(R.string.dialog_prompt))
-                .setPrompt(getString(resoutId))
+                .setPrompt(prompt)
                 .setPositiveButtonText(this, R.string.try_again)
                 .setNegativeButtonText(this, R.string.cancel)
                 .setCancelable(true)
@@ -419,9 +418,10 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                 tvLocation.setText(aMapLocation.getAddress());
                 break;
             default:
-                showLocationPromptDialog(R.string.dialog_prompt_location_error, Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
+                showLocationPromptDialog(aMapLocation.getErrorInfo(), Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
                 break;
         }
+        taskSubmitPresenter.stopLocation();
     }
 
     @Override

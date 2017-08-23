@@ -2,6 +2,7 @@ package com.service.customer.ui.presenter;
 
 import android.content.Context;
 
+import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.service.customer.R;
@@ -11,6 +12,7 @@ import com.service.customer.base.net.model.BaseEntity;
 import com.service.customer.components.http.model.FileWrapper;
 import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.IOUtil;
+import com.service.customer.components.utils.LogUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
@@ -30,14 +32,6 @@ public class TaskSubmitPresenter extends BasePresenterImplement implements TaskS
     private AMapLocationClient aMapLocationClient;
     private AMapLocationClientOption aMapLocationClientOption;
 
-    public AMapLocationClient getAMapLocationClient() {
-        return aMapLocationClient;
-    }
-
-    public AMapLocationClientOption getAMapLocationClientOption() {
-        return aMapLocationClientOption;
-    }
-
     public TaskSubmitPresenter(Context context, TaskSubmitContract.View view) {
         this.context = context;
         this.view = view;
@@ -46,27 +40,45 @@ public class TaskSubmitPresenter extends BasePresenterImplement implements TaskS
     @Override
     public void initialize() {
         super.initialize();
-        TTSUtil.getInstance().initializeSpeechRecognizer(context);
-        aMapLocationClient = new AMapLocationClient(BaseApplication.getInstance());
+        aMapLocationClient = new AMapLocationClient(context);
         aMapLocationClientOption = new AMapLocationClientOption();
         aMapLocationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        aMapLocationClientOption.setGpsFirst(true);
+        AMapLocationClientOption.setLocationProtocol(AMapLocationClientOption.AMapLocationProtocol.HTTP);
         aMapLocationClientOption.setHttpTimeOut(Constant.Map.LOCATION_TIME_OUT);
         aMapLocationClientOption.setInterval(Constant.Map.LOCATION_INTERVAL);
+        aMapLocationClientOption.setWifiScan(true);
+        aMapLocationClientOption.setGpsFirst(false);
         aMapLocationClientOption.setNeedAddress(true);
         aMapLocationClientOption.setOnceLocation(true);
-        aMapLocationClientOption.setOnceLocationLatest(false);
-        AMapLocationClientOption.setLocationProtocol(AMapLocationClientOption.AMapLocationProtocol.HTTPS);
+        aMapLocationClientOption.setOnceLocationLatest(true);
         aMapLocationClientOption.setSensorEnable(false);
-        aMapLocationClientOption.setWifiScan(true);
         aMapLocationClientOption.setLocationCacheEnable(false);
+        aMapLocationClientOption.setMockEnable(false);
         aMapLocationClient.setLocationOption(aMapLocationClientOption);
+        aMapLocationClient.setLocationListener(view);
+        TTSUtil.getInstance().initializeSpeechRecognizer(context);
     }
 
     @Override
-    public void location() {
-        view.showLoadingPromptDialog(R.string.location_prompt, Constant.RequestCode.DIALOG_PROGRESS_LOCATION);
-        aMapLocationClient.startLocation();
+    public void startLocation() {
+        if (aMapLocationClient != null) {
+            view.showLoadingPromptDialog(R.string.location_prompt, Constant.RequestCode.DIALOG_PROGRESS_LOCATION);
+            aMapLocationClient.startLocation();
+        }
+    }
+
+    @Override
+    public void stopLocation() {
+        if (aMapLocationClient != null) {
+            aMapLocationClient.stopLocation();
+        }
+    }
+
+    @Override
+    public void destroyLocation() {
+        aMapLocationClient.onDestroy();
+        aMapLocationClient = null;
+        aMapLocationClientOption = null;
     }
 
     @Override
@@ -101,6 +113,7 @@ public class TaskSubmitPresenter extends BasePresenterImplement implements TaskS
 
     @Override
     public void deleteFile() {
+        LogUtil.getInstance().print("deleteFile");
         try {
             IOUtil.getInstance().deleteFile(IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, null));
         } catch (IOException e) {

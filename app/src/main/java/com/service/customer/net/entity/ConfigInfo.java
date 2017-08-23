@@ -59,8 +59,9 @@ public class ConfigInfo extends BaseEntity {
             //todo
 //            this.key = object.getString(ResponseParameterKey.KEY);
             if (object.containsKey(ResponseParameterKey.INTERFACE_URL)) {
-                this.cardUrl = object.getJSONObject(ResponseParameterKey.INTERFACE_URL).getString(ResponseParameterKey.CARD_URL);
-                this.workUrl = object.getJSONObject(ResponseParameterKey.INTERFACE_URL).getString(ResponseParameterKey.WORK_URL);
+                this.cardUrl = object.getJSONObject(ResponseParameterKey.CARD_URL).getString(ResponseParameterKey.CARD_URL);
+                this.workUrl = object.getJSONObject(ResponseParameterKey.WORK_URL).getString(ResponseParameterKey.WORK_URL);
+                this.serverUrl = object.getJSONObject(ResponseParameterKey.SERVER_URL).getString(ResponseParameterKey.SERVER_URL);
             }
             return this;
         } else {

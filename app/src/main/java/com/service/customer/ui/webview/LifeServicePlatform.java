@@ -60,7 +60,7 @@ public class LifeServicePlatform {
                 case Constant.JavaScript.WORK_LOG:
                     //todo 应该通过url字段获取跳转地址且不应该新开页面
                     bundle = new Bundle();
-                    bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+                    bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl());
                     activityViewImplement.startActivity(WapActivity.class, bundle);
                     break;
                 case Constant.JavaScript.TASK_PROCESSING:

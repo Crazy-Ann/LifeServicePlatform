@@ -41,6 +41,10 @@ public final class LoginInfo extends BaseEntity {
         return accountAvatar;
     }
 
+    public void setAccountAvatar(String accountAvatar) {
+        this.accountAvatar = accountAvatar;
+    }
+
     public String getPhone() {
         return phone;
     }

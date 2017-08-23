@@ -30,10 +30,11 @@ public class RequestParameter {
     public OnHttpRequestTaskListener onHttpRequestTaskListener;
     private String httpTaskKey;
     private RequestBody requestBody;
-    private boolean isJsonType;
+    private boolean isJsonFormat;
     private JSONObject jsonObject;
     private boolean isUrlEncode = true;
     public CacheControl cacheControl;
+    private boolean isMultipart;
 
     public RequestParameter() {
         this(null);
@@ -50,18 +51,16 @@ public class RequestParameter {
 
     public RequestBody getRequestBody() {
         RequestBody body = null;
-        if (isJsonType) {
-            String json;
+        if (isJsonFormat) {
             if (jsonObject == null) {
                 JSONObject object = new JSONObject();
                 for (Parameter parameter : parameters) {
                     object.put(parameter.getKey(), parameter.getValue());
                 }
-                json = object.toJSONString();
+                body = RequestBody.create(MediaType.parse(Regex.JSON_TYPE.getRegext()), object.toJSONString());
             } else {
-                json = jsonObject.toJSONString();
+                body = RequestBody.create(MediaType.parse(Regex.JSON_TYPE.getRegext()), jsonObject.toJSONString());
             }
-            body = RequestBody.create(MediaType.parse(Regex.JSON_TYPE.getRegext()), json);
         } else if (requestBody != null) {
             body = requestBody;
         } else if (files != null && files.size() > 0) {
@@ -86,11 +85,22 @@ public class RequestParameter {
                 body = builder.build();
             }
         } else {
-            FormBody.Builder builder = new FormBody.Builder();
-            for (Parameter parameter : parameters) {
-                builder.add(parameter.getKey(), parameter.getValue());
+            if(isMultipart){
+                MultipartBody.Builder builder = new MultipartBody.Builder();
+                builder.setType(MultipartBody.FORM);
+                for (Parameter parameter : parameters) {
+                    String key = parameter.getKey();
+                    String value = parameter.getValue();
+                    builder.addFormDataPart(key, value);
+                }
+                body = builder.build();
+            }else {
+                FormBody.Builder builder = new FormBody.Builder();
+                for (Parameter parameter : parameters) {
+                    builder.add(parameter.getKey(), parameter.getValue());
+                }
+                body = builder.build();
             }
-            body = builder.build();
         }
         return body;
     }
@@ -111,12 +121,16 @@ public class RequestParameter {
         setRequestBody(MediaType.parse(Regex.STRING_TYPE.getRegext()), string);
     }
 
-    public boolean isJsonType() {
-        return isJsonType;
+    public boolean isJsonFormat() {
+        return isJsonFormat;
     }
 
-    public void setJsonType(boolean jsonType) {
-        isJsonType = jsonType;
+    public void setJsonFormat(boolean jsonFormat) {
+        isJsonFormat = jsonFormat;
+    }
+
+    public void setMultipart(boolean multipart) {
+        isMultipart = multipart;
     }
 
     public boolean isUrlEncode() {
@@ -128,7 +142,7 @@ public class RequestParameter {
     }
 
     public void setJsonObject(JSONObject object) {
-        isJsonType = true;
+        isJsonFormat = true;
         this.jsonObject = object;
     }
 
@@ -288,7 +302,7 @@ public class RequestParameter {
     public String toString() {
         if (BuildConfig.DEBUG) {
             StringBuilder result = new StringBuilder();
-            if (isJsonType) {
+            if (isJsonFormat) {
                 JSONObject object = new JSONObject();
                 for (Parameter parameter : parameters) {
                     object.put(parameter.getKey(), parameter.getValue());

@@ -52,17 +52,15 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
     @Override
     protected void initialize(Bundle savedInstanceState) {
         mainPresenter = new MainPresenter(this, this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainPresenter.checkPermission(this, this);
-        }
         mainPresenter.initialize();
+        
         setBasePresenterImplement(mainPresenter);
         getSavedInstanceState(savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mainPresenter.checkPermission(this, this);
         }
-
+        
         tlMenu.setTabMode(TabLayout.MODE_FIXED);
         tlMenu.setBackgroundColor(Color.WHITE);
         tlMenu.setSelectedTabIndicatorHeight(0);

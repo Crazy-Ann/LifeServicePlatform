@@ -162,7 +162,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                 break;
             case R.id.rlWorkLog:
                 bundle = new Bundle();
-                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl());
                 startActivity(WapActivity.class, bundle);
                 break;
             case R.id.rlAddWorkLog:
@@ -172,9 +172,8 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                 startActivity(MapActivity.class);
                 break;
             case R.id.rlGreetingCard:
-                LogUtil.getInstance().print("url:" + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getCardUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
                 bundle = new Bundle();
-                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getCardUrl() + Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getCardUrl());
                 //bundle.putString(Temp.URL.getContent(), Constant.ASSET_URL.GREETING_CARD_LIST);
                 startActivity(WapActivity.class, bundle);
                 break;
@@ -305,6 +304,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
 
     @Override
     public void setHeadImage(String url) {
+        LogUtil.getInstance().print("headimage url:" + url);
         GlideUtil.getInstance().with(getActivity(), url, null, getResources().getDrawable(R.mipmap.ic_launcher_round), DiskCacheStrategy.NONE, ivHeadImage);
     }
 }

@@ -14,6 +14,7 @@ import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.utils.BundleUtil;
+import com.service.customer.components.utils.HttpUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
@@ -54,9 +55,6 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
         initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, null);
 
         presenter = new WapPresenter(this, this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            presenter.checkPermission(this,this);
-        }
         presenter.initialize();
 
         setBasePresenterImplement(presenter);
@@ -75,7 +73,11 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
             wvContent.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 //        wvContent.getSettings().setUserAgentString(wvContent.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
-        wvContent.loadUrl(BundleUtil.getInstance().getStringData(this, Temp.URL.getContent())+ Regex.QUESTION_MARK.getRegext() + RequestParameterKey.TOKEN + Regex.EQUALS.getRegext() + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            presenter.checkPermission(this, this);
+        } else {
+            wvContent.loadUrl(HttpUtil.getInstance().addParameter(BundleUtil.getInstance().getStringData(this, Temp.URL.getContent()), RequestParameterKey.TOKEN, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken()));
+        }
     }
 
     @Override
@@ -176,9 +178,10 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
         switch (requestCode) {
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
-                // 重新执行getVersion
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    presenter.checkPermission(this,this);
+                    presenter.checkPermission(this, this);
+                } else {
+                    wvContent.loadUrl(HttpUtil.getInstance().addParameter(BundleUtil.getInstance().getStringData(this, Temp.URL.getContent()), RequestParameterKey.TOKEN, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken()));
                 }
                 break;
             default:
@@ -188,7 +191,7 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
 
     @Override
     public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-
+        wvContent.loadUrl(HttpUtil.getInstance().addParameter(BundleUtil.getInstance().getStringData(this, Temp.URL.getContent()), RequestParameterKey.TOKEN, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken()));
     }
 
     @Override
@@ -198,6 +201,6 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
 
     @Override
     public void startMainActivity(int tab) {
-        
+
     }
 }

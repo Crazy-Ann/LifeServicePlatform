@@ -65,7 +65,6 @@ public class TTSUtil implements SynthesizerListener, InitListener, RecognizerDia
 
     public void initializeSpeechRecognizer(Context context) {
         speechRecognizer = SpeechRecognizer.createRecognizer(context, this);
-        LogUtil.getInstance().print("SpeechConstant:" + speechRecognizer);
         setSpeechRecognizerParameter();
     }
 
