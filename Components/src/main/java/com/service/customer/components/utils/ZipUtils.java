@@ -12,9 +12,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by huyj on 2016/11/11.
- */
 public class ZipUtils {
 
     private static ZipUtils mZipUtil;
@@ -43,9 +40,9 @@ public class ZipUtils {
      * @param outZipPath 压缩后zip的保存路径
      */
     public void addFileToZip(String filePath, String outZipPath) {
-        List<String> filesPath = new ArrayList<String>();
+        List<String> filesPath = new ArrayList<>();
         filesPath.add(filePath);
-        addFilesToZip(filesPath,outZipPath);
+        addFilesToZip(filesPath, outZipPath);
     }
 
     /**
@@ -57,7 +54,7 @@ public class ZipUtils {
     public void addFilesToZip(List<String> filesPath, String outZipPath) {
         try {
             ZipFile zipFile = new ZipFile(outZipPath);
-            ArrayList<File> filesToAdd = new ArrayList<File>();
+            ArrayList<File> filesToAdd = new ArrayList<>();
             for (int i = 0; i < filesPath.size(); i++) {
                 filesToAdd.add(new File(filesPath.get(i)));
             }
@@ -80,7 +77,7 @@ public class ZipUtils {
     public void addFileWithAESEncryp(String filePath, String outZipPath, String password) {
         List<String> filesPath = new ArrayList<>();
         filesPath.add(filePath);
-        addFilesWithAESEncryp(filesPath,outZipPath,password);
+        addFilesWithAESEncryp(filesPath, outZipPath, password);
     }
 
     /**

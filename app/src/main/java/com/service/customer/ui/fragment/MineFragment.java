@@ -36,7 +36,6 @@ import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.LoginInfo;
-import com.service.customer.ui.activity.MapActivity;
 import com.service.customer.ui.activity.SettingActivity;
 import com.service.customer.ui.activity.WapActivity;
 import com.service.customer.ui.activity.WorkSubmitActivity;
@@ -56,21 +55,19 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     private MinePresenter minePresenter;
     private ImageView ivHeadImage;
     private TextView tvRealName;
-    private LinearLayout llVolunteerContent;
-    private RelativeLayout rlWorkLog;
-    private RelativeLayout rlAddWorkLog;
-    private RelativeLayout rlMapEvent;
+    private LinearLayout llHelperOperation;
+    //    private RelativeLayout rlWorkLog;
+    private RelativeLayout rlAddCondolenceRecord;
+    //    private RelativeLayout rlMapEvent;
+    private RelativeLayout rlHelpSeekerInfo;
+    private LinearLayout llHelpSeekerOperation;
     private RelativeLayout rlGreetingCard;
+    private RelativeLayout rlHelperInfo;
     private RelativeLayout rlSetting;
     private Button btnLogout;
     private MineHandler mineHandler;
 
-    @Override
-    public void startMainActivity(int tab) {
-
-    }
-
-    private class MineHandler extends FragmentHandler<MineFragment> {
+    private static class MineHandler extends FragmentHandler<MineFragment> {
 
         public MineHandler(MineFragment fragments) {
             super(fragments);
@@ -80,12 +77,12 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
         protected void handleMessage(MineFragment fragments, Message msg) {
             switch (msg.what) {
                 case Constant.Message.GET_IMAGE_SUCCESS:
-                    hideLoadingPromptDialog();
-                    minePresenter.saveHeadImage((File) msg.obj);
+                    fragments.hideLoadingPromptDialog();
+                    fragments.minePresenter.saveHeadImage((File) msg.obj);
                     break;
                 case Constant.Message.GET_IMAGE_FAILED:
-                    hideLoadingPromptDialog();
-                    showPromptDialog(R.string.dialog_prompt_get_image_error, Constant.RequestCode.DIALOG_PROMPT_GET_IMAGE_ERROR);
+                    fragments.hideLoadingPromptDialog();
+                    fragments.showPromptDialog(R.string.dialog_prompt_get_image_error, Constant.RequestCode.DIALOG_PROMPT_GET_IMAGE_ERROR);
                     break;
                 default:
                     break;
@@ -105,11 +102,14 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     @Override
     protected void findViewById() {
         ivHeadImage = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.ivHeadImage, this);
-        llVolunteerContent = ViewUtil.getInstance().findView(rootView, R.id.llVolunteerContent);
-        rlWorkLog = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlWorkLog, this);
-        rlAddWorkLog = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlAddWorkLog, this);
-        rlMapEvent = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlMapEvent, this);
+        llHelperOperation = ViewUtil.getInstance().findView(rootView, R.id.llHelperOperation);
+//        rlWorkLog = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlWorkLog, this);
+        rlAddCondolenceRecord = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlAddCondolenceRecord, this);
+//        rlMapEvent = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlMapEvent, this);
+        rlHelpSeekerInfo = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlHelpSeekerInfo, this);
+        llHelpSeekerOperation = ViewUtil.getInstance().findView(rootView, R.id.llHelpSeekerOperation);
         rlGreetingCard = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlGreetingCard, this);
+        rlHelperInfo = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlHelperInfo, this);
         rlSetting = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlSetting, this);
         btnLogout = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.btnLogout, this);
         tvRealName = ViewUtil.getInstance().findView(rootView, R.id.tvRealName);
@@ -129,11 +129,11 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                                    + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getAccountId()
                                    + Regex.RIGHT_PARENTHESIS.getRegext());
         if (TextUtils.equals(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType(), "1")) {
-            ViewUtil.getInstance().setViewGone(rlGreetingCard);
-            ViewUtil.getInstance().setViewVisible(llVolunteerContent);
+            ViewUtil.getInstance().setViewGone(llHelpSeekerOperation);
+            ViewUtil.getInstance().setViewVisible(llHelperOperation);
         } else {
-            ViewUtil.getInstance().setViewGone(llVolunteerContent);
-            ViewUtil.getInstance().setViewVisible(rlGreetingCard);
+            ViewUtil.getInstance().setViewGone(llHelperOperation);
+            ViewUtil.getInstance().setViewVisible(llHelpSeekerOperation);
         }
     }
 
@@ -160,21 +160,33 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                         .setCancelable(true)
                         .showAllowingStateLoss(getActivity());
                 break;
-            case R.id.rlWorkLog:
-                bundle = new Bundle();
-                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl());
-                startActivity(WapActivity.class, bundle);
-                break;
-            case R.id.rlAddWorkLog:
+//            case R.id.rlWorkLog:
+//                bundle = new Bundle();
+//                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl());
+//                startActivity(WapActivity.class, bundle);
+//                break;
+            case R.id.rlAddCondolenceRecord:
                 startActivity(WorkSubmitActivity.class);
                 break;
-            case R.id.rlMapEvent:
-                startActivity(MapActivity.class);
+//            case R.id.rlMapEvent:
+//                startActivity(MapActivity.class);
+//                break;
+            case R.id.rlHelpSeekerInfo:
+                bundle = new Bundle();
+                bundle.putString(Temp.TITLE.getContent(), getString(R.string.helper_list));
+                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getHelpSeekerUrl());
+                startActivity(WapActivity.class, bundle);
                 break;
             case R.id.rlGreetingCard:
                 bundle = new Bundle();
+                bundle.putString(Temp.TITLE.getContent(), getString(R.string.greeting_card));
                 bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getCardUrl());
-                //bundle.putString(Temp.URL.getContent(), Constant.ASSET_URL.GREETING_CARD_LIST);
+                startActivity(WapActivity.class, bundle);
+                break;
+            case R.id.rlHelperInfo:
+                bundle = new Bundle();
+                bundle.putString(Temp.TITLE.getContent(), getString(R.string.help_seeker_list));
+                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getHelperUrl());
                 startActivity(WapActivity.class, bundle);
                 break;
             case R.id.rlSetting:

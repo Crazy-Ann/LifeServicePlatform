@@ -61,18 +61,20 @@ public final class Constant {
         public static final int DIALOG_PROMPT_MODIFY_PASSWORD_SUCCESS = 0x5034;
         public static final int DIALOG_PROGRESS_SCORE_TASK_INFO = 0x5035;
         public static final int DIALOG_PROMPT_SCORE_TASK_INFO_ERROR = 0x5036;
-        public static final int DIALOG_PROGRESS_TASK_INFOS = 0x5037;
-        public static final int DIALOG_PROMPT_TASK_INFOS_ERROR = 0x5038;
-        public static final int DIALOG_PROMPT_EVALUATE_INFO_SUCCESS = 0x5039;
-        public static final int DIALOG_PROMPT_EVALUATE_INFO_ERROR = 0x5040;
-        public static final int DIALOG_PROGRESS_SAVE_WORK_INFO = 0x5041;
-        public static final int DIALOG_PROMPT_SAVE_WORK_INFO_ERROR = 0x5042;
-        public static final int DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS = 0x5043;
-        public static final int DIALOG_PROMPT_SUBMIT_PICTURE_ERROR = 0x5044;
-        public static final int DIALOG_PROGRESS_DEAL_TASK_INFO = 0x5045;
-        public static final int DIALOG_PROMPT_DEAL_TASK_INFO_ERROR = 0x5046;
-        public static final int DIALOG_PROMPT_DEAL_TASK_INFO_SUCCESS = 0x5047;
-        public static final int DIALOG_PROMPT_TTS_INTIALIZED_ERROR = 0x5048;
+        public static final int DIALOG_PROMPT_SCORE_TASK_INFO_SUCCESS = 0x5037;
+        public static final int DIALOG_PROGRESS_TASK_INFOS = 0x5038;
+        public static final int DIALOG_PROMPT_TASK_INFOS_ERROR = 0x5039;
+        public static final int DIALOG_PROGRESS_SAVE_WORK_INFO = 0x5040;
+        public static final int DIALOG_PROMPT_SAVE_WORK_INFO_ERROR = 0x5041;
+        public static final int DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS = 0x5042;
+        public static final int DIALOG_PROMPT_SUBMIT_PICTURE_ERROR = 0x5043;
+        public static final int DIALOG_PROGRESS_DEAL_TASK_INFO = 0x5044;
+        public static final int DIALOG_PROMPT_DEAL_TASK_INFO_ERROR = 0x5045;
+        public static final int DIALOG_PROMPT_DEAL_TASK_INFO_SUCCESS = 0x5046;
+        public static final int DIALOG_PROMPT_TTS_INTIALIZED_ERROR = 0x5047;
+        public static final int DIALOG_PROGRESS_SCORE_HELPER_INFO = 0x5048;
+        public static final int DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR = 0x5049;
+        public static final int DIALOG_PROMPT_SCORE_HELPER_INFO_SUCCESS = 0x5050;
         public static final int INSTALL_APK = 0x5097;
         public static final int REQUEST_CODE_PHOTOGRAPH = 0x5098;
         public static final int REQUEST_CODE_ALBUM = 0x5099;
@@ -142,23 +144,8 @@ public final class Constant {
         public static final String TASK_TYPE = "tasktype";
         public static final String BILL_NO = "billno";
 
-        public static final String EMERGENCY_CALL_FOR_HELP = "emergency_call_for_help";
-        public static final String APPLIANCE_MAINTENANCE = "appliance_maintenance";
-        public static final String LIVING_FACILITIES_MAINTENANCE = "living_facilities_maintenance";
-        public static final String OTHER_LIFE_EVENTS = "other_life_events";
-        public static final String PSYCHOLOGICAL_COUNSELING = "psychological_counseling";
-        public static final String DOCTOR_MEDICINE = "doctor_medicine";
-        public static final String OTHER = "other";
-        public static final String IMMEDIATE_EVALUATION = "immediate_evaluation";
-        public static final String SECURETY_POLICE_CALL = "securety_police_call";
-        public static final String FIRE_CONTROL_CALL = "fire_control_call";
-        public static final String HOSPITAL_CALL = "hospital_call";
-        public static final String TRAFFIC_POLICE_CALL = "traffic_police_call";
-
-        public static final String POLICIES_REGULATIONS = "policies_regulations";
-        public static final String QUERY_ANALYSIS = "query_analysis";
-        public static final String INFORMATION_MANAGEMENT = "information_management";
-        public static final String EVENT_QUERY = "event_query";
+        public static final String TASK_EVALUATION = "task_evaluation";
+        public static final String HELPER_EVALUATION = "helper_evaluation";
         public static final String MAP_QUERY = "map_query";
         public static final String WORK_LOG = "work_log";
 
@@ -170,7 +157,7 @@ public final class Constant {
 
     public static class DEAL_STATUS {
         public static final int PROCESSING_COMPLETED = 2;
-        public static final int DEMANDER_INDEX = 4;
+        public static final int CAN_NOT_HANDLE = 4;
     }
 
     public static class ASSET_URL {

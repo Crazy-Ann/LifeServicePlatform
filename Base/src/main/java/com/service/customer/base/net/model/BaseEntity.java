@@ -62,5 +62,16 @@ public class BaseEntity extends CacheableImplement implements Parcelable {
         this.returnCode = in.readString();
         this.returnMessage = in.readString();
     }
+    
+    public static final Creator<BaseEntity> CREATOR = new Creator<BaseEntity>() {
+        @Override
+        public BaseEntity createFromParcel(Parcel in) {
+            return new BaseEntity(in);
+        }
 
+        @Override
+        public BaseEntity[] newArray(int size) {
+            return new BaseEntity[size];
+        }
+    };
 }

@@ -12,15 +12,15 @@ import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
 import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.net.listener.ApiListener;
-import com.service.customer.ui.contract.EvaluateContract;
+import com.service.customer.ui.contract.TaskEvaluateContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
-public class EvaluatePresenter extends BasePresenterImplement implements EvaluateContract.Presenter {
+public class TaskEvaluatePresenter extends BasePresenterImplement implements TaskEvaluateContract.Presenter {
 
     private Context context;
-    private EvaluateContract.View view;
+    private TaskEvaluateContract.View view;
 
-    public EvaluatePresenter(Context context, EvaluateContract.View view) {
+    public TaskEvaluatePresenter(Context context, TaskEvaluateContract.View view) {
         this.context = context;
         this.view = view;
     }
@@ -32,7 +32,7 @@ public class EvaluatePresenter extends BasePresenterImplement implements Evaluat
     }
 
     @Override
-    public void evaluate(String billNo, int score, String note) {
+    public void scoreTaskInfo(String billNo, int score, String note) {
         Api.getInstance().scoreTaskInfo(
                 context,
                 view,
@@ -46,7 +46,7 @@ public class EvaluatePresenter extends BasePresenterImplement implements Evaluat
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-                        view.showPromptDialog(R.string.dialog_prompt_evaluate_info_success, Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_SUCCESS);
+                        view.showPromptDialog(R.string.dialog_prompt_score_task_info_success, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_SUCCESS);
                     }
 
                     @Override

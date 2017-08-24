@@ -67,7 +67,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
 
     private TaskSubmitPresenter taskSubmitPresenter;
     private TextView tvLocation;
-    private VoiceEdittext vetDescreption;
+    private VoiceEdittext vetTaskNote;
     private RecyclerView rvTaskImage;
     private TaskImageAdapter taskImageAdapter;
     private GridLayoutManager gridLayoutManager;
@@ -79,7 +79,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
 
     private TaskHandler taskHandler;
 
-    private class TaskHandler extends ActivityHandler<TaskSubmitActivity> {
+    private static class TaskHandler extends ActivityHandler<TaskSubmitActivity> {
 
         public TaskHandler(TaskSubmitActivity activity) {
             super(activity);
@@ -89,13 +89,13 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
         protected void handleMessage(TaskSubmitActivity activity, Message msg) {
             switch (msg.what) {
                 case Constant.Message.GET_IMAGE_SUCCESS:
-                    hideLoadingPromptDialog();
-                    taskImageInfos.add((TaskImageInfo) msg.obj);
-                    taskImageAdapter.setData(taskImageInfos);
+                    activity.hideLoadingPromptDialog();
+                    activity.taskImageInfos.add((TaskImageInfo) msg.obj);
+                    activity.taskImageAdapter.setData(activity.taskImageInfos);
                     break;
                 case Constant.Message.GET_IMAGE_FAILED:
-                    hideLoadingPromptDialog();
-                    showPromptDialog(R.string.dialog_prompt_get_image_error, Constant.RequestCode.DIALOG_PROMPT_GET_IMAGE_ERROR);
+                    activity.hideLoadingPromptDialog();
+                    activity.showPromptDialog(R.string.dialog_prompt_get_image_error, Constant.RequestCode.DIALOG_PROMPT_GET_IMAGE_ERROR);
                     break;
                 default:
                     break;
@@ -116,7 +116,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
     protected void findViewById() {
         inToolbar = ViewUtil.getInstance().findView(this, R.id.inToolbar);
         tvLocation = ViewUtil.getInstance().findView(this, R.id.tvLocation);
-        vetDescreption = ViewUtil.getInstance().findView(this, R.id.vetDescreption);
+        vetTaskNote = ViewUtil.getInstance().findView(this, R.id.vetWorkNote);
         rvTaskImage = ViewUtil.getInstance().findView(this, R.id.rvTaskImage);
         btnSubmit = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.btnSubmit, this);
     }
@@ -124,8 +124,8 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
     @Override
     protected void initialize(Bundle savedInstanceState) {
         initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
-        vetDescreption.setHint(getString(R.string.text_descreption_prompt));
-        vetDescreption.setTextCount(0);
+        vetTaskNote.setHint(getString(R.string.text_descreption_prompt));
+        vetTaskNote.setTextCount(0);
         taskHandler = new TaskHandler(this);
 
         taskSubmitPresenter = new TaskSubmitPresenter(this, this);
@@ -135,7 +135,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
         getSavedInstanceState(savedInstanceState);
 
         editTextValidator = new EditTextValidator();
-        editTextValidator.add(new Validation(null, vetDescreption.getEtContent(), true, null, new TaskValidation()));
+        editTextValidator.add(new Validation(null, vetTaskNote.getEtContent(), true, null, new TaskValidation()));
         editTextValidator.execute(this, btnSubmit, com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
@@ -165,7 +165,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
     @Override
     protected void setListener() {
         TTSUtil.getInstance().setOnIntializeListener(this);
-        vetDescreption.setOnVoiceClickListener(this);
+        vetTaskNote.setOnVoiceClickListener(this);
         TTSUtil.getInstance().setOnDictationListener(this);
         taskImageAdapter.setOnItemClickListener(this);
     }
@@ -186,7 +186,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                                 fileWrappers.add(new FileWrapper(file));
                             }
                         }
-                        taskSubmitPresenter.saveTaskInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), String.valueOf(aMapLocation.getAddress()), BundleUtil.getInstance().getIntData(this, Temp.TASK_TYPE.getContent()), vetDescreption.getText().trim(), fileWrappers);
+                        taskSubmitPresenter.saveTaskInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), String.valueOf(aMapLocation.getAddress()), BundleUtil.getInstance().getIntData(this, Temp.TASK_TYPE.getContent()), vetTaskNote.getText().trim(), fileWrappers);
                     }
                 } else {
                     showLocationPromptDialog(getString(R.string.dialog_prompt_location_error), Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
@@ -263,7 +263,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
     @Override
     public void onDictation(String content) {
         LogUtil.getInstance().print("content:" + content);
-        vetDescreption.setText(content);
+        vetTaskNote.setText(content);
     }
 
     @Override
@@ -390,14 +390,6 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                 .setCancelableOnTouchOutside(true)
                 .setRequestCode(requestCode)
                 .show(this);
-    }
-
-    @Override
-    public void startMainActivity(int tab) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(Temp.TAB.getContent(), tab);
-        startActivity(MainActivity.class, bundle);
-        onFinish("startMainActivity");
     }
 
     @Override

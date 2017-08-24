@@ -234,9 +234,4 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
     public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
         showPermissionPromptDialog();
     }
-
-    @Override
-    public void startMainActivity(int tab) {
-
-    }
 }

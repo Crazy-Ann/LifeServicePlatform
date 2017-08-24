@@ -16,8 +16,8 @@ import com.iflytek.cloud.ErrorCode;
 import com.service.customer.R;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
-import com.service.customer.components.tts.listener.OnDictationListener;
 import com.service.customer.components.tts.TTSUtil;
+import com.service.customer.components.tts.listener.OnDictationListener;
 import com.service.customer.components.tts.listener.OnIntializeListener;
 import com.service.customer.components.utils.BundleUtil;
 import com.service.customer.components.utils.GlideUtil;
@@ -30,19 +30,19 @@ import com.service.customer.components.validation.Validation;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.EvaluateInfo;
-import com.service.customer.net.entity.validation.TaskValidation;
-import com.service.customer.ui.contract.EvaluateContract;
+import com.service.customer.net.entity.validation.EvaluateValidation;
+import com.service.customer.ui.contract.HelperEvaluateContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
-import com.service.customer.ui.presenter.EvaluatePresenter;
+import com.service.customer.ui.presenter.HelperEvaluatePresenter;
 import com.service.customer.ui.widget.edittext.VoiceEdittext;
 import com.service.customer.ui.widget.edittext.listener.OnVoiceClickListener;
 import com.service.customer.ui.widget.ratingbar.RatingBar;
 
 import java.util.List;
 
-public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Presenter> implements EvaluateContract.View, OnLeftIconEventListener, View.OnClickListener, OnDictationListener, OnVoiceClickListener, OnIntializeListener {
+public class HelperEvaluateActivity extends ActivityViewImplement<HelperEvaluateContract.Presenter> implements HelperEvaluateContract.View, OnLeftIconEventListener, View.OnClickListener, OnDictationListener, OnVoiceClickListener, OnIntializeListener {
 
-    private EvaluatePresenter evaluatePresenter;
+    private HelperEvaluatePresenter helperEvaluatePresenter;
     private ImageView ivHeadImage;
     private TextView tvRealName;
     private RatingBar rbEvaluate;
@@ -54,7 +54,7 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_evaluate);
+        setContentView(R.layout.activity_task_evaluate);
         findViewById();
         initialize(savedInstanceState);
         setListener();
@@ -72,20 +72,20 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.service_evaluate));
+        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.evaluate));
         TTSUtil.getInstance().initializeSpeechRecognizer(this);
 
-        evaluatePresenter = new EvaluatePresenter(this, this);
-        evaluatePresenter.initialize();
+        helperEvaluatePresenter = new HelperEvaluatePresenter(this, this);
+        helperEvaluatePresenter.initialize();
 
-        setBasePresenterImplement(evaluatePresenter);
+        setBasePresenterImplement(helperEvaluatePresenter);
         getSavedInstanceState(savedInstanceState);
 
         vetEvaluate.setHint(getString(R.string.evaluate_prompt1));
         vetEvaluate.setTextCount(0);
 
         editTextValidator = new EditTextValidator();
-        editTextValidator.add(new Validation(null, vetEvaluate.getEtContent(), true, null, new TaskValidation()));
+        editTextValidator.add(new Validation(null, vetEvaluate.getEtContent(), true, null, new EvaluateValidation()));
         editTextValidator.execute(this, btnSubmit, com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
@@ -113,18 +113,18 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
         switch (view.getId()) {
             case R.id.btnSubmit:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    evaluatePresenter.checkPermission(this, this);
+                    helperEvaluatePresenter.checkPermission(this, this);
                 } else {
                     if (evaluateInfo != null) {
                         if (rbEvaluate.getSelectedCount() > 0) {
                             if (editTextValidator.validate(this)) {
-                                evaluatePresenter.evaluate(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                                helperEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
                             }
                         } else {
                             ToastUtil.getInstance().showToast(this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
                         }
                     } else {
-                        showPromptDialog(R.string.dialog_prompt_evaluate_info_error, Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_ERROR);
+                        showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
                     }
                 }
                 break;
@@ -140,18 +140,18 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    evaluatePresenter.checkPermission(this, this);
+                    helperEvaluatePresenter.checkPermission(this, this);
                 } else {
                     if (evaluateInfo != null) {
                         if (rbEvaluate.getSelectedCount() > 0) {
                             if (editTextValidator.validate(this)) {
-                                evaluatePresenter.evaluate(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                                helperEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
                             }
                         } else {
                             ToastUtil.getInstance().showToast(this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
                         }
                     } else {
-                        showPromptDialog(R.string.dialog_prompt_evaluate_info_error, Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_ERROR);
+                        showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
                     }
                 }
                 break;
@@ -194,13 +194,13 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
                 startLoginActivity(true);
                 break;
-            case Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_SUCCESS:
-                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_EVALUATE_INFO_SUCCESS");
-                onFinish("DIALOG_PROMPT_EVALUATE_INFO_SUCCESS");
+            case Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_SUCCESS:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SCORE_HELPER_INFO_SUCCESS");
+                startMainActivity(Constant.Tab.TASK_MANAGEMENT);
                 break;
-            case Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_ERROR:
-                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_EVALUATE_INFO_ERROR");
-                onFinish("DIALOG_PROMPT_EVALUATE_INFO_SUCCESS");
+            case Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR:
+                LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR");
+                onFinish("DIALOG_PROMPT_EVALUATE_INFO_ERROR");
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_TTS_INTIALIZED_ERROR:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TTS_INTIALIZED_ERROR");
@@ -230,13 +230,13 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
         if (evaluateInfo != null) {
             if (rbEvaluate.getSelectedCount() > 0) {
                 if (editTextValidator.validate(this)) {
-                    evaluatePresenter.evaluate(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                    helperEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
                 }
             } else {
                 ToastUtil.getInstance().showToast(this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
             }
         } else {
-            showPromptDialog(R.string.dialog_prompt_evaluate_info_error, Constant.RequestCode.DIALOG_PROMPT_EVALUATE_INFO_ERROR);
+            showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
         }
     }
 
@@ -253,11 +253,6 @@ public class EvaluateActivity extends ActivityViewImplement<EvaluateContract.Pre
     @Override
     public void OnLeftIconEvent() {
         onFinish("OnLeftIconEvent");
-    }
-
-    @Override
-    public void startMainActivity(int tab) {
-
     }
 
     @Override

@@ -31,20 +31,20 @@ public abstract class BaseDialogBuilder<T extends BaseDialogBuilder<T>> {
     protected abstract Bundle prepareArguments();
 
     public T setCancelable(boolean cancelable) {
-        isCancelable = cancelable;
+        this.isCancelable = cancelable;
         return self();
     }
 
     public T setCancelableOnTouchOutside(boolean cancelable) {
-        isCancelableOnTouchOutside = cancelable;
+        this.isCancelableOnTouchOutside = cancelable;
         if (cancelable) {
-            isCancelable = cancelable;
+            this.isCancelable = cancelable;
         }
         return self();
     }
 
     public T setTargetFragment(Fragment fragment, int requestCode) {
-        targetFragment = fragment;
+        this.targetFragment = fragment;
         this.requestCode = requestCode;
         return self();
     }
@@ -60,12 +60,12 @@ public abstract class BaseDialogBuilder<T extends BaseDialogBuilder<T>> {
     }
 
     public T useDarkTheme() {
-        isUseDarkTheme = true;
+        this.isUseDarkTheme = true;
         return self();
     }
 
     public T useLightTheme() {
-        isUseLightTheme = true;
+        this.isUseLightTheme = true;
         return self();
     }
 

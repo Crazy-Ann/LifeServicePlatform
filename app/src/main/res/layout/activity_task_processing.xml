@@ -21,7 +21,7 @@
         android:textSize="@dimen/sp_15"/>
 
     <com.service.customer.ui.widget.edittext.VoiceEdittext
-        android:id="@+id/vetDescreption"
+        android:id="@+id/vetWorkNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

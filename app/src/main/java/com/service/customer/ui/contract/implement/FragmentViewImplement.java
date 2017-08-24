@@ -12,7 +12,9 @@ import com.service.customer.components.utils.IOUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
+import com.service.customer.constant.Temp;
 import com.service.customer.ui.activity.LoginActivity;
+import com.service.customer.ui.activity.MainActivity;
 import com.service.customer.ui.dialog.ProgressDialog;
 import com.service.customer.ui.dialog.PromptDialog;
 
@@ -104,6 +106,14 @@ public abstract class FragmentViewImplement<T> extends BaseFragment implements B
         }
         startActivity(LoginActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         onFinish("startLoginActivity");
+    }
+
+    @Override
+    public void startMainActivity(int tab) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(Temp.TAB.getContent(), tab);
+        startActivity(MainActivity.class, bundle);
+        onFinish("startMainActivity");
     }
 
     @Override

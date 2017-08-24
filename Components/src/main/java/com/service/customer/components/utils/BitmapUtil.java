@@ -45,7 +45,7 @@ public class BitmapUtil {
 
     public Bitmap base64ToBitmap(String base64Data) {
         byte[] bytes = Base64Util.decode(base64Data);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        return bytes != null ? BitmapFactory.decodeByteArray(bytes, 0, bytes.length) : null;
     }
 
     public String bitmapToBase64(Bitmap bitmap, int quality) {
@@ -88,6 +88,7 @@ public class BitmapUtil {
      * @param url      传入的字符串，通常是一个URL
      * @param qrWidth  宽度（像素值px）
      * @param qrHeight 高度（像素值px）
+     *
      * @return
      */
     public final Bitmap create2DCoderBitmap(String url, int qrWidth, int qrHeight) {
@@ -114,7 +115,7 @@ public class BitmapUtil {
             }
             // 生成二维码图片的格式，使用ARGB_8888
             Bitmap bitmap = Bitmap.createBitmap(qrWidth, qrHeight,
-                    Bitmap.Config.ARGB_8888);
+                                                Bitmap.Config.ARGB_8888);
             bitmap.setPixels(pixels, 0, qrWidth, 0, 0, qrWidth, qrHeight);
             // 显示到一个ImageView上面
             // sweepIV.setImageBitmap(bitmap);
@@ -130,6 +131,7 @@ public class BitmapUtil {
      *
      * @param bitmap
      * @param fileName
+     *
      * @return
      */
     public boolean saveBitmap(Bitmap bitmap, String fileName) {

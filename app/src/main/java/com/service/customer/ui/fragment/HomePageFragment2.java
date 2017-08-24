@@ -50,28 +50,23 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract2.P
     private LinearLayoutManager linearLayoutManager;
     private HomePageHandler homePageHandler;
 
-    @Override
-    public void startMainActivity(int tab) {
-        
-    }
-
-    private class HomePageHandler extends FragmentHandler<HomePageFragment2> {
+    private static class HomePageHandler extends FragmentHandler<HomePageFragment2> {
 
         public HomePageHandler(HomePageFragment2 fragments) {
             super(fragments);
         }
 
         @Override
-        protected void handleMessage(HomePageFragment2 fragments, Message msg) {
+        protected void handleMessage(final HomePageFragment2 fragments, Message msg) {
             switch (msg.what) {
                 case com.service.customer.constant.Constant.Message.GET_SERVICE_INFOS_SUCCESS:
-                    hideLoadingPromptDialog();
-                    serviceInfos = ((ServiceInfos) msg.obj).getServiceInfos();
-                    serviceAdapter.setData(serviceInfos);
+                    fragments.hideLoadingPromptDialog();
+                    fragments.serviceInfos = ((ServiceInfos) msg.obj).getServiceInfos();
+                    fragments.serviceAdapter.setData(fragments.serviceInfos);
                     ThreadPoolUtil.execute(new Runnable() {
                         @Override
                         public void run() {
-                            NotificationAnnouncementInfos notificationAnnouncementInfos = homePagePresenter2.generateNotificationAnnouncementInfos();
+                            NotificationAnnouncementInfos notificationAnnouncementInfos = fragments.homePagePresenter2.generateNotificationAnnouncementInfos();
                             if (notificationAnnouncementInfos != null) {
                                 sendMessage(MessageUtil.getMessage(com.service.customer.constant.Constant.Message.GET_NOTIFICATION_ANNOUNCEMENT_INFOS_SUCCESS, notificationAnnouncementInfos));
                             } else {
@@ -81,15 +76,15 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract2.P
                     });
                     break;
                 case com.service.customer.constant.Constant.Message.GET_SERVICE_INFOS_FAILED:
-                    hideLoadingPromptDialog();
+                    fragments.hideLoadingPromptDialog();
                     break;
                 case com.service.customer.constant.Constant.Message.GET_NOTIFICATION_ANNOUNCEMENT_INFOS_SUCCESS:
-                    hideLoadingPromptDialog();
-                    notificationAnnouncementInfos = ((NotificationAnnouncementInfos) msg.obj).getNotificationAnnouncementInfos();
-                    notificationAnnouncementAdapter.setData(notificationAnnouncementInfos);
+                    fragments.hideLoadingPromptDialog();
+                    fragments.notificationAnnouncementInfos = ((NotificationAnnouncementInfos) msg.obj).getNotificationAnnouncementInfos();
+                    fragments.notificationAnnouncementAdapter.setData(fragments.notificationAnnouncementInfos);
                     break;
                 case com.service.customer.constant.Constant.Message.GET_NOTIFICATION_ANNOUNCEMENT_INFOS_FAILED:
-                    hideLoadingPromptDialog();
+                    fragments.hideLoadingPromptDialog();
                     break;
                 default:
                     break;

@@ -135,7 +135,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
                 //if (taskInfo != null) {
                 //    Bundle bundle = new Bundle();
                 //   bundle.putParcelable(Temp.TASK_INFO.getContent(), taskInfo);
-                //   startActivity(EvaluateActivity.class, bundle);
+                //   startActivity(TaskEvaluateActivity.class, bundle);
                 //}
                 break;
             case R.id.ivClose:
@@ -337,11 +337,6 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     @Override
     public void OnLeftIconEvent() {
         onFinish("OnLeftIconEvent");
-    }
-
-    @Override
-    public void startMainActivity(int tab) {
-
     }
 }
 

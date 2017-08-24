@@ -85,7 +85,7 @@ public class RequestParameter {
                 body = builder.build();
             }
         } else {
-            if(isMultipart){
+            if (isMultipart) {
                 MultipartBody.Builder builder = new MultipartBody.Builder();
                 builder.setType(MultipartBody.FORM);
                 for (Parameter parameter : parameters) {
@@ -94,7 +94,7 @@ public class RequestParameter {
                     builder.addFormDataPart(key, value);
                 }
                 body = builder.build();
-            }else {
+            } else {
                 FormBody.Builder builder = new FormBody.Builder();
                 for (Parameter parameter : parameters) {
                     builder.add(parameter.getKey(), parameter.getValue());
@@ -258,10 +258,8 @@ public class RequestParameter {
         if (isFileAvalable(file)) {
             if (file.getName().toLowerCase().lastIndexOf(Regex.PNG.getRegext()) > 0) {
                 addFormDataParameter(key, file, Regex.IMAGE_PNG_TYPE1.getRegext());
-                return;
             } else if (file.getName().toLowerCase().lastIndexOf(Regex.JPG.getRegext()) > 0 || file.getName().toLowerCase().lastIndexOf(Regex.JPEG.getRegext()) > 0) {
                 addFormDataParameter(key, file, Regex.IMAGE_JPEG_TYPE.getRegext());
-                return;
             } else {
                 addFormDataParameter(key, new FileWrapper(file, null));
             }

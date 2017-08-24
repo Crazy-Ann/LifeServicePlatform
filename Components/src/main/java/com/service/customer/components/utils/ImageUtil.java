@@ -173,7 +173,7 @@ public class ImageUtil {
             offsetX = (w - scaleWidth) / 2;
             offsetY = (h - scaleHeight) / 2;
         }
-        Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+        Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
         //容错级别
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
@@ -212,8 +212,7 @@ public class ImageUtil {
         Matrix matrix = new Matrix();
         float scaleFactor = Math.min(w * 1.0f / 5 / logo.getWidth(), h * 1.0f / 5 / logo.getHeight());
         matrix.postScale(scaleFactor, scaleFactor);
-        Bitmap result = Bitmap.createBitmap(logo, 0, 0, logo.getWidth(), logo.getHeight(), matrix, true);
-        return result;
+        return Bitmap.createBitmap(logo, 0, 0, logo.getWidth(), logo.getHeight(), matrix, true);
     }
 
 
@@ -221,14 +220,14 @@ public class ImageUtil {
     public static Bitmap getNarrowBitmap(Context context, Uri uri, float f) throws InterruptedException, ExecutionException, IOException {
         final Bitmap original = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
         LogUtil.getInstance().print("图片压缩前大小，" + "w:" + original.getWidth() + "h:" + original.getHeight());
-        Bitmap bitmap = GlideUtil.getInstance().get(context,uri,(int) (original.getWidth() * f),(int) (original.getHeight() * f));
+        Bitmap bitmap = GlideUtil.getInstance().get(context, uri, (int) (original.getWidth() * f), (int) (original.getHeight() * f));
         LogUtil.getInstance().print("图片压缩后大小，" + "w:" + bitmap.getWidth() + "h:" + bitmap.getHeight());
         return bitmap;
     }
 
     // 按指定dp压缩图片
     public static Bitmap getNarrowBitmap(Context context, Uri uri, int widthDp, int HeightDp) throws InterruptedException, ExecutionException, IOException {
-        Bitmap bitmap = Glide
+        return Glide
                 .with(context)
                 .load(uri)
                 .asBitmap()
@@ -236,7 +235,6 @@ public class ImageUtil {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(DensityUtil.getInstance(context).dp2px(widthDp), DensityUtil.getInstance(context).dp2px(HeightDp))
                 .get();
-        return bitmap;
     }
 
     /**
@@ -288,9 +286,7 @@ public class ImageUtil {
                     bytes[i] += 256;
                 }
             }
-            // 生成bitMap图片
-            Bitmap bitmap = Bytes2Bimap(bytes);
-            return bitmap;
+            return Bytes2Bimap(bytes);
         } catch (Exception e) {
             return null;
         }

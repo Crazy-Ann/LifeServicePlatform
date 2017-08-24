@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class FragmentUtil {
 
     private FragmentManager fragmentManager;
-    private HashMap<String, OperationInfo> items = new HashMap<String, OperationInfo>();
+    private HashMap<String, OperationInfo> items = new HashMap<>();
     private OperationInfo operationInfo;
     private int resource;
     private int[] animations = new int[2];

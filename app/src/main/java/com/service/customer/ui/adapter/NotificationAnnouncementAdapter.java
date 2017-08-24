@@ -8,10 +8,6 @@ import com.service.customer.base.sticky.binder.BaseViewBinder;
 import com.service.customer.net.entity.NotificationAnnouncementInfo;
 import com.service.customer.ui.holder.NotificationAnnouncementHolder;
 
-/**
- * Created by yjt on 2017/8/1.
- */
-
 public class NotificationAnnouncementAdapter extends FixedStickyHeaderAdapter<NotificationAnnouncementInfo, NotificationAnnouncementHolder> {
 
     public NotificationAnnouncementAdapter(Context ctx, BaseViewBinder binder, boolean groupable) {

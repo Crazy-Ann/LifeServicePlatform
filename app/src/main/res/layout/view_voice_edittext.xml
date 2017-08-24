@@ -20,7 +20,8 @@
             android:maxLength="240"
             android:padding="@dimen/dp_6"
             android:textColor="@color/color_a5a5a5"
-            android:textSize="@dimen/sp_14"/>
+            android:textSize="@dimen/sp_14" 
+            android:inputType="text"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

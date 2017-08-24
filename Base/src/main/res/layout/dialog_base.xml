@@ -37,7 +37,7 @@
                 android:id="@+id/lvDialogContent"
                 style="@style/Light_Dialog.ListView"
                 android:background="@drawable/dialog_listview"
-                android:paddingLeft="@dimen/dp_1"
+                android:paddingStart="@dimen/dp_1"
                 android:paddingTop="@dimen/dp_1" />
 
         </LinearLayout>

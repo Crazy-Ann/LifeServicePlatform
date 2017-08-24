@@ -9,6 +9,7 @@ public class RequestParameterKey {
     public final static String TASK_INFO = "taskinfo";
     public final static String WROK_INFO = "workinfo";
     public final static String SCORE_INFO = "scoreinfo";
+    public final static String SCORE_ASSIST = "scoreassist";
     public final static String SAVE_HEAD_IMAGE = "headimage";
     public final static String DEAL_TASK_INFO = "dealtaskInfo";
     public final static String TASK_LIST = "tasklist";

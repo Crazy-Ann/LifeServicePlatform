@@ -48,7 +48,7 @@ public class FragmentStatePagerItemAdapter extends FragmentStatePagerAdapter {
   public Object instantiateItem(ViewGroup container, int position) {
     Object item = super.instantiateItem(container, position);
     if (item instanceof Fragment) {
-      holder.put(position, new WeakReference<Fragment>((Fragment) item));
+      holder.put(position, new WeakReference<>((Fragment) item));
     }
     return item;
   }

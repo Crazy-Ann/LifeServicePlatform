@@ -20,6 +20,7 @@ import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.ConfigInfo;
 import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.activity.LoginActivity;
+import com.service.customer.ui.activity.MainActivity;
 import com.service.customer.ui.dialog.ProgressDialog;
 import com.service.customer.ui.dialog.PromptDialog;
 
@@ -125,6 +126,14 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
         }
         startActivity(LoginActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         onFinish("startLoginActivity");
+    }
+
+    @Override
+    public void startMainActivity(int tab) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(Temp.TAB.getContent(), tab);
+        startActivity(MainActivity.class, bundle);
+        onFinish("startMainActivity");
     }
 
     @Override

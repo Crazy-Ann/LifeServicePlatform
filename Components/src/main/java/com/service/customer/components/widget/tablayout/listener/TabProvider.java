@@ -4,10 +4,6 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Create the custom tabs in the tab layout. Set with
- * {@link #setCustomTabView(TabProvider)}
- */
 public interface TabProvider {
 
     /**

@@ -36,6 +36,7 @@ public class RatingBar extends LinearLayout {
         size = typedArray.getDimension(R.styleable.RatingBar_rb_size, ViewUtil.getInstance().dp2px(context, 0));
         divider = typedArray.getDimension(R.styleable.RatingBar_rb_divider, ViewUtil.getInstance().dp2px(context, 0));
         stateDrawable = typedArray.getResourceId(R.styleable.RatingBar_rb_stateDrawable, -1);
+        typedArray.recycle();
         initializeView();
     }
 

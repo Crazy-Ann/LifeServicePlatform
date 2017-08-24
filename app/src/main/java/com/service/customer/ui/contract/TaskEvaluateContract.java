@@ -3,7 +3,7 @@ package com.service.customer.ui.contract;
 import com.service.customer.base.presenter.BasePresenter;
 import com.service.customer.base.view.BaseView;
 
-public interface EvaluateContract {
+public interface TaskEvaluateContract {
 
     interface View extends BaseView<Presenter> {
 
@@ -12,6 +12,6 @@ public interface EvaluateContract {
 
     interface Presenter extends BasePresenter {
 
-        void evaluate(String billNo, int score, String note);
+        void scoreTaskInfo(String billNo, int score, String note);
     }
 }

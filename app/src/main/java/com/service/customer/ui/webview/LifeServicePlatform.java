@@ -10,15 +10,14 @@ import android.webkit.WebView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.base.application.BaseApplication;
-import com.service.customer.base.constant.net.RequestParameterKey;
-import com.service.customer.components.constant.Regex;
 import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.EvaluateInfo;
 import com.service.customer.net.entity.LoginInfo;
-import com.service.customer.ui.activity.EvaluateActivity;
+import com.service.customer.ui.activity.HelperEvaluateActivity;
+import com.service.customer.ui.activity.TaskEvaluateActivity;
 import com.service.customer.ui.activity.MapActivity;
 import com.service.customer.ui.activity.TaskProcessingActivity;
 import com.service.customer.ui.activity.TaskSubmitActivity;
@@ -39,7 +38,6 @@ public class LifeServicePlatform {
         if (!TextUtils.isEmpty(tag)) {
             Bundle bundle;
             switch (tag) {
-                //Volunteer.html
                 case Constant.JavaScript.NEW_WAP_PAGE:
                     if (!TextUtils.isEmpty(parameter)) {
                         bundle = new Bundle();
@@ -78,9 +76,17 @@ public class LifeServicePlatform {
                         activityViewImplement.startActivity(TaskSubmitActivity.class, bundle);
                     }
                     break;
-                case Constant.JavaScript.IMMEDIATE_EVALUATION:
+                case Constant.JavaScript.TASK_EVALUATION:
                     if (!TextUtils.isEmpty(parameter)) {
-                        Intent intent = new Intent(activityViewImplement, EvaluateActivity.class);
+                        Intent intent = new Intent(activityViewImplement, TaskEvaluateActivity.class);
+                        intent.putExtra(Temp.EVALUATE_INFO.getContent(), new EvaluateInfo().parse(JSONObject.parseObject(parameter)));
+                        intent.setExtrasClassLoader(EvaluateInfo.class.getClassLoader());
+                        activityViewImplement.startActivity(intent);
+                    }
+                    break;
+                case Constant.JavaScript.HELPER_EVALUATION:
+                    if (!TextUtils.isEmpty(parameter)) {
+                        Intent intent = new Intent(activityViewImplement, HelperEvaluateActivity.class);
                         intent.putExtra(Temp.EVALUATE_INFO.getContent(), new EvaluateInfo().parse(JSONObject.parseObject(parameter)));
                         intent.setExtrasClassLoader(EvaluateInfo.class.getClassLoader());
                         activityViewImplement.startActivity(intent);

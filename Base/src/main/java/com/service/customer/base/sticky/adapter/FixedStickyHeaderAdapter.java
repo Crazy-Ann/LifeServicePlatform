@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.service.customer.base.R;
 import com.service.customer.base.sticky.binder.BaseViewBinder;
 import com.service.customer.base.sticky.holder.BaseHolder;
+import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.components.widget.sticky.listener.OnGroupListener;
 import com.service.customer.components.widget.sticky.listener.StickyRecyclerHeadersAdapter;
 
@@ -55,7 +56,7 @@ public class FixedStickyHeaderAdapter<T extends OnGroupListener, V extends Recyc
     @Override
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (groupable) {
-            TextView tvHeader = (TextView) holder.itemView.findViewById(R.id.tvDate);
+            TextView tvHeader = ViewUtil.getInstance().findView(holder.itemView, R.id.tvDate);
             if (getHeaderId(position) != GROUP_ID_UNAVAILABLE) {
                 tvHeader.setText(((OnGroupListener) getItem(position)).getGroupName());
             }

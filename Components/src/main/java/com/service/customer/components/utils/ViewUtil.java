@@ -536,8 +536,7 @@ public class ViewUtil {
     }
 
     public float getDistanceBetween2Points(PointF p0, PointF p1) {
-        float distance = (float) Math.sqrt(Math.pow(p0.y - p1.y, 2) + Math.pow(p0.x - p1.x, 2));
-        return distance;
+        return (float) Math.sqrt(Math.pow(p0.y - p1.y, 2) + Math.pow(p0.x - p1.x, 2));
     }
 
     public PointF getMiddlePoint(PointF p1, PointF p2) {
@@ -571,11 +570,8 @@ public class ViewUtil {
 
     private void checkAppCompatTheme(Context context) {
         TypedArray typedArray = context.obtainStyledAttributes(new int[]{android.support.v7.appcompat.R.attr.colorPrimary});
-        final boolean failed = !typedArray.hasValue(0);
-        if (typedArray != null) {
-            typedArray.recycle();
-        }
-        if (failed) {
+        typedArray.recycle();
+        if (!typedArray.hasValue(0)) {
             throw new IllegalArgumentException("You need to use typedArray Theme.AppCompat theme " + "(or descendant) with the design library.");
         }
     }

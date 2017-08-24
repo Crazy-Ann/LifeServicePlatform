@@ -87,7 +87,7 @@ public final class TaskInfos extends BaseEntity {
         this.pageIndex = in.readInt();
         this.pageCount = in.readInt();
         this.totalRecord = in.readInt();
-        this.taskInfos = new ArrayList<TaskInfo>();
+        this.taskInfos = new ArrayList<>();
         in.readList(this.taskInfos, TaskInfo.class.getClassLoader());
     }
 

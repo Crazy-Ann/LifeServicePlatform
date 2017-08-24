@@ -28,7 +28,6 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:maxLines="1"
-            android:text="asdfasdf"
             android:textColor="@color/color_3f3f3f"
             android:textSize="@dimen/sp_14"/>
     </LinearLayout>
@@ -39,7 +38,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_15"
         android:maxLines="1"
-        android:text="asdfasdf"
         android:textColor="@color/color_a4a4a4"
         android:textSize="@dimen/sp_14"/>
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.support.annotation.NonNull;
 
 import com.service.customer.components.constant.Constant;
 
@@ -47,7 +48,7 @@ public class NodeDrawable extends Drawable {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(@NonNull Canvas canvas) {
         for (int ii = 0; ii < Constant.Lock.CIRCLE_COUNT; ii++) {
             mCircles[Constant.Lock.CIRCLE_ORDER[ii]].draw(canvas);
         }

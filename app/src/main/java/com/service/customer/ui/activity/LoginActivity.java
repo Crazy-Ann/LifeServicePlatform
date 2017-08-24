@@ -27,7 +27,6 @@ import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.components.validation.EditTextValidator;
 import com.service.customer.components.validation.Validation;
 import com.service.customer.constant.Constant;
-import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.validation.AccountValidation;
 import com.service.customer.net.entity.validation.PasswordValidation;
 import com.service.customer.ui.contract.LoginContract;
@@ -232,13 +231,5 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
     @Override
     public boolean isRememberLoginInfo() {
         return cbRememberLoginInfo.isChecked();
-    }
-
-    @Override
-    public void startMainActivity(int tab) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(Temp.TAB.getContent(), tab);
-        startActivity(MainActivity.class, bundle);
-        onFinish("startMainActivity");
     }
 }

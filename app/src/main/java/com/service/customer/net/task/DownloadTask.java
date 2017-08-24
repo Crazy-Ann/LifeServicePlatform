@@ -98,7 +98,6 @@ public class DownloadTask extends AsyncTask<String, Long, Boolean> {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return false;
                 }
                 try {
                     if (fileOutputStream != null) {
@@ -106,7 +105,6 @@ public class DownloadTask extends AsyncTask<String, Long, Boolean> {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return false;
                 }
             }
         }

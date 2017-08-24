@@ -66,9 +66,6 @@ public class IOUtil {
 
     public List<File> getFiles(Context ctx) {
         File path = getFilePath(ctx);
-        LogUtil.getInstance().print("Cache:" + path.getAbsolutePath());
-        LogUtil.getInstance().print("listFiles:" + path.listFiles());
-        LogUtil.getInstance().print("exists:" + path.exists());
         List<File> files = Lists.newArrayList();
         if (path.listFiles() != null && path.exists()) {
             for (File file : path.listFiles()) {
@@ -199,7 +196,6 @@ public class IOUtil {
                     bufferedReader.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return null;
                 }
             }
         }
@@ -387,7 +383,7 @@ public class IOUtil {
             return;
         }
         int bytesum = 0;
-        int byteread = 0;
+        int byteread;
         InputStream inStream = null;
         FileOutputStream fs = null;
         try {

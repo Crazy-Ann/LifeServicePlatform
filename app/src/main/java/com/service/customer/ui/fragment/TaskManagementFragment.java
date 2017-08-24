@@ -157,9 +157,4 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
     public boolean isActive() {
         return false;
     }
-
-    @Override
-    public void startMainActivity(int tab) {
-
-    }
 }

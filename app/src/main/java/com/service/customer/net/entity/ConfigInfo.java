@@ -15,8 +15,6 @@ public class ConfigInfo extends BaseEntity {
     private String downloadUrl;
     private int lowestVersion;
     private String updateMessage;
-    private String cardUrl;
-    private String workUrl;
 
     public ConfigInfo() {
     }
@@ -41,23 +39,12 @@ public class ConfigInfo extends BaseEntity {
         return updateMessage;
     }
 
-    public String getCardUrl() {
-        return cardUrl;
-    }
-
-    public String getWorkUrl() {
-        return workUrl;
-    }
-
     public ConfigInfo parse(JSONObject object) {
         if (object != null) {
-//            this.version = object.getIntValue(ResponseParameterKey.VERSION);
-//            this.lowestVersion = object.getIntValue(ResponseParameterKey.LOWEST_VERSION);
-            this.version = 1;
-            this.lowestVersion = 1;
+            this.version = object.getIntValue(ResponseParameterKey.VERSION);
+            this.lowestVersion = object.getIntValue(ResponseParameterKey.LOWEST_VERSION);
             this.downloadUrl = object.getString(ResponseParameterKey.DOWNLOAD_URL);
             this.updateMessage = object.getString(ResponseParameterKey.UPDATE_MESSAGE);
-            //todo
             if (object.containsKey(ResponseParameterKey.INTERFACE_URL)) {
                 this.serverUrl = object.getJSONObject(ResponseParameterKey.INTERFACE_URL).getString(ResponseParameterKey.SERVER_URL);
             }
@@ -76,8 +63,6 @@ public class ConfigInfo extends BaseEntity {
                     ", lowestVersion:" + lowestVersion + '\'' +
                     ", updateMessage:" + updateMessage + '\'' +
                     ", downloadUrl:" + downloadUrl + '\'' +
-                    ", cardUrl:" + cardUrl + '\'' +
-                    ", workUrl:" + workUrl + '\'' +
                     '}';
         } else {
             return super.toString();
@@ -95,8 +80,6 @@ public class ConfigInfo extends BaseEntity {
         dest.writeString(this.downloadUrl);
         dest.writeInt(this.lowestVersion);
         dest.writeString(this.updateMessage);
-        dest.writeString(this.cardUrl);
-        dest.writeString(this.workUrl);
     }
 
     protected ConfigInfo(Parcel in) {
@@ -106,8 +89,6 @@ public class ConfigInfo extends BaseEntity {
         this.downloadUrl = in.readString();
         this.lowestVersion = in.readInt();
         this.updateMessage = in.readString();
-        this.cardUrl = in.readString();
-        this.workUrl = in.readString();
     }
 
     public static final Creator<ConfigInfo> CREATOR = new Creator<ConfigInfo>() {

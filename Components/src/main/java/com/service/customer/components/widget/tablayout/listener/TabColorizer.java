@@ -1,9 +1,5 @@
 package com.service.customer.components.widget.tablayout.listener;
 
-/**
- * Allows complete control over the colors drawn in the tab layout. Set with
- * {@link #setCustomTabColorizer(TabColorizer)}.
- */
 public interface TabColorizer {
 
     /**

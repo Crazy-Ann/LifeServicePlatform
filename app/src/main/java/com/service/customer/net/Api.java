@@ -458,7 +458,7 @@ public class Api {
                     public void onStart() {
                         super.onStart();
                         LogUtil.getInstance().print("提交工作日志开始");
-                        view.showLoadingPromptDialog(R.string.save_work_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SAVE_WORK_INFO);
+                        view.showLoadingPromptDialog(R.string.save_condolence_record_prompt, Constant.RequestCode.DIALOG_PROGRESS_SAVE_WORK_INFO);
                     }
 
                     @Override
@@ -468,7 +468,7 @@ public class Api {
                         if (headImageInfo != null) {
                             apiListener.success(headImageInfo);
                         } else {
-                            view.showPromptDialog(R.string.dialog_prompt_save_work_info_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_ERROR);
+                            view.showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_ERROR);
                         }
                     }
 
@@ -510,7 +510,7 @@ public class Api {
     }
 
     public void scoreTaskInfo(final Context context, final BaseView view, String url, String token, String billNo, int score, String note, final ApiListener apiListener) {
-        LogUtil.getInstance().print("scoreTaskInfo");
+        LogUtil.getInstance().print("scoreAssistInfo");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.BILL_NO, billNo);
@@ -523,21 +523,21 @@ public class Api {
                     @Override
                     public void onStart() {
                         super.onStart();
-                        LogUtil.getInstance().print("提交评价开始");
+                        LogUtil.getInstance().print("提交任务评价信息开始");
                         view.showLoadingPromptDialog(R.string.score_task_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SCORE_TASK_INFO);
                     }
 
                     @Override
                     public void onResponseSuccess(JSONObject object) {
                         super.onResponseSuccess(object);
-                        LogUtil.getInstance().print("提交评价成功:" + object.toString());
+                        LogUtil.getInstance().print("提交任务评价信息成功:" + object.toString());
                         apiListener.success(null);
                     }
 
                     @Override
                     public void onResponseFailed(String code, String message) {
                         super.onResponseFailed(code, message);
-                        LogUtil.getInstance().print("提交评价失败,code:" + code + ",message:" + message);
+                        LogUtil.getInstance().print("提交任务评价信息失败,code:" + code + ",message:" + message);
                         view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR);
                         apiListener.failed(null, code, message);
                     }
@@ -545,21 +545,21 @@ public class Api {
                     @Override
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
-                        LogUtil.getInstance().print("提交评价失败,code:" + code + ",message:" + message);
+                        LogUtil.getInstance().print("提交任务评价信息失败,code:" + code + ",message:" + message);
                         handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR, object);
                     }
 
                     @Override
                     public void onEnd() {
                         super.onEnd();
-                        LogUtil.getInstance().print("提交评价结束");
+                        LogUtil.getInstance().print("提交任务评价信息结束");
                         view.hideLoadingPromptDialog();
                     }
 
                     @Override
                     public void onFailed(int code, String message) {
                         super.onFailed(code, message);
-                        LogUtil.getInstance().print("提交任务失败,code:" + code + ",message:" + message);
+                        LogUtil.getInstance().print("提交任务评价信息失败,code:" + code + ",message:" + message);
                         view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR);
                     }
                 });
@@ -634,8 +634,70 @@ public class Api {
         }
     }
 
+    public void scoreAssistInfo(final Context context, final BaseView view, String url, String token, String billNo, int score, String note, final ApiListener apiListener) {
+        LogUtil.getInstance().print("scoreAssistInfo");
+        if (NetworkUtil.getInstance().isInternetConnecting(context)) {
+            HashMap<String, String> parameters = new HashMap<>();
+            parameters.put(RequestParameterKey.BILL_NO, billNo);
+            parameters.put(RequestParameterKey.SCORE_NUM, String.valueOf(score));
+            parameters.put(RequestParameterKey.NOTE, note);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SCORE_ASSIST, parameters, null, token, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new ScoreTaskInfoResponse() {
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        LogUtil.getInstance().print("提交志愿者评价信息开始");
+                        view.showLoadingPromptDialog(R.string.score_helper_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SCORE_HELPER_INFO);
+                    }
+
+                    @Override
+                    public void onResponseSuccess(JSONObject object) {
+                        super.onResponseSuccess(object);
+                        LogUtil.getInstance().print("提交志愿者评价信息成功:" + object.toString());
+                        apiListener.success(null);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message) {
+                        super.onResponseFailed(code, message);
+                        LogUtil.getInstance().print("提交志愿者评价信息失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
+                        apiListener.failed(null, code, message);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message, JSONObject object) {
+                        super.onResponseFailed(code, message, object);
+                        LogUtil.getInstance().print("提交志愿者评价信息失败,code:" + code + ",message:" + message);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR, object);
+                    }
+
+                    @Override
+                    public void onEnd() {
+                        super.onEnd();
+                        LogUtil.getInstance().print("提交志愿者评价信息结束");
+                        view.hideLoadingPromptDialog();
+                    }
+
+                    @Override
+                    public void onFailed(int code, String message) {
+                        super.onFailed(code, message);
+                        LogUtil.getInstance().print("提交志愿者评价信息失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
+                    }
+                });
+            } else {
+                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
+            }
+        } else {
+            view.showNetWorkPromptDialog();
+        }
+    }
+
     public void taskList(final Context context, final BaseView view, String url, String token, int pageindex, final ApiListener apiListener) {
-        LogUtil.getInstance().print("scoreTaskInfo");
+        LogUtil.getInstance().print("scoreAssistInfo");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.PAGE_INDEX, String.valueOf(pageindex));

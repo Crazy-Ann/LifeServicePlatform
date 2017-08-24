@@ -68,13 +68,8 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
         }
         //        wvHomePage.getSettings().setUserAgentString(wvHomePage.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
         wvHomePage.loadUrl(HttpUtil.getInstance().addParameter(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getIndexUrl(), RequestParameterKey.TOKEN, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken()));
-//        if (TextUtils.equals((((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()), "1")) {
-//            wvHomePage.loadUrl(Constant.ASSET_URL.VOLUNTEER_INDEX);
-//        } else {
-//            wvHomePage.loadUrl(Constant.ASSET_URL.DEMANDER_INDEX);
-//        }
     }
-
+    
     @Override
     protected void setListener() {
 
@@ -138,10 +133,5 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
     @Override
     public boolean isActive() {
         return false;
-    }
-
-    @Override
-    public void startMainActivity(int tab) {
-
     }
 }

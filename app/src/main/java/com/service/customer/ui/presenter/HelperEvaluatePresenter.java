@@ -6,27 +6,21 @@ import com.service.customer.R;
 import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.net.model.BaseEntity;
-import com.service.customer.components.http.model.FileWrapper;
 import com.service.customer.components.tts.TTSUtil;
-import com.service.customer.components.utils.IOUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
 import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.net.listener.ApiListener;
-import com.service.customer.ui.contract.WorkSubmitContract;
+import com.service.customer.ui.contract.HelperEvaluateContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
-import java.io.IOException;
-import java.util.List;
-
-
-public class WorkSubmitPresenter extends BasePresenterImplement implements WorkSubmitContract.Presenter {
+public class HelperEvaluatePresenter extends BasePresenterImplement implements HelperEvaluateContract.Presenter {
 
     private Context context;
-    private WorkSubmitContract.View view;
+    private HelperEvaluateContract.View view;
 
-    public WorkSubmitPresenter(Context context, WorkSubmitContract.View view) {
+    public HelperEvaluatePresenter(Context context, HelperEvaluateContract.View view) {
         this.context = context;
         this.view = view;
     }
@@ -38,22 +32,21 @@ public class WorkSubmitPresenter extends BasePresenterImplement implements WorkS
     }
 
     @Override
-    public void saveWrokInfo(int workType, String workNote, List<FileWrapper> fileWrappers) {
-        Api.getInstance().saveWrokInfo(
+    public void scoreAssistInfo(String billNo, int score, String note) {
+        Api.getInstance().scoreAssistInfo(
                 context,
                 view,
-//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl() + ServiceMethod.SAVE_WOORK_INFO,
-                BuildConfig.SERVICE_URL + ServiceMethod.SAVE_WOORK_INFO,
+//                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl() + ServiceMethod.SCORE_TASK_INFO,
+                BuildConfig.SERVICE_URL + ServiceMethod.SCORE_ASSIST_INFO,
                 ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
-                workType,
-                workNote,
-                fileWrappers,
+                billNo,
+                score,
+                note,
                 new ApiListener() {
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-                        view.showPromptDialog(R.string.dialog_prompt_save_condolence_record_success, Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS);
-                        deleteFile();
+                        view.showPromptDialog(R.string.dialog_prompt_score_helper_info_success, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_SUCCESS);
                     }
 
                     @Override
@@ -62,14 +55,5 @@ public class WorkSubmitPresenter extends BasePresenterImplement implements WorkS
                     }
                 }
         );
-    }
-
-    @Override
-    public void deleteFile() {
-        try {
-            IOUtil.getInstance().deleteFile(IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, null));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

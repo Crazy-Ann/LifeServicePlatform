@@ -26,11 +26,10 @@ import com.service.customer.ui.presenter.WapPresenter;
 import com.service.customer.ui.webview.CustomChromeClient;
 import com.service.customer.ui.webview.CustomWebviewClient;
 import com.service.customer.ui.webview.LifeServicePlatform;
-import com.service.customer.ui.webview.listener.OnReceivedTitleListener;
 
 import java.util.List;
 
-public class WapActivity extends ActivityViewImplement<WapContract.Presenter> implements WapContract.View, OnLeftIconEventListener, OnReceivedTitleListener {
+public class WapActivity extends ActivityViewImplement<WapContract.Presenter> implements WapContract.View, OnLeftIconEventListener {
 
     private WapPresenter presenter;
     private WebView wvContent;
@@ -52,7 +51,7 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, null);
+        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
 
         presenter = new WapPresenter(this, this);
         presenter.initialize();
@@ -61,7 +60,7 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
         getSavedInstanceState(savedInstanceState);
 
         wvContent.setWebViewClient(new CustomWebviewClient(this));
-        wvContent.setWebChromeClient(new CustomChromeClient(Constant.JavaScript.INJECTED_NAME, LifeServicePlatform.class, this));
+        wvContent.setWebChromeClient(new CustomChromeClient(Constant.JavaScript.INJECTED_NAME, LifeServicePlatform.class));
         wvContent.getSettings().setJavaScriptEnabled(true);
         wvContent.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         wvContent.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
@@ -103,11 +102,6 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
     @Override
     public void onNeutralButtonClicked(int requestCode) {
 
-    }
-
-    @Override
-    public void receivedTitle(WebView view, String title) {
-        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, title);
     }
 
     @Override
@@ -197,10 +191,5 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
     @Override
     public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
         showPermissionPromptDialog();
-    }
-
-    @Override
-    public void startMainActivity(int tab) {
-
     }
 }

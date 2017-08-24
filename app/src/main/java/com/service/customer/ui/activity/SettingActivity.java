@@ -165,9 +165,4 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
     public void OnLeftIconEvent() {
         onFinish("OnLeftIconEvent");
     }
-
-    @Override
-    public void startMainActivity(int tab) {
-
-    }
 }

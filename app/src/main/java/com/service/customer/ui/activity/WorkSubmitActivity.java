@@ -41,7 +41,6 @@ import com.service.customer.components.validation.EditTextValidator;
 import com.service.customer.components.validation.Validation;
 import com.service.customer.components.widget.sticky.decoration.GridLayoutDividerItemDecoration;
 import com.service.customer.constant.Constant;
-import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.TaskImageInfo;
 import com.service.customer.net.entity.validation.TaskValidation;
 import com.service.customer.ui.adapter.TaskImageAdapter;
@@ -63,7 +62,7 @@ import java.util.concurrent.ExecutionException;
 public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract.Presenter> implements WorkSubmitContract.View, View.OnClickListener, OnDictationListener, OnLeftIconEventListener, FixedStickyViewAdapter.OnItemClickListener, OnVoiceClickListener, OnIntializeListener {
 
     private WorkSubmitPresenter workSubmitPresenter;
-    private VoiceEdittext vetDescreption;
+    private VoiceEdittext vetWorkNote;
     private RecyclerView rvTaskImage;
     private TaskImageAdapter taskImageAdapter;
     private GridLayoutManager gridLayoutManager;
@@ -79,7 +78,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
 
     }
 
-    private class TaskHandler extends ActivityHandler<WorkSubmitActivity> {
+    private static class TaskHandler extends ActivityHandler<WorkSubmitActivity> {
 
         public TaskHandler(WorkSubmitActivity activity) {
             super(activity);
@@ -89,13 +88,13 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
         protected void handleMessage(WorkSubmitActivity activity, Message msg) {
             switch (msg.what) {
                 case Constant.Message.GET_IMAGE_SUCCESS:
-                    hideLoadingPromptDialog();
-                    taskImageInfos.add((TaskImageInfo) msg.obj);
-                    taskImageAdapter.setData(taskImageInfos);
+                    activity.hideLoadingPromptDialog();
+                    activity.taskImageInfos.add((TaskImageInfo) msg.obj);
+                    activity.taskImageAdapter.setData(activity.taskImageInfos);
                     break;
                 case Constant.Message.GET_IMAGE_FAILED:
-                    hideLoadingPromptDialog();
-                    showPromptDialog(R.string.dialog_prompt_get_image_error, Constant.RequestCode.DIALOG_PROMPT_GET_IMAGE_ERROR);
+                    activity.hideLoadingPromptDialog();
+                    activity.showPromptDialog(R.string.dialog_prompt_get_image_error, Constant.RequestCode.DIALOG_PROMPT_GET_IMAGE_ERROR);
                     break;
                 default:
                     break;
@@ -115,17 +114,17 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
     @Override
     protected void findViewById() {
         inToolbar = ViewUtil.getInstance().findView(this, R.id.inToolbar);
-        vetDescreption = ViewUtil.getInstance().findView(this, R.id.vetDescreption);
+        vetWorkNote = ViewUtil.getInstance().findView(this, R.id.vetWorkNote);
         rvTaskImage = ViewUtil.getInstance().findView(this, R.id.rvTaskImage);
         btnSubmit = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.btnSubmit, this);
     }
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.add_work_log));
+        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.add_condolence_record));
 
-        vetDescreption.setHint(getString(R.string.text_descreption_prompt));
-        vetDescreption.setTextCount(0);
+        vetWorkNote.setHint(getString(R.string.text_descreption_prompt));
+        vetWorkNote.setTextCount(0);
         taskHandler = new TaskHandler(this);
         workSubmitPresenter = new WorkSubmitPresenter(this, this);
         workSubmitPresenter.initialize();
@@ -134,7 +133,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
         getSavedInstanceState(savedInstanceState);
 
         editTextValidator = new EditTextValidator();
-        editTextValidator.add(new Validation(null, vetDescreption.getEtContent(), true, null, new TaskValidation()));
+        editTextValidator.add(new Validation(null, vetWorkNote.getEtContent(), true, null, new TaskValidation()));
         editTextValidator.execute(this, btnSubmit, com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
@@ -158,7 +157,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
     @Override
     protected void setListener() {
         TTSUtil.getInstance().setOnIntializeListener(this);
-        vetDescreption.setOnVoiceClickListener(this);
+        vetWorkNote.setOnVoiceClickListener(this);
         TTSUtil.getInstance().setOnDictationListener(this);
         taskImageAdapter.setOnItemClickListener(this);
     }
@@ -181,7 +180,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
                                 fileWrappers.add(new FileWrapper(file));
                             }
                         }
-                        workSubmitPresenter.saveWrokInfo(1, vetDescreption.getText().trim(), fileWrappers);
+                        workSubmitPresenter.saveWrokInfo(1, vetWorkNote.getText().trim(), fileWrappers);
                     }
                 }
                 break;
@@ -206,7 +205,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
                             fileWrappers.add(new FileWrapper(file));
                         }
                     }
-                    workSubmitPresenter.saveWrokInfo(1, vetDescreption.getText().trim(), fileWrappers);
+                    workSubmitPresenter.saveWrokInfo(1, vetWorkNote.getText().trim(), fileWrappers);
                 }
                 break;
             case Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH:
@@ -263,7 +262,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
     @Override
     public void onDictation(String content) {
         LogUtil.getInstance().print("content:" + content);
-        vetDescreption.setText(content);
+        vetWorkNote.setText(content);
     }
 
     @Override
@@ -357,7 +356,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
                 fileWrappers.add(new FileWrapper(file));
             }
         }
-        workSubmitPresenter.saveWrokInfo(1, vetDescreption.getText().trim(), fileWrappers);
+        workSubmitPresenter.saveWrokInfo(1, vetWorkNote.getText().trim(), fileWrappers);
     }
 
     @Override
@@ -368,14 +367,6 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
     @Override
     public boolean isActive() {
         return false;
-    }
-
-    @Override
-    public void startMainActivity(int tab) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(Temp.TAB.getContent(), tab);
-        startActivity(MainActivity.class, bundle);
-        onFinish("startMainActivity");
     }
 
     @Override

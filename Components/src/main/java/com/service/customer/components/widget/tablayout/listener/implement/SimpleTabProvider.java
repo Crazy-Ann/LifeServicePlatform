@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.components.widget.tablayout.listener.TabProvider;
 
 public class SimpleTabProvider implements TabProvider {
@@ -31,7 +32,7 @@ public class SimpleTabProvider implements TabProvider {
         }
 
         if (tabViewTextViewId != View.NO_ID && tabView != null) {
-            tabTitleView = (TextView) tabView.findViewById(tabViewTextViewId);
+            tabTitleView = ViewUtil.getInstance().findView(tabView, tabViewTextViewId);;
         }
 
         if (tabTitleView == null && TextView.class.isInstance(tabView)) {

@@ -246,9 +246,8 @@ public class SecurityUtil {
         String k3 = key.substring(16, 24);
         byte[] iv = new byte[8];
         int i;
-        boolean bHex16 = "ToHex16".equalsIgnoreCase(format);
         byte[] msg;
-        if (bHex16)
+        if ("ToHex16".equalsIgnoreCase(format))
             msg = hexStringToByte(message);
         else
             msg = Base64Util.decode(message);
