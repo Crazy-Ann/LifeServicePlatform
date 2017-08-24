@@ -97,7 +97,7 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
         switch (view.getId()) {
             case R.id.btnProcessingCompleted:
                 if (editTextValidator.validate(this)) {
-                    dealStatus = Constant.DEAL_STATUS.PROCESSING_COMPLETED;
+                    dealStatus = Constant.DealStatus.PROCESSING_COMPLETED;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         taskProcessingPresenter.checkPermission(this, this);
                     } else {
@@ -107,7 +107,7 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
                 break;
             case R.id.btnCannotHandle:
                 if (editTextValidator.validate(this)) {
-                    dealStatus = Constant.DEAL_STATUS.CAN_NOT_HANDLE;
+                    dealStatus = Constant.DealStatus.CAN_NOT_HANDLE;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         taskProcessingPresenter.checkPermission(this, this);
                     } else {

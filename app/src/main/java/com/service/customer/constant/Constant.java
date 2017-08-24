@@ -155,12 +155,19 @@ public final class Constant {
         public static final String PHONE_CALL = "phone_call";
     }
 
-    public static class DEAL_STATUS {
+    public static class DealStatus {
         public static final int PROCESSING_COMPLETED = 2;
         public static final int CAN_NOT_HANDLE = 4;
     }
 
-    public static class ASSET_URL {
+    public static class AccountRole {
+        public static final String WEI_JI_WEI = "1";
+        public static final String JI_SHENG_BAN = "2";
+        public static final String VOLUNTEER = "3";
+        public static final String HELP_SEEKER = "4";
+    }
+
+    public static class AssetUrl {
         public static final String VOLUNTEER_INDEX = "file:///android_asset/h5/zView/Index.html";
         public static final String DEMANDER_INDEX = "file:///android_asset/h5/mView/Index.html";
         public static final String GREETING_CARD_LIST = "file:///android_asset/h5/mView/GreetingCardList.html";

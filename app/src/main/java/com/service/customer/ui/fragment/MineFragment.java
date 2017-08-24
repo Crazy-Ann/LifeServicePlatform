@@ -128,6 +128,18 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                                    + Regex.LEFT_PARENTHESIS.getRegext()
                                    + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getAccountId()
                                    + Regex.RIGHT_PARENTHESIS.getRegext());
+        switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()){
+            case Constant.AccountRole.WEI_JI_WEI:
+                break;
+            case Constant.AccountRole.JI_SHENG_BAN:
+                break;
+            case Constant.AccountRole.VOLUNTEER:
+                break;
+            case Constant.AccountRole.HELP_SEEKER:
+                break;
+            default:
+                break;
+        }
         if (TextUtils.equals(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType(), "1")) {
             ViewUtil.getInstance().setViewGone(llHelpSeekerOperation);
             ViewUtil.getInstance().setViewVisible(llHelperOperation);

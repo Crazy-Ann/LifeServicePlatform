@@ -58,6 +58,7 @@ public class LifeServicePlatform {
                 case Constant.JavaScript.WORK_LOG:
                     //todo 应该通过url字段获取跳转地址且不应该新开页面
                     bundle = new Bundle();
+                    bundle.putString(Temp.TITLE.getContent(), JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE));
                     bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl());
                     activityViewImplement.startActivity(WapActivity.class, bundle);
                     break;
