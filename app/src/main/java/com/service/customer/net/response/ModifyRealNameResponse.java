@@ -40,7 +40,7 @@ public class ModifyRealNameResponse extends JSONObjectResponse {
 
     @Override
     public void onProgress(int progress, long speed, boolean isDone) {
-        LogUtil.getInstance().print("ModifyPassword's progress:" + progress + ",speed:" + speed + ",isDone:" + isDone);
+        LogUtil.getInstance().print("ModifyRealNameResponse's progress:" + progress + ",speed:" + speed + ",isDone:" + isDone);
     }
 
     @Override

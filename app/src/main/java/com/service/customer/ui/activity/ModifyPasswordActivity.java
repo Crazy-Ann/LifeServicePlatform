@@ -14,11 +14,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.GlideUtil;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
@@ -50,6 +52,8 @@ public class ModifyPasswordActivity extends ActivityViewImplement<ModifyPassword
     private boolean isNewPasswordHidden;
     private boolean isNewPasswordAgainHidden;
 
+    private boolean hasLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +84,18 @@ public class ModifyPasswordActivity extends ActivityViewImplement<ModifyPassword
 
         setBasePresenterImplement(modifyPasswordPresenter);
         getSavedInstanceState(savedInstanceState);
+        
+        switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
+            case Constant.AccountRole.WEI_JI_WEI:
+            case Constant.AccountRole.JI_SHENG_BAN:
+            case Constant.AccountRole.VOLUNTEER:
+                break;
+            case Constant.AccountRole.HELP_SEEKER:
+                super.initialize(savedInstanceState);
+                break;
+            default:
+                break;
+        }
 
         editTextValidator = new EditTextValidator();
         editTextValidator.add(new Validation(null, etNewPassword, true, ibNewPasswordEmpty, new NewPasswordValidation()));
@@ -128,13 +144,83 @@ public class ModifyPasswordActivity extends ActivityViewImplement<ModifyPassword
                 if (editTextValidator.validate(this)) {
                     if (TextUtils.equals(etNewPassword.getText(), etNewPasswordAgain.getText())) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            modifyPasswordPresenter.checkPermission(this,this);
+                            modifyPasswordPresenter.checkPermission(this, new PermissionCallback() {
+                                @Override
+                                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                    modifyPasswordPresenter.modifyPassword(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getPhone(), etNewPassword.getText().toString());
+                                }
+
+                                @Override
+                                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+
+                                }
+                            });
                         } else {
                             modifyPasswordPresenter.modifyPassword(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getPhone(), etNewPassword.getText().toString());
                         }
                     } else {
                         ToastUtil.getInstance().showToast(this, R.string.modify_password_prompt2, Toast.LENGTH_SHORT);
                     }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
+            case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
+                switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
+                    case Constant.AccountRole.WEI_JI_WEI:
+                    case Constant.AccountRole.JI_SHENG_BAN:
+                    case Constant.AccountRole.VOLUNTEER:
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            modifyPasswordPresenter.checkPermission(this, new PermissionCallback() {
+                                @Override
+                                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                    modifyPasswordPresenter.modifyPassword(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getPhone(), etNewPassword.getText().toString());
+                                }
+
+                                @Override
+                                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                                    showPermissionPromptDialog();
+                                }
+                            });
+                        } else {
+                            modifyPasswordPresenter.modifyPassword(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getPhone(), etNewPassword.getText().toString());
+                        }
+                        break;
+                    case Constant.AccountRole.HELP_SEEKER:
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            modifyPasswordPresenter.checkPermission(this, new PermissionCallback() {
+                                @Override
+                                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                    if (hasLocation) {
+                                        modifyPasswordPresenter.modifyPassword(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getPhone(), etNewPassword.getText().toString());
+                                    } else {
+                                        modifyPasswordPresenter.startLocation();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                                    showPermissionPromptDialog();
+                                }
+                            });
+                        } else {
+                            if (hasLocation) {
+                                modifyPasswordPresenter.modifyPassword(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getPhone(), etNewPassword.getText().toString());
+                            } else {
+                                modifyPasswordPresenter.startLocation();
+                            }
+                        }
+                        break;
+                    default:
+                        break;
                 }
                 break;
             default:
@@ -195,16 +281,6 @@ public class ModifyPasswordActivity extends ActivityViewImplement<ModifyPassword
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        modifyPasswordPresenter.modifyPassword(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getPhone(), etNewPassword.getText().toString());
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
-    }
-
-    @Override
     public boolean isActive() {
         return false;
     }
@@ -212,5 +288,23 @@ public class ModifyPasswordActivity extends ActivityViewImplement<ModifyPassword
     @Override
     public void OnLeftIconEvent() {
         onFinish("OnLeftIconEvent");
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        modifyPasswordPresenter.stopLocation();
+        switch (aMapLocation.getErrorCode()) {
+            case AMapLocation.LOCATION_SUCCESS:
+                LogUtil.getInstance().print("经度:" + aMapLocation.getLongitude());
+                LogUtil.getInstance().print("纬度:" + aMapLocation.getLatitude());
+                LogUtil.getInstance().print("精度:" + aMapLocation.getAccuracy());
+                LogUtil.getInstance().print("地址:" + aMapLocation.getAddress());
+                modifyPasswordPresenter.saveAddressInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), aMapLocation.getAddress());
+                break;
+            default:
+                LogUtil.getInstance().print(aMapLocation.getErrorInfo());
+                break;
+        }
+        hasLocation = true;
     }
 }

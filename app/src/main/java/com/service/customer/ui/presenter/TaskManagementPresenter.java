@@ -11,6 +11,7 @@ public class TaskManagementPresenter extends BasePresenterImplement implements T
     private TaskManagementContract.View view;
 
     public TaskManagementPresenter(Context context, TaskManagementContract.View view) {
+        super(context, view);
         this.context = context;
         this.view = view;
     }

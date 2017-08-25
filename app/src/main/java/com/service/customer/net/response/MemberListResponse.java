@@ -3,19 +3,23 @@ package com.service.customer.net.response;
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.base.net.response.JSONObjectResponse;
 import com.service.customer.components.utils.LogUtil;
+import com.service.customer.net.entity.MemberInfos;
 
 import okhttp3.Headers;
 import okhttp3.Response;
 
-public class ModifyPasswordResponse extends JSONObjectResponse {
+public class MemberListResponse extends JSONObjectResponse {
 
-    public ModifyPasswordResponse() {
+    public MemberInfos memberInfos;
+
+    public MemberListResponse() {
         super();
+        memberInfos = new MemberInfos();
     }
 
     @Override
     public void onParseData(JSONObject object) {
-
+        memberInfos.parse(object);
     }
 
     @Override
@@ -40,7 +44,7 @@ public class ModifyPasswordResponse extends JSONObjectResponse {
 
     @Override
     public void onProgress(int progress, long speed, boolean isDone) {
-        LogUtil.getInstance().print("ModifyPasswordResponse's progress:" + progress + ",speed:" + speed + ",isDone:" + isDone);
+        LogUtil.getInstance().print("MemberListResponse's progress:" + progress + ",speed:" + speed + ",isDone:" + isDone);
     }
 
     @Override

@@ -9,13 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.amap.api.location.AMapLocation;
 import com.service.customer.R;
+import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
+import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.contract.SettingContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.presenter.SettingPresenter;
@@ -27,6 +31,8 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
     private SettingPresenter settingPresenter;
     private RelativeLayout rlModifyPassword;
     private Button btnLogout;
+
+    private boolean hasLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,18 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
 
         setBasePresenterImplement(settingPresenter);
         getSavedInstanceState(savedInstanceState);
+        
+        switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
+            case Constant.AccountRole.WEI_JI_WEI:
+            case Constant.AccountRole.JI_SHENG_BAN:
+            case Constant.AccountRole.VOLUNTEER:
+                break;
+            case Constant.AccountRole.HELP_SEEKER:
+                super.initialize(savedInstanceState);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -71,7 +89,17 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
                 break;
             case R.id.btnLogout:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    settingPresenter.checkPermission(this,this);
+                    settingPresenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            settingPresenter.logout();
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 } else {
                     settingPresenter.logout();
                 }
@@ -87,10 +115,53 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
         switch (requestCode) {
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    settingPresenter.checkPermission(this,this);
-                } else {
-                    settingPresenter.logout();
+                switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
+                    case Constant.AccountRole.WEI_JI_WEI:
+                    case Constant.AccountRole.JI_SHENG_BAN:
+                    case Constant.AccountRole.VOLUNTEER:
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            settingPresenter.checkPermission(this, new PermissionCallback() {
+                                @Override
+                                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                    settingPresenter.logout();
+                                }
+
+                                @Override
+                                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+
+                                }
+                            });
+                        } else {
+                            settingPresenter.logout();
+                        }
+                        break;
+                    case Constant.AccountRole.HELP_SEEKER:
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            settingPresenter.checkPermission(this, new PermissionCallback() {
+                                @Override
+                                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                    if (hasLocation) {
+                                        settingPresenter.logout();
+                                    } else {
+                                        settingPresenter.startLocation();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+
+                                }
+                            });
+                        } else {
+                            if (hasLocation) {
+                                settingPresenter.logout();
+                            } else {
+                                settingPresenter.startLocation();
+                            }
+                        }
+                        break;
+                    default:
+                        break;
                 }
                 break;
             default:
@@ -147,16 +218,6 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        settingPresenter.logout();
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
-    }
-
-    @Override
     public boolean isActive() {
         return false;
     }
@@ -164,5 +225,23 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
     @Override
     public void OnLeftIconEvent() {
         onFinish("OnLeftIconEvent");
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        settingPresenter.stopLocation();
+        switch (aMapLocation.getErrorCode()) {
+            case AMapLocation.LOCATION_SUCCESS:
+                LogUtil.getInstance().print("经度:" + aMapLocation.getLongitude());
+                LogUtil.getInstance().print("纬度:" + aMapLocation.getLatitude());
+                LogUtil.getInstance().print("精度:" + aMapLocation.getAccuracy());
+                LogUtil.getInstance().print("地址:" + aMapLocation.getAddress());
+                settingPresenter.saveAddressInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), aMapLocation.getAddress());
+                break;
+            default:
+                LogUtil.getInstance().print(aMapLocation.getErrorInfo());
+                break;
+        }
+        hasLocation = true;
     }
 }

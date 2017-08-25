@@ -22,6 +22,7 @@ public class TaskProcessingPresenter extends BasePresenterImplement implements T
     private TaskProcessingContract.View view;
 
     public TaskProcessingPresenter(Context context, TaskProcessingContract.View view) {
+        super(context, view);
         this.context = context;
         this.view = view;
     }

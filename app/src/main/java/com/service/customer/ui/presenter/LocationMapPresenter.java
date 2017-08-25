@@ -16,16 +16,16 @@ import com.service.customer.constant.Constant;
 import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
 import com.service.customer.net.entity.LoginInfo;
-import com.service.customer.net.entity.TaskInfos;
+import com.service.customer.net.entity.MemberInfos;
 import com.service.customer.net.listener.ApiListener;
-import com.service.customer.ui.contract.MapContract;
+import com.service.customer.ui.contract.LocationMapContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
 
-public class MapPresenter extends BasePresenterImplement implements MapContract.Presenter {
+public class LocationMapPresenter extends BasePresenterImplement implements LocationMapContract.Presenter {
 
     private Context context;
-    private MapContract.View view;
+    private LocationMapContract.View view;
     private AMap aMap;
     private DistrictSearch districtSearch;
     private DistrictSearchQuery districtSearchQuery;
@@ -38,7 +38,8 @@ public class MapPresenter extends BasePresenterImplement implements MapContract.
         return districtSearch;
     }
 
-    public MapPresenter(Context context, MapContract.View view) {
+    public LocationMapPresenter(Context context, LocationMapContract.View view) {
+        super(context, view);
         this.context = context;
         this.view = view;
     }
@@ -71,19 +72,19 @@ public class MapPresenter extends BasePresenterImplement implements MapContract.
     }
 
     @Override
-    public void getTaskInfos() {
-        Api.getInstance().taskList(
+    public void getMemberList() {
+        Api.getInstance().memberList(
                 context,
                 view,
 //                ((ConfigInfo) BaseApplication.getInstance().getConfigInfo()).getServerUrl() + ServiceMethod.TASK_LIST,
-                BuildConfig.SERVICE_URL + ServiceMethod.TASK_LIST,
+                BuildConfig.SERVICE_URL + ServiceMethod.MEMBER_LIST,
                 ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken(),
                 1,
                 new ApiListener() {
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-                        view.setEventMarker((TaskInfos) baseEntity);
+                        view.setEventMarker((MemberInfos) baseEntity);
                         getBoundary(context.getString(R.string.miyun_district));
                     }
 

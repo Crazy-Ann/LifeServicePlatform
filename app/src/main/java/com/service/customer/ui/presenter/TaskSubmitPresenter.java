@@ -32,6 +32,7 @@ public class TaskSubmitPresenter extends BasePresenterImplement implements TaskS
     private AMapLocationClientOption aMapLocationClientOption;
 
     public TaskSubmitPresenter(Context context, TaskSubmitContract.View view) {
+        super(context, view);
         this.context = context;
         this.view = view;
     }
@@ -60,24 +61,8 @@ public class TaskSubmitPresenter extends BasePresenterImplement implements TaskS
 
     @Override
     public void startLocation() {
-        if (aMapLocationClient != null) {
-            view.showLoadingPromptDialog(R.string.location_prompt, Constant.RequestCode.DIALOG_PROGRESS_LOCATION);
-            aMapLocationClient.startLocation();
-        }
-    }
-
-    @Override
-    public void stopLocation() {
-        if (aMapLocationClient != null) {
-            aMapLocationClient.stopLocation();
-        }
-    }
-
-    @Override
-    public void destroyLocation() {
-        aMapLocationClient.onDestroy();
-        aMapLocationClient = null;
-        aMapLocationClientOption = null;
+        view.showLoadingPromptDialog(R.string.location_prompt, Constant.RequestCode.DIALOG_PROGRESS_LOCATION);
+        super.startLocation();
     }
 
     @Override
@@ -111,7 +96,7 @@ public class TaskSubmitPresenter extends BasePresenterImplement implements TaskS
     }
 
     @Override
-    public void deleteFile() {
+    public void deleteFile() {//todo 返回存在問題，直接退出
         LogUtil.getInstance().print("deleteFile");
         try {
             IOUtil.getInstance().deleteFile(IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, null));

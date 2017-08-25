@@ -8,11 +8,13 @@ import android.support.annotation.NonNull;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.amap.api.location.AMapLocation;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.BundleUtil;
 import com.service.customer.components.utils.HttpUtil;
 import com.service.customer.components.utils.LogUtil;
@@ -73,7 +75,17 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
         }
 //        wvContent.getSettings().setUserAgentString(wvContent.getSettings().getUserAgentString() + Regex.SPACE.getRegext() + JS.UA.getContent() + Regex.SPACE.getRegext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            presenter.checkPermission(this, this);
+            presenter.checkPermission(this, new PermissionCallback() {
+                @Override
+                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                    wvContent.loadUrl(HttpUtil.getInstance().addParameter(BundleUtil.getInstance().getStringData(WapActivity.this, Temp.URL.getContent()), RequestParameterKey.TOKEN, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken()));
+                }
+
+                @Override
+                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                    showPermissionPromptDialog();
+                }
+            });
         } else {
             wvContent.loadUrl(HttpUtil.getInstance().addParameter(BundleUtil.getInstance().getStringData(this, Temp.URL.getContent()), RequestParameterKey.TOKEN, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken()));
         }
@@ -173,7 +185,17 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    presenter.checkPermission(this, this);
+                    presenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            wvContent.loadUrl(HttpUtil.getInstance().addParameter(BundleUtil.getInstance().getStringData(WapActivity.this, Temp.URL.getContent()), RequestParameterKey.TOKEN, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken()));
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 } else {
                     wvContent.loadUrl(HttpUtil.getInstance().addParameter(BundleUtil.getInstance().getStringData(this, Temp.URL.getContent()), RequestParameterKey.TOKEN, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken()));
                 }
@@ -184,12 +206,7 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        wvContent.loadUrl(HttpUtil.getInstance().addParameter(BundleUtil.getInstance().getStringData(this, Temp.URL.getContent()), RequestParameterKey.TOKEN, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getToken()));
-    }
+    public void onLocationChanged(AMapLocation aMapLocation) {
 
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
     }
 }

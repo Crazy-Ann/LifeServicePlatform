@@ -11,11 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.iflytek.cloud.ErrorCode;
 import com.service.customer.R;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.tts.listener.OnDictationListener;
 import com.service.customer.components.tts.listener.OnIntializeListener;
@@ -31,18 +33,18 @@ import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.EvaluateInfo;
 import com.service.customer.net.entity.validation.EvaluateValidation;
-import com.service.customer.ui.contract.HelperEvaluateContract;
+import com.service.customer.ui.contract.VolunteerEvaluateContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
-import com.service.customer.ui.presenter.HelperEvaluatePresenter;
+import com.service.customer.ui.presenter.VolunteerEvaluatePresenter;
 import com.service.customer.ui.widget.edittext.VoiceEdittext;
 import com.service.customer.ui.widget.edittext.listener.OnVoiceClickListener;
 import com.service.customer.ui.widget.ratingbar.RatingBar;
 
 import java.util.List;
 
-public class HelperEvaluateActivity extends ActivityViewImplement<HelperEvaluateContract.Presenter> implements HelperEvaluateContract.View, OnLeftIconEventListener, View.OnClickListener, OnDictationListener, OnVoiceClickListener, OnIntializeListener {
+public class VolunteerEvaluateActivity extends ActivityViewImplement<VolunteerEvaluateContract.Presenter> implements VolunteerEvaluateContract.View, OnLeftIconEventListener, View.OnClickListener, OnDictationListener, OnVoiceClickListener, OnIntializeListener {
 
-    private HelperEvaluatePresenter helperEvaluatePresenter;
+    private VolunteerEvaluatePresenter volunteerEvaluatePresenter;
     private ImageView ivHeadImage;
     private TextView tvRealName;
     private RatingBar rbEvaluate;
@@ -51,10 +53,12 @@ public class HelperEvaluateActivity extends ActivityViewImplement<HelperEvaluate
     private EditTextValidator editTextValidator;
     private EvaluateInfo evaluateInfo;
 
+    private boolean hasLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_evaluate);
+        setContentView(R.layout.activity_volunteer_evaluate);
         findViewById();
         initialize(savedInstanceState);
         setListener();
@@ -75,11 +79,11 @@ public class HelperEvaluateActivity extends ActivityViewImplement<HelperEvaluate
         initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.evaluate));
         TTSUtil.getInstance().initializeSpeechRecognizer(this);
 
-        helperEvaluatePresenter = new HelperEvaluatePresenter(this, this);
-        helperEvaluatePresenter.initialize();
+        volunteerEvaluatePresenter = new VolunteerEvaluatePresenter(this, this);
+        volunteerEvaluatePresenter.initialize();
 
-        setBasePresenterImplement(helperEvaluatePresenter);
-        getSavedInstanceState(savedInstanceState);
+        setBasePresenterImplement(volunteerEvaluatePresenter);
+        super.initialize(savedInstanceState);
 
         vetEvaluate.setHint(getString(R.string.evaluate_prompt1));
         vetEvaluate.setTextCount(0);
@@ -113,18 +117,38 @@ public class HelperEvaluateActivity extends ActivityViewImplement<HelperEvaluate
         switch (view.getId()) {
             case R.id.btnSubmit:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    helperEvaluatePresenter.checkPermission(this, this);
+                    volunteerEvaluatePresenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            if (evaluateInfo != null) {
+                                if (rbEvaluate.getSelectedCount() > 0) {
+                                    if (editTextValidator.validate(VolunteerEvaluateActivity.this)) {
+                                        volunteerEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                                    }
+                                } else {
+                                    ToastUtil.getInstance().showToast(VolunteerEvaluateActivity.this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
+                                }
+                            } else {
+                                showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR);
+                            }
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 } else {
                     if (evaluateInfo != null) {
                         if (rbEvaluate.getSelectedCount() > 0) {
                             if (editTextValidator.validate(this)) {
-                                helperEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                                volunteerEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
                             }
                         } else {
                             ToastUtil.getInstance().showToast(this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
                         }
                     } else {
-                        showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
+                        showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR);
                     }
                 }
                 break;
@@ -140,18 +164,46 @@ public class HelperEvaluateActivity extends ActivityViewImplement<HelperEvaluate
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    helperEvaluatePresenter.checkPermission(this, this);
+                    volunteerEvaluatePresenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            if (hasLocation) {
+                                if (evaluateInfo != null) {
+                                    if (rbEvaluate.getSelectedCount() > 0) {
+                                        if (editTextValidator.validate(VolunteerEvaluateActivity.this)) {
+                                            volunteerEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                                        }
+                                    } else {
+                                        ToastUtil.getInstance().showToast(VolunteerEvaluateActivity.this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
+                                    }
+                                } else {
+                                    showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR);
+                                }
+                            } else {
+                                volunteerEvaluatePresenter.startLocation();
+                            }
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 } else {
-                    if (evaluateInfo != null) {
-                        if (rbEvaluate.getSelectedCount() > 0) {
-                            if (editTextValidator.validate(this)) {
-                                helperEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                    if (hasLocation) {
+                        if (evaluateInfo != null) {
+                            if (rbEvaluate.getSelectedCount() > 0) {
+                                if (editTextValidator.validate(VolunteerEvaluateActivity.this)) {
+                                    volunteerEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                                }
+                            } else {
+                                ToastUtil.getInstance().showToast(VolunteerEvaluateActivity.this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
                             }
                         } else {
-                            ToastUtil.getInstance().showToast(this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
+                            showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR);
                         }
                     } else {
-                        showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
+                        volunteerEvaluatePresenter.startLocation();
                     }
                 }
                 break;
@@ -194,11 +246,11 @@ public class HelperEvaluateActivity extends ActivityViewImplement<HelperEvaluate
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
                 startLoginActivity(true);
                 break;
-            case Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_SUCCESS:
+            case Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_SUCCESS:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_SCORE_HELPER_INFO_SUCCESS");
                 startMainActivity(Constant.Tab.TASK_MANAGEMENT);
                 break;
-            case Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR:
+            case Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR");
                 onFinish("DIALOG_PROMPT_EVALUATE_INFO_ERROR");
                 break;
@@ -226,26 +278,6 @@ public class HelperEvaluateActivity extends ActivityViewImplement<HelperEvaluate
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        if (evaluateInfo != null) {
-            if (rbEvaluate.getSelectedCount() > 0) {
-                if (editTextValidator.validate(this)) {
-                    helperEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
-                }
-            } else {
-                ToastUtil.getInstance().showToast(this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
-            }
-        } else {
-            showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
-        }
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
-    }
-
-    @Override
     public boolean isActive() {
         return false;
     }
@@ -269,5 +301,23 @@ public class HelperEvaluateActivity extends ActivityViewImplement<HelperEvaluate
         } else {
             showPromptDialog(R.string.tts_intialized_error_prompt, Constant.RequestCode.DIALOG_PROMPT_TTS_INTIALIZED_ERROR);
         }
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        volunteerEvaluatePresenter.stopLocation();
+        switch (aMapLocation.getErrorCode()) {
+            case AMapLocation.LOCATION_SUCCESS:
+                LogUtil.getInstance().print("经度:" + aMapLocation.getLongitude());
+                LogUtil.getInstance().print("纬度:" + aMapLocation.getLatitude());
+                LogUtil.getInstance().print("精度:" + aMapLocation.getAccuracy());
+                LogUtil.getInstance().print("地址:" + aMapLocation.getAddress());
+                volunteerEvaluatePresenter.saveAddressInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), aMapLocation.getAddress());
+                break;
+            default:
+                LogUtil.getInstance().print(aMapLocation.getErrorInfo());
+                break;
+        }
+        hasLocation = true;
     }
 }

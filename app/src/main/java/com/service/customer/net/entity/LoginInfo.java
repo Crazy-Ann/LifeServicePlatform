@@ -26,7 +26,7 @@ public final class LoginInfo extends BaseEntity {
     private String taskUrl;
     private String cardUrl;
     private String workUrl;
-    private String helperUrl;
+    private String volunteerUrl;
     private String helpSeekerUrl;
 
     public LoginInfo() {}
@@ -79,8 +79,8 @@ public final class LoginInfo extends BaseEntity {
         return workUrl;
     }
 
-    public String getHelperUrl() {
-        return helperUrl;
+    public String getVolunteerUrl() {
+        return volunteerUrl;
     }
 
     public String getHelpSeekerUrl() {
@@ -94,7 +94,7 @@ public final class LoginInfo extends BaseEntity {
                 this.taskUrl = object.getString(ResponseParameterKey.TASK_URL);
                 this.cardUrl = object.getString(ResponseParameterKey.CARD_URL);
                 this.workUrl = object.getString(ResponseParameterKey.WORK_URL);
-                this.helperUrl = object.getString(ResponseParameterKey.ASIST_URL);
+                this.volunteerUrl = object.getString(ResponseParameterKey.ASIST_URL);
                 this.helpSeekerUrl = object.getString(ResponseParameterKey.ACCOUNT_URL);
                 this.token = object.getString(ResponseParameterKey.TOKEN);
                 if (object.containsKey(ResponseParameterKey.USER_INFO)) {
@@ -134,7 +134,7 @@ public final class LoginInfo extends BaseEntity {
                     ", taskUrl='" + taskUrl + '\'' +
                     ", cardUrl='" + cardUrl + '\'' +
                     ", workUrl='" + workUrl + '\'' +
-                    ", helperUrl='" + helperUrl + '\'' +
+                    ", volunteerUrl='" + volunteerUrl + '\'' +
                     ", helpSeekerUrl='" + helpSeekerUrl + '\'' +
                     ", token='" + token + '\'' +
                     '}';
@@ -160,7 +160,7 @@ public final class LoginInfo extends BaseEntity {
         dest.writeString(this.taskUrl);
         dest.writeString(this.cardUrl);
         dest.writeString(this.workUrl);
-        dest.writeString(this.helperUrl);
+        dest.writeString(this.volunteerUrl);
         dest.writeString(this.helpSeekerUrl);
     }
 
@@ -177,7 +177,7 @@ public final class LoginInfo extends BaseEntity {
         this.taskUrl = in.readString();
         this.cardUrl = in.readString();
         this.workUrl = in.readString();
-        this.helperUrl = in.readString();
+        this.volunteerUrl = in.readString();
         this.helpSeekerUrl = in.readString();
     }
 

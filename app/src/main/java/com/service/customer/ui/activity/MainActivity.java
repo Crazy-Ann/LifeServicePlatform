@@ -9,9 +9,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.view.View;
 
+import com.amap.api.location.AMapLocation;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.ActivityUtil;
 import com.service.customer.components.utils.BundleUtil;
 import com.service.customer.components.utils.FragmentUtil;
@@ -19,6 +21,7 @@ import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
+import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.ui.contract.MainContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
@@ -53,14 +56,22 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
     protected void initialize(Bundle savedInstanceState) {
         mainPresenter = new MainPresenter(this, this);
         mainPresenter.initialize();
-        
+
         setBasePresenterImplement(mainPresenter);
         getSavedInstanceState(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mainPresenter.checkPermission(this, this);
-        }
         
+        switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
+            case Constant.AccountRole.WEI_JI_WEI:
+            case Constant.AccountRole.JI_SHENG_BAN:
+            case Constant.AccountRole.VOLUNTEER:
+                break;
+            case Constant.AccountRole.HELP_SEEKER:
+                super.initialize(savedInstanceState);
+                break;
+            default:
+                break;
+        }
+
         tlMenu.setTabMode(TabLayout.MODE_FIXED);
         tlMenu.setBackgroundColor(Color.WHITE);
         tlMenu.setSelectedTabIndicatorHeight(0);
@@ -101,8 +112,28 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
         switch (requestCode) {
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    mainPresenter.checkPermission(this, this);
+                switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
+                    case Constant.AccountRole.WEI_JI_WEI:
+                    case Constant.AccountRole.JI_SHENG_BAN:
+                    case Constant.AccountRole.VOLUNTEER:
+                        break;
+                    case Constant.AccountRole.HELP_SEEKER:
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            mainPresenter.checkPermission(this, new PermissionCallback() {
+                                @Override
+                                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                    mainPresenter.startLocation();
+                                }
+
+                                @Override
+                                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                                    showPermissionPromptDialog();
+                                }
+                            });
+                        }
+                        break;
+                    default:
+                        break;
                 }
                 break;
             default:
@@ -226,12 +257,19 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        mainPresenter.stopLocation();
+        switch (aMapLocation.getErrorCode()) {
+            case AMapLocation.LOCATION_SUCCESS:
+                LogUtil.getInstance().print("经度:" + aMapLocation.getLongitude());
+                LogUtil.getInstance().print("纬度:" + aMapLocation.getLatitude());
+                LogUtil.getInstance().print("精度:" + aMapLocation.getAccuracy());
+                LogUtil.getInstance().print("地址:" + aMapLocation.getAddress());
+                mainPresenter.saveAddressInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), aMapLocation.getAddress());
+                break;
+            default:
+                LogUtil.getInstance().print(aMapLocation.getErrorInfo());
+                break;
+        }
     }
 }

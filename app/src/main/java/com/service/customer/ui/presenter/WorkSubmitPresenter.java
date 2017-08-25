@@ -9,6 +9,7 @@ import com.service.customer.base.net.model.BaseEntity;
 import com.service.customer.components.http.model.FileWrapper;
 import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.IOUtil;
+import com.service.customer.components.utils.LogUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
@@ -27,6 +28,7 @@ public class WorkSubmitPresenter extends BasePresenterImplement implements WorkS
     private WorkSubmitContract.View view;
 
     public WorkSubmitPresenter(Context context, WorkSubmitContract.View view) {
+        super(context, view);
         this.context = context;
         this.view = view;
     }
@@ -65,7 +67,8 @@ public class WorkSubmitPresenter extends BasePresenterImplement implements WorkS
     }
 
     @Override
-    public void deleteFile() {
+    public void deleteFile() {//todo 返回存在問題，直接退出
+        LogUtil.getInstance().print("deleteFile");
         try {
             IOUtil.getInstance().deleteFile(IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, null));
         } catch (IOException e) {

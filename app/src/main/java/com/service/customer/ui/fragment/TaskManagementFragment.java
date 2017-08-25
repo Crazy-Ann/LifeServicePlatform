@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.amap.api.location.AMapLocation;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.HttpUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ViewUtil;
@@ -94,7 +96,17 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    taskManagementPresenter.checkPermission(getActivity(), this);
+                    taskManagementPresenter.checkPermission(getActivity(), new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 }
                 break;
             default:
@@ -144,17 +156,17 @@ public class TaskManagementFragment extends FragmentViewImplement<TaskManagement
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-
-    }
-
-    @Override
     public boolean isActive() {
         return false;
+    }
+
+    @Override
+    public void showLocationPromptDialog(String prompt, int requestCode) {
+
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        
     }
 }

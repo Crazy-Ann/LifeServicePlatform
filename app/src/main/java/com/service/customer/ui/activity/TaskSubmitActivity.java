@@ -27,6 +27,7 @@ import com.service.customer.base.sticky.adapter.FixedStickyViewAdapter;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.http.model.FileWrapper;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.tts.listener.OnDictationListener;
 import com.service.customer.components.tts.listener.OnIntializeListener;
@@ -77,11 +78,11 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
     private AMapLocation aMapLocation;
     private List<TaskImageInfo> taskImageInfos;
 
-    private TaskHandler taskHandler;
+    private TaskSubmitHandler taskSubmitHandler;
 
-    private static class TaskHandler extends ActivityHandler<TaskSubmitActivity> {
+    private static class TaskSubmitHandler extends ActivityHandler<TaskSubmitActivity> {
 
-        public TaskHandler(TaskSubmitActivity activity) {
+        public TaskSubmitHandler(TaskSubmitActivity activity) {
             super(activity);
         }
 
@@ -126,13 +127,13 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
         initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, BundleUtil.getInstance().getStringData(this, Temp.TITLE.getContent()));
         vetTaskNote.setHint(getString(R.string.text_descreption_prompt));
         vetTaskNote.setTextCount(0);
-        taskHandler = new TaskHandler(this);
+        taskSubmitHandler = new TaskSubmitHandler(this);
 
         taskSubmitPresenter = new TaskSubmitPresenter(this, this);
         taskSubmitPresenter.initialize();
 
         setBasePresenterImplement(taskSubmitPresenter);
-        getSavedInstanceState(savedInstanceState);
+        super.initialize(savedInstanceState);
 
         editTextValidator = new EditTextValidator();
         editTextValidator.add(new Validation(null, vetTaskNote.getEtContent(), true, null, new TaskValidation()));
@@ -140,12 +141,6 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            taskSubmitPresenter.checkPermission(this, this);
-        } else {
-            taskSubmitPresenter.startLocation();
-        }
 
         taskImageInfos = new ArrayList<>();
         TaskImageInfo taskImageInfo = new TaskImageInfo();
@@ -204,7 +199,17 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    taskSubmitPresenter.checkPermission(this, this);
+                    taskSubmitPresenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            taskSubmitPresenter.startLocation();
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 } else {
                     taskSubmitPresenter.startLocation();
                 }
@@ -219,13 +224,13 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                             if (file != null && BitmapUtil.getInstance().saveBitmap(ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), IOUtil.getInstance().getFileUri(BaseApplication.getInstance(), true, file), 0.25f), file.getAbsolutePath())) {
                                 TaskImageInfo taskImageInfo = new TaskImageInfo();
                                 taskImageInfo.setFile(file);
-                                taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
+                                taskSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
                             } else {
-                                taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
+                                taskSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                             }
                         } catch (IOException | InterruptedException | ExecutionException e) {
                             e.printStackTrace();
-                            taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
+                            taskSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                         }
                     }
                 });
@@ -243,13 +248,13 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                                 if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
                                     TaskImageInfo taskImageInfo = new TaskImageInfo();
                                     taskImageInfo.setFile(file);
-                                    taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
+                                    taskSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
                                 } else {
-                                    taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
+                                    taskSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                                 }
                             } catch (InterruptedException | ExecutionException | IOException e) {
                                 e.printStackTrace();
-                                taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
+                                taskSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                             }
                         }
                     });
@@ -275,7 +280,6 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
     @Override
     public void onDestroy() {
         super.onDestroy();
-        taskSubmitPresenter.destroyLocation();
         taskSubmitPresenter.deleteFile();
     }
 
@@ -365,31 +369,8 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        taskSubmitPresenter.startLocation();
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
-    }
-
-    @Override
     public boolean isActive() {
         return false;
-    }
-
-    @Override
-    public void showLocationPromptDialog(String prompt, int requestCode) {
-        PromptDialog.createBuilder(getSupportFragmentManager())
-                .setTitle(getString(R.string.dialog_prompt))
-                .setPrompt(prompt)
-                .setPositiveButtonText(this, R.string.try_again)
-                .setNegativeButtonText(this, R.string.cancel)
-                .setCancelable(true)
-                .setCancelableOnTouchOutside(true)
-                .setRequestCode(requestCode)
-                .show(this);
     }
 
     @Override
@@ -400,6 +381,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
         hideLoadingPromptDialog();
+        taskSubmitPresenter.stopLocation();
         switch (aMapLocation.getErrorCode()) {
             case AMapLocation.LOCATION_SUCCESS:
                 this.aMapLocation = aMapLocation;
@@ -413,7 +395,6 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
                 showLocationPromptDialog(aMapLocation.getErrorInfo(), Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR);
                 break;
         }
-        taskSubmitPresenter.stopLocation();
     }
 
     @Override

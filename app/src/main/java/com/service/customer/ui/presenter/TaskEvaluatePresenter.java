@@ -21,6 +21,7 @@ public class TaskEvaluatePresenter extends BasePresenterImplement implements Tas
     private TaskEvaluateContract.View view;
 
     public TaskEvaluatePresenter(Context context, TaskEvaluateContract.View view) {
+        super(context, view);
         this.context = context;
         this.view = view;
     }

@@ -8,10 +8,12 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 
+import com.amap.api.location.AMapLocation;
 import com.iflytek.cloud.ErrorCode;
 import com.service.customer.R;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.tts.listener.OnDictationListener;
 import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.tts.listener.OnIntializeListener;
@@ -99,7 +101,17 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
                 if (editTextValidator.validate(this)) {
                     dealStatus = Constant.DealStatus.PROCESSING_COMPLETED;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        taskProcessingPresenter.checkPermission(this, this);
+                        taskProcessingPresenter.checkPermission(this, new PermissionCallback() {
+                            @Override
+                            public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                taskProcessingPresenter.dealTaskInfo(BundleUtil.getInstance().getStringData(TaskProcessingActivity.this, Temp.BILL_NO.getContent()), dealStatus, vetDealNote.getText().trim());
+                            }
+
+                            @Override
+                            public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                                showPermissionPromptDialog();
+                            }
+                        });
                     } else {
                         taskProcessingPresenter.dealTaskInfo(BundleUtil.getInstance().getStringData(this, Temp.BILL_NO.getContent()), dealStatus, vetDealNote.getText().trim());
                     }
@@ -109,7 +121,17 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
                 if (editTextValidator.validate(this)) {
                     dealStatus = Constant.DealStatus.CAN_NOT_HANDLE;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        taskProcessingPresenter.checkPermission(this, this);
+                        taskProcessingPresenter.checkPermission(this, new PermissionCallback() {
+                            @Override
+                            public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                taskProcessingPresenter.dealTaskInfo(BundleUtil.getInstance().getStringData(TaskProcessingActivity.this, Temp.BILL_NO.getContent()), dealStatus, vetDealNote.getText().trim());
+                            }
+
+                            @Override
+                            public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                                showPermissionPromptDialog();
+                            }
+                        });
                     } else {
                         taskProcessingPresenter.dealTaskInfo(BundleUtil.getInstance().getStringData(this, Temp.BILL_NO.getContent()), dealStatus, vetDealNote.getText().trim());
                     }
@@ -127,7 +149,17 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    taskProcessingPresenter.checkPermission(this, this);
+                    taskProcessingPresenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            taskProcessingPresenter.dealTaskInfo(BundleUtil.getInstance().getStringData(TaskProcessingActivity.this, Temp.BILL_NO.getContent()), dealStatus, vetDealNote.getText().trim());
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 } else {
                     taskProcessingPresenter.dealTaskInfo(BundleUtil.getInstance().getStringData(this, Temp.BILL_NO.getContent()), dealStatus, vetDealNote.getText().trim());
                 }
@@ -205,16 +237,6 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        taskProcessingPresenter.dealTaskInfo(BundleUtil.getInstance().getStringData(this, Temp.BILL_NO.getContent()), dealStatus, vetDealNote.getText().trim());
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
-    }
-
-    @Override
     public boolean isActive() {
         return false;
     }
@@ -238,5 +260,10 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
         } else {
             showPromptDialog(R.string.tts_intialized_error_prompt, Constant.RequestCode.DIALOG_PROMPT_TTS_INTIALIZED_ERROR);
         }
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        
     }
 }

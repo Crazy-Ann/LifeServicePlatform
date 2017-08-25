@@ -10,6 +10,7 @@ public final class Constant {
     public static final String FILE_NAME = "LifeServicePlatform";
 
     public static final String[] PERMISSIONS = {Manifest.permission.READ_PHONE_STATE
+            , Manifest.permission.PROCESS_OUTGOING_CALLS
 //            , Manifest.permission.WRITE_SETTINGS
             , Manifest.permission.READ_EXTERNAL_STORAGE
             , Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -62,8 +63,8 @@ public final class Constant {
         public static final int DIALOG_PROGRESS_SCORE_TASK_INFO = 0x5035;
         public static final int DIALOG_PROMPT_SCORE_TASK_INFO_ERROR = 0x5036;
         public static final int DIALOG_PROMPT_SCORE_TASK_INFO_SUCCESS = 0x5037;
-        public static final int DIALOG_PROGRESS_TASK_INFOS = 0x5038;
-        public static final int DIALOG_PROMPT_TASK_INFOS_ERROR = 0x5039;
+        public static final int DIALOG_PROGRESS_TASK_LIST = 0x5038;
+        public static final int DIALOG_PROMPT_TASK_LIST_ERROR = 0x5039;
         public static final int DIALOG_PROGRESS_SAVE_WORK_INFO = 0x5040;
         public static final int DIALOG_PROMPT_SAVE_WORK_INFO_ERROR = 0x5041;
         public static final int DIALOG_PROMPT_SAVE_WORK_INFO_SUCCESS = 0x5042;
@@ -72,9 +73,14 @@ public final class Constant {
         public static final int DIALOG_PROMPT_DEAL_TASK_INFO_ERROR = 0x5045;
         public static final int DIALOG_PROMPT_DEAL_TASK_INFO_SUCCESS = 0x5046;
         public static final int DIALOG_PROMPT_TTS_INTIALIZED_ERROR = 0x5047;
-        public static final int DIALOG_PROGRESS_SCORE_HELPER_INFO = 0x5048;
-        public static final int DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR = 0x5049;
-        public static final int DIALOG_PROMPT_SCORE_HELPER_INFO_SUCCESS = 0x5050;
+        public static final int DIALOG_PROGRESS_SCORE_VOLUNTEER_INFO = 0x5048;
+        public static final int DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR = 0x5049;
+        public static final int DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_SUCCESS = 0x5050;
+        public static final int DIALOG_PROGRESS_MEMBER_LIST = 0x5051;
+        public static final int DIALOG_PROMPT_TASK_MEMBER_ERROR = 0x5052;
+        public static final int DIALOG_PROGRESS_SAVE_ADDRESS_INFO = 0x5053;
+        public static final int DIALOG_PROMPT_SAVE_ADDRESS_INFO_ERROR = 0x5054;
+        public static final int DIALOG_PROMPT_SAVE_ADDRESS_INFO_SUCCESS = 0x5055;
         public static final int INSTALL_APK = 0x5097;
         public static final int REQUEST_CODE_PHOTOGRAPH = 0x5098;
         public static final int REQUEST_CODE_ALBUM = 0x5099;

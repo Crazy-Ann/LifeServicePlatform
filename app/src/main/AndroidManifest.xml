@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -21,7 +22,7 @@
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
 
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
@@ -35,11 +36,11 @@
     <application
         android:name=".base.application.BaseApplication"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/icon_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" 
-        android:fullBackupContent="true">
+        android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.WelcomeActivity"
                   android:configChanges="orientation|keyboardHidden|screenSize"
                   android:launchMode="singleTop"
@@ -82,7 +83,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize"/>
         <activity
-            android:name=".ui.activity.MapActivity"
+            android:name=".ui.activity.TaskMapActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
+        <activity
+            android:name=".ui.activity.LocationMapActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -112,7 +119,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
         <activity
-            android:name=".ui.activity.HelperEvaluateActivity"
+            android:name=".ui.activity.VolunteerEvaluateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -126,6 +133,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
+        <!--<receiver android:name=".receiver.PhoneStateReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.NEW_OUTGOING_CALL"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
     </application>
 
 </manifest>

@@ -14,10 +14,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.amap.api.location.AMapLocation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.ActivityUtil;
 import com.service.customer.components.utils.GlideUtil;
 import com.service.customer.components.utils.InputUtil;
@@ -117,7 +119,17 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
             case R.id.btnLogin:
                 if (editTextValidator.validate(this)) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        loginPresenter.checkPermission(this,this);
+                        loginPresenter.checkPermission(this, new PermissionCallback() {
+                            @Override
+                            public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                loginPresenter.login(etAccount.getText().toString(), etPassword.getText().toString());
+                            }
+
+                            @Override
+                            public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                                showPermissionPromptDialog();
+                            }
+                        });
                     } else {
                         loginPresenter.login(etAccount.getText().toString(), etPassword.getText().toString());
                     }
@@ -135,7 +147,17 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    loginPresenter.checkPermission(this,this);
+                    loginPresenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            loginPresenter.login(etAccount.getText().toString(), etPassword.getText().toString());
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 } else {
                     loginPresenter.login(etAccount.getText().toString(), etPassword.getText().toString());
                 }
@@ -214,16 +236,6 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        loginPresenter.login(etAccount.getText().toString(), etPassword.getText().toString());
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
-    }
-
-    @Override
     public boolean isActive() {
         return false;
     }
@@ -231,5 +243,10 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
     @Override
     public boolean isRememberLoginInfo() {
         return cbRememberLoginInfo.isChecked();
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+
     }
 }

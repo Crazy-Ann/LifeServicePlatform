@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
@@ -28,6 +29,7 @@ import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.AnimationUtil;
 import com.service.customer.components.utils.GlideUtil;
 import com.service.customer.components.utils.InputUtil;
@@ -35,30 +37,30 @@ import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.ThreadPoolUtil;
 import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
-import com.service.customer.net.entity.TaskInfo;
-import com.service.customer.net.entity.TaskInfos;
-import com.service.customer.ui.contract.MapContract;
+import com.service.customer.net.entity.MemberInfo;
+import com.service.customer.net.entity.MemberInfos;
+import com.service.customer.ui.contract.LocationMapContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 import com.service.customer.ui.dialog.PromptDialog;
-import com.service.customer.ui.presenter.MapPresenter;
+import com.service.customer.ui.presenter.LocationMapPresenter;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MapActivity extends ActivityViewImplement<MapContract.Presenter> implements MapContract.View, View.OnClickListener, OnLeftIconEventListener, AMap.OnMarkerClickListener, DistrictSearch.OnDistrictSearchListener {
+public class LocationMapActivity extends ActivityViewImplement<LocationMapContract.Presenter> implements LocationMapContract.View, View.OnClickListener, OnLeftIconEventListener, AMap.OnMarkerClickListener, DistrictSearch.OnDistrictSearchListener {
 
-    private MapPresenter mapPresenter;
+    private LocationMapPresenter locationMapPresenter;
     private MapView mapView;
     private LinearLayout llTaskInfo;
     private ImageView ivHeadImage;
     private TextView tvRealName;
     private ImageView ivClose;
-    private TextView tvDescreption;
+    private TextView tvAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_location_map);
         findViewById();
         initialize(savedInstanceState);
         setListener();
@@ -72,31 +74,41 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
         ivHeadImage = ViewUtil.getInstance().findView(this, R.id.ivHeadImage);
         tvRealName = ViewUtil.getInstance().findView(this, R.id.tvRealName);
         ivClose = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.ivClose, this);
-        tvDescreption = ViewUtil.getInstance().findView(this, R.id.tvDescreption);
+        tvAddress = ViewUtil.getInstance().findView(this, R.id.tvAddress);
     }
 
     @Override
     protected void initialize(Bundle savedInstanceState) {
-        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.map_event));
+        initializeToolbar(R.color.color_015293, true, R.mipmap.icon_back1, this, android.R.color.white, getString(R.string.help_seeker_location));
         mapView.onCreate(savedInstanceState);
 
-        mapPresenter = new MapPresenter(this, this);
-        mapPresenter.initialize();
+        locationMapPresenter = new LocationMapPresenter(this, this);
+        locationMapPresenter.initialize();
        
-        setBasePresenterImplement(mapPresenter);
+        setBasePresenterImplement(locationMapPresenter);
         getSavedInstanceState(savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mapPresenter.checkPermission(this, this);
+            locationMapPresenter.checkPermission(this, new PermissionCallback() {
+                @Override
+                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                    locationMapPresenter.getMemberList();
+                }
+
+                @Override
+                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                    showPermissionPromptDialog();
+                }
+            });
         } else {
-            mapPresenter.getTaskInfos();
+            locationMapPresenter.getMemberList();
         }
     }
 
     @Override
     protected void setListener() {
-        mapPresenter.getAMap().setOnMarkerClickListener(this);
-        mapPresenter.getDistrictSearch().setOnDistrictSearchListener(this);
+        locationMapPresenter.getAMap().setOnMarkerClickListener(this);
+        locationMapPresenter.getDistrictSearch().setOnDistrictSearchListener(this);
     }
 
     @Override
@@ -153,9 +165,19 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    mapPresenter.checkPermission(this, this);
+                    locationMapPresenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            locationMapPresenter.getMemberList();
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 } else {
-                    mapPresenter.getTaskInfos();
+                    locationMapPresenter.getMemberList();
                 }
                 break;
             default:
@@ -183,7 +205,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
                 startPermissionSettingActivity();
             case Constant.RequestCode.DIALOG_PROMPT_LOCATION_ERROR:
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_LOCATION_ERROR");
-                mapPresenter.getBoundary(getString(R.string.miyun_district));
+                locationMapPresenter.getBoundary(getString(R.string.miyun_district));
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_TOKEN_ERROR:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_TOKEN_ERROR");
@@ -218,16 +240,6 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        mapPresenter.getTaskInfos();
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
-    }
-
-    @Override
     public boolean isActive() {
         return false;
     }
@@ -251,17 +263,17 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     }
 
     @Override
-    public void setEventMarker(final TaskInfos taskInfos) {
+    public void setEventMarker(final MemberInfos memberInfos) {
         ThreadPoolUtil.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if (taskInfos != null) {
-                        for (TaskInfo taskInfo : taskInfos.getTaskInfos()) {
-                            mapPresenter.getAMap().addMarker(new MarkerOptions()
-                                                                     .position(new LatLng(taskInfo.getLatitude(), taskInfo.getLongitude()))
+                    if (memberInfos != null) {
+                        for (MemberInfo memberInfo : memberInfos.getMemberInfos()) {
+                            locationMapPresenter.getAMap().addMarker(new MarkerOptions()
+                                                                     .position(new LatLng(memberInfo.getLatitude(), memberInfo.getLongitude()))
                                                                      .icon(BitmapDescriptorFactory.fromBitmap(GlideUtil.getInstance().get(BaseApplication.getInstance(), R.mipmap.icon_mark, ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24), ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24))))
-                                                                     .draggable(false)).setObject(taskInfo);
+                                                                     .draggable(false)).setObject(memberInfo);
                         }
                     }
                 } catch (ExecutionException | InterruptedException e) {
@@ -274,12 +286,12 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (marker != null) {
-            TaskInfo taskInfo = (TaskInfo) marker.getObject();
+            MemberInfo memberInfo = (MemberInfo) marker.getObject();
             AnimationUtil.getInstance().fadeInByAlphaAnimation(llTaskInfo, 100, 100);
-            GlideUtil.getInstance().with(this, taskInfo.getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
-            tvRealName.setText(taskInfo.getRealName());
-            tvDescreption.setText(taskInfo.getTasNote());
-            llTaskInfo.setTag(taskInfo);
+            GlideUtil.getInstance().with(this, memberInfo.getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
+            tvRealName.setText(memberInfo.getRealName());
+            tvAddress.setText(memberInfo.getAddress());
+            llTaskInfo.setTag(memberInfo);
         }
         return true;
     }
@@ -296,7 +308,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
                     }
                     LatLonPoint centerLatLng = districtItem.getCenter();
                     if (centerLatLng != null) {
-                        mapPresenter.mapCameraOperation(new LatLng(centerLatLng.getLatitude(), centerLatLng.getLongitude()), Constant.Map.ZOOM, Constant.Map.BEARING, Constant.Map.TILT);
+                        locationMapPresenter.mapCameraOperation(new LatLng(centerLatLng.getLatitude(), centerLatLng.getLongitude()), Constant.Map.ZOOM, Constant.Map.BEARING, Constant.Map.TILT);
                     }
                     runOnUiThread(new Runnable() {
                         @Override
@@ -319,7 +331,7 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
                                         polylineOption.add(startPointLatLng);
                                     }
                                     polylineOption.width(10).color(Color.BLUE);
-                                    mapPresenter.getAMap().addPolyline(polylineOption);
+                                    locationMapPresenter.getAMap().addPolyline(polylineOption);
                                 }
                             }
                         }
@@ -338,5 +350,12 @@ public class MapActivity extends ActivityViewImplement<MapContract.Presenter> im
     public void OnLeftIconEvent() {
         onFinish("OnLeftIconEvent");
     }
+
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+
+    }
+   
 }
 

@@ -20,6 +20,7 @@ public class ModifyPasswordPresenter extends BasePresenterImplement implements M
     private ModifyPasswordContract.View view;
 
     public ModifyPasswordPresenter(Context context, ModifyPasswordContract.View view) {
+        super(context, view);
         this.context = context;
         this.view = view;
     }

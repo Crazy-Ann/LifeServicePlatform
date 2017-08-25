@@ -11,6 +11,7 @@ public class SettingPresenter extends BasePresenterImplement implements SettingC
     private SettingContract.View view;
 
     public SettingPresenter(Context context, SettingContract.View view) {
+        super(context, view);
         this.context = context;
         this.view = view;
     }

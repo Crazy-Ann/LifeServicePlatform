@@ -16,11 +16,11 @@ import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.EvaluateInfo;
 import com.service.customer.net.entity.LoginInfo;
-import com.service.customer.ui.activity.HelperEvaluateActivity;
 import com.service.customer.ui.activity.TaskEvaluateActivity;
-import com.service.customer.ui.activity.MapActivity;
+import com.service.customer.ui.activity.TaskMapActivity;
 import com.service.customer.ui.activity.TaskProcessingActivity;
 import com.service.customer.ui.activity.TaskSubmitActivity;
+import com.service.customer.ui.activity.VolunteerEvaluateActivity;
 import com.service.customer.ui.activity.WapActivity;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
 
@@ -46,17 +46,10 @@ public class LifeServicePlatform {
                         activityViewImplement.startActivity(WapActivity.class, bundle);
                     }
                     break;
-//                case Constant.JavaScript.EVENT_QUERY:
-//                    //todo 应该通过url字段获取跳转地址
-//                    bundle = new Bundle();
-//                    bundle.putInt(Temp.TAB.getContent(), Constant.Tab.TASK_MANAGEMENT);
-//                    activityViewImplement.startActivity(MainActivity.class, bundle);
-//                    break;
                 case Constant.JavaScript.MAP_QUERY:
-                    activityViewImplement.startActivity(MapActivity.class);
+                    activityViewImplement.startActivity(TaskMapActivity.class);
                     break;
                 case Constant.JavaScript.WORK_LOG:
-                    //todo 应该通过url字段获取跳转地址且不应该新开页面
                     bundle = new Bundle();
                     bundle.putString(Temp.TITLE.getContent(), JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE));
                     bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl());
@@ -87,7 +80,7 @@ public class LifeServicePlatform {
                     break;
                 case Constant.JavaScript.HELPER_EVALUATION:
                     if (!TextUtils.isEmpty(parameter)) {
-                        Intent intent = new Intent(activityViewImplement, HelperEvaluateActivity.class);
+                        Intent intent = new Intent(activityViewImplement, VolunteerEvaluateActivity.class);
                         intent.putExtra(Temp.EVALUATE_INFO.getContent(), new EvaluateInfo().parse(JSONObject.parseObject(parameter)));
                         intent.setExtrasClassLoader(EvaluateInfo.class.getClassLoader());
                         activityViewImplement.startActivity(intent);

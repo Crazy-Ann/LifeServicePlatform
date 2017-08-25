@@ -12,7 +12,9 @@ public class RequestParameterKey {
     public final static String SCORE_ASSIST = "scoreassist";
     public final static String SAVE_HEAD_IMAGE = "headimage";
     public final static String DEAL_TASK_INFO = "dealtaskInfo";
+    public final static String ADDRESS_INFO = "addressinfo";
     public final static String TASK_LIST = "tasklist";
+    public final static String MEMBER_LIST = "memberlist";
     public final static String WORK_LIST = "workList";
 
     public static final String TYPE = "type";

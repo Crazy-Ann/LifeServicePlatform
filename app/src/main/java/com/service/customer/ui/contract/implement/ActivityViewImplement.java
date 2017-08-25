@@ -2,8 +2,10 @@ package com.service.customer.ui.contract.implement;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import com.service.customer.R;
@@ -11,6 +13,7 @@ import com.service.customer.base.activity.BaseActivity;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.view.BaseView;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.ActivityUtil;
 import com.service.customer.components.utils.IOUtil;
 import com.service.customer.components.utils.LogUtil;
@@ -23,6 +26,8 @@ import com.service.customer.ui.activity.LoginActivity;
 import com.service.customer.ui.activity.MainActivity;
 import com.service.customer.ui.dialog.ProgressDialog;
 import com.service.customer.ui.dialog.PromptDialog;
+
+import java.util.List;
 
 public abstract class ActivityViewImplement<T> extends BaseActivity implements BaseView<T> {
 
@@ -77,6 +82,19 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
     @Override
     public void hideLoadingPromptDialog() {
         ViewUtil.getInstance().hideDialog(dialogFragment);
+    }
+
+    @Override
+    public void showLocationPromptDialog(String prompt, int requestCode) {
+        PromptDialog.createBuilder(getSupportFragmentManager())
+                .setTitle(getString(R.string.dialog_prompt))
+                .setPrompt(prompt)
+                .setPositiveButtonText(this, R.string.try_again)
+                .setNegativeButtonText(this, R.string.cancel)
+                .setCancelable(true)
+                .setCancelableOnTouchOutside(true)
+                .setRequestCode(requestCode)
+                .show(this);
     }
 
     @Override
@@ -147,5 +165,30 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
     public void refusePermissionSetting() {
         BaseApplication.getInstance().releaseInstance();
         ActivityUtil.removeAll();
+    }
+
+    @Override
+    protected void initialize(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            basePresenterImplement.checkPermission(this, new PermissionCallback() {
+                @Override
+                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                    basePresenterImplement.startLocation();
+                }
+
+                @Override
+                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                    showPermissionPromptDialog();
+                }
+            });
+        } else {
+            basePresenterImplement.startLocation();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        basePresenterImplement.destroyLocation();
     }
 }

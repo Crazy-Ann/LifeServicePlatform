@@ -4,9 +4,9 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.service.customer.base.presenter.BasePresenter;
 import com.service.customer.base.view.BaseView;
-import com.service.customer.net.entity.TaskInfos;
+import com.service.customer.net.entity.MemberInfos;
 
-public interface MapContract {
+public interface LocationMapContract {
 
     interface View extends BaseView<Presenter> {
 
@@ -16,7 +16,7 @@ public interface MapContract {
 
         void showBoundaryPromptDialog(int resoutId, int requestCode);
 
-        void setEventMarker(TaskInfos taskInfos);
+        void setEventMarker(MemberInfos memberInfos);
     }
 
     interface Presenter extends BasePresenter {
@@ -25,7 +25,7 @@ public interface MapContract {
 
         void mapCameraOperation(LatLng lating, float zoom, float tilt, float bearing);
 
-        void getTaskInfos();
+        void getMemberList();
 
     }
 }

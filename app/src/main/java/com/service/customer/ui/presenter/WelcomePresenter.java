@@ -31,7 +31,7 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
     private WelcomeContract.View view;
     private boolean isForceUpdate;
     private String filePath;
-
+    
     public boolean isForceUpdate() {
         return isForceUpdate;
     }
@@ -45,6 +45,7 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
     }
 
     public WelcomePresenter(Context context, WelcomeContract.View view) {
+        super(context, view);
         this.context = context;
         this.view = view;
     }

@@ -3,23 +3,18 @@ package com.service.customer.net.response;
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.base.net.response.JSONObjectResponse;
 import com.service.customer.components.utils.LogUtil;
-import com.service.customer.net.entity.TaskInfos;
 
 import okhttp3.Headers;
 import okhttp3.Response;
 
-public class TaskInfosResponse extends JSONObjectResponse {
-    
-    public TaskInfos taskInfos;
+public class SaveAddressInfoResponse extends JSONObjectResponse {
 
-    public TaskInfosResponse() {
+    public SaveAddressInfoResponse() {
         super();
-        taskInfos = new TaskInfos();
     }
 
     @Override
     public void onParseData(JSONObject object) {
-        taskInfos.parse(object);
     }
 
     @Override
@@ -44,7 +39,7 @@ public class TaskInfosResponse extends JSONObjectResponse {
 
     @Override
     public void onProgress(int progress, long speed, boolean isDone) {
-        LogUtil.getInstance().print("TaskInfosResponse's progress:" + progress + ",speed:" + speed + ",isDone:" + isDone);
+        LogUtil.getInstance().print("SaveAddressInfoResponse's progress:" + progress + ",speed:" + speed + ",isDone:" + isDone);
     }
 
     @Override

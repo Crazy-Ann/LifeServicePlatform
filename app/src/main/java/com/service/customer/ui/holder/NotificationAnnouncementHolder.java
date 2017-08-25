@@ -15,6 +15,6 @@ public class NotificationAnnouncementHolder extends BaseHolder {
     public NotificationAnnouncementHolder(View itemView) {
         super(itemView);
         tvTtile = ViewUtil.getInstance().findView(itemView, R.id.tvTtile);
-        tvDescreption = ViewUtil.getInstance().findView(itemView, R.id.tvDescreption);
+        tvDescreption = ViewUtil.getInstance().findView(itemView, R.id.tvAddress);
     }
 }

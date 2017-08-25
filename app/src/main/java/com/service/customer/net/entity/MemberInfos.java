@@ -10,12 +10,12 @@ import com.service.customer.base.net.model.BaseEntity;
 
 import java.util.ArrayList;
 
-public final class TaskInfos extends BaseEntity {
+public final class MemberInfos extends BaseEntity {
 
     private int pageIndex;
     private int pageCount;
     private int totalRecord;
-    private ArrayList<TaskInfo> taskInfos;
+    private ArrayList<MemberInfo> memberInfos;
 
     public int getPageIndex() {
         return pageIndex;
@@ -29,23 +29,23 @@ public final class TaskInfos extends BaseEntity {
         return totalRecord;
     }
 
-    public ArrayList<TaskInfo> getTaskInfos() {
-        return taskInfos;
+    public ArrayList<MemberInfo> getMemberInfos() {
+        return memberInfos;
     }
 
-    public TaskInfos() {
+    public MemberInfos() {
     }
 
-    public TaskInfos parse(JSONObject object) {
+    public MemberInfos parse(JSONObject object) {
         if (object != null) {
             this.pageIndex = object.getIntValue(ResponseParameterKey.PAGE_INDEX);
             this.pageCount = object.getIntValue(ResponseParameterKey.PAGE_COUNT);
             this.totalRecord = object.getIntValue(ResponseParameterKey.TOTAL_RECORD);
             if (object.containsKey(ResponseParameterKey.TASK_INFOS)) {
                 JSONArray array = object.getJSONArray(ResponseParameterKey.TASK_INFOS);
-                this.taskInfos = new ArrayList<>();
+                this.memberInfos = new ArrayList<>();
                 for (int i = 0; i < array.size(); i++) {
-                    this.taskInfos.add(new TaskInfo().parse(array.getJSONObject(i)));
+                    this.memberInfos.add(new MemberInfo().parse(array.getJSONObject(i)));
                 }
             } else {
                 return null;
@@ -59,11 +59,11 @@ public final class TaskInfos extends BaseEntity {
     @Override
     public String toString() {
         if (BuildConfig.DEBUG) {
-            return "TaskInfos{" +
+            return "MemberInfos{" +
                     "pageIndex='" + pageIndex + '\'' +
                     ", pageCount='" + pageCount + '\'' +
                     ", totalRecord='" + totalRecord + '\'' +
-                    ", memberInfos='" + taskInfos + '\'' +
+                    ", memberInfos='" + memberInfos + '\'' +
                     '}';
         } else {
             return super.toString();
@@ -79,23 +79,23 @@ public final class TaskInfos extends BaseEntity {
         dest.writeInt(this.pageIndex);
         dest.writeInt(this.pageCount);
         dest.writeInt(this.totalRecord);
-        dest.writeList(this.taskInfos);
+        dest.writeList(this.memberInfos);
     }
 
-    protected TaskInfos(Parcel in) {
+    protected MemberInfos(Parcel in) {
         super(in);
         this.pageIndex = in.readInt();
         this.pageCount = in.readInt();
         this.totalRecord = in.readInt();
-        this.taskInfos = new ArrayList<>();
-        in.readList(this.taskInfos, TaskInfo.class.getClassLoader());
+        this.memberInfos = new ArrayList<>();
+        in.readList(this.memberInfos, TaskInfo.class.getClassLoader());
     }
 
-    public static final Creator<TaskInfos> CREATOR = new Creator<TaskInfos>() {
+    public static final Creator<MemberInfos> CREATOR = new Creator<MemberInfos>() {
         @Override
-        public TaskInfos createFromParcel(Parcel source) {return new TaskInfos(source);}
+        public MemberInfos createFromParcel(Parcel source) {return new MemberInfos(source);}
 
         @Override
-        public TaskInfos[] newArray(int size) {return new TaskInfos[size];}
+        public MemberInfos[] newArray(int size) {return new MemberInfos[size];}
     };
 }

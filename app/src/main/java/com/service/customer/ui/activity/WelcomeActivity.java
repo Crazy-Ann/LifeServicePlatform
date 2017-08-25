@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.amap.api.location.AMapLocation;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.ActivityUtil;
 import com.service.customer.components.utils.ApplicationUtil;
 import com.service.customer.components.utils.IOUtil;
@@ -67,12 +69,22 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
     protected void initialize(Bundle savedInstanceState) {
         welcomePresenter = new WelcomePresenter(this, this);
         welcomePresenter.initialize();
-       
+
         setBasePresenterImplement(welcomePresenter);
         getSavedInstanceState(savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            welcomePresenter.checkPermission(this,this);
+            welcomePresenter.checkPermission(this, new PermissionCallback() {
+                @Override
+                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                    welcomePresenter.getConfig();
+                }
+
+                @Override
+                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                    showPermissionPromptDialog();
+                }
+            });
         } else {
             welcomePresenter.getConfig();
         }
@@ -98,7 +110,17 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
             case Constant.RequestCode.PREMISSION_SETTING:
             case Constant.RequestCode.INSTALL_APK:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    welcomePresenter.checkPermission(this,this);
+                    welcomePresenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            welcomePresenter.getConfig();
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 } else {
                     welcomePresenter.getConfig();
                 }
@@ -248,16 +270,6 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        welcomePresenter.getConfig();
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
-    }
-
-    @Override
     public boolean isActive() {
         return false;
     }
@@ -301,5 +313,10 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
                 .setCancelableOnTouchOutside(false)
                 .setRequestCode(Constant.RequestCode.DIALOG_PROMPT_INSTALL)
                 .showAllowingStateLoss(this);
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        
     }
 }

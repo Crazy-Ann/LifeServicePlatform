@@ -19,6 +19,7 @@ public class HomePagePresenter2 extends BasePresenterImplement implements HomePa
     private HomePageContract2.View view;
 
     public HomePagePresenter2(Context context, HomePageContract2.View view) {
+        super(context, view);
         this.context = context;
         this.view = view;
     }

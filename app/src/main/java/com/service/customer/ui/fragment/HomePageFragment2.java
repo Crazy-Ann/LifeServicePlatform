@@ -12,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.amap.api.location.AMapLocation;
 import com.service.customer.R;
 import com.service.customer.base.handler.FragmentHandler;
 import com.service.customer.base.sticky.adapter.FixedStickyViewAdapter;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.components.utils.MessageUtil;
 import com.service.customer.components.utils.ThreadPoolUtil;
@@ -25,7 +27,7 @@ import com.service.customer.net.entity.NotificationAnnouncementInfo;
 import com.service.customer.net.entity.NotificationAnnouncementInfos;
 import com.service.customer.net.entity.ServiceInfo;
 import com.service.customer.net.entity.ServiceInfos;
-import com.service.customer.ui.activity.MapActivity;
+import com.service.customer.ui.activity.TaskMapActivity;
 import com.service.customer.ui.activity.TaskSubmitActivity;
 import com.service.customer.ui.adapter.NotificationAnnouncementAdapter;
 import com.service.customer.ui.adapter.ServiceAdapter;
@@ -180,7 +182,7 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract2.P
                     case com.service.customer.constant.Constant.ServiceAction.MAP_QUERY:
                         bundle = new Bundle();
                         bundle.putString(Temp.TITLE.getContent(), serviceInfos.get(position).getName());
-                        startActivity(MapActivity.class, bundle);
+                        startActivity(TaskMapActivity.class, bundle);
                         break;
                     default:
                         break;
@@ -208,7 +210,17 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract2.P
             case com.service.customer.constant.Constant.RequestCode.NET_WORK_SETTING:
             case com.service.customer.constant.Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    homePagePresenter2.checkPermission(getActivity(), this);
+                    homePagePresenter2.checkPermission(getActivity(), new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 }
                 break;
             default:
@@ -232,17 +244,17 @@ public class HomePageFragment2 extends FragmentViewImplement<HomePageContract2.P
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-
-    }
-
-    @Override
     public boolean isActive() {
         return false;
+    }
+
+    @Override
+    public void showLocationPromptDialog(String prompt, int requestCode) {
+
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+
     }
 }

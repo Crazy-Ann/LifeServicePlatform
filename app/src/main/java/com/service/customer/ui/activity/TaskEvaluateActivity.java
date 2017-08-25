@@ -11,11 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.iflytek.cloud.ErrorCode;
 import com.service.customer.R;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.tts.listener.OnDictationListener;
 import com.service.customer.components.tts.listener.OnIntializeListener;
@@ -50,6 +52,8 @@ public class TaskEvaluateActivity extends ActivityViewImplement<TaskEvaluateCont
     private Button btnSubmit;
     private EditTextValidator editTextValidator;
     private EvaluateInfo evaluateInfo;
+    
+    private boolean hasLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +83,7 @@ public class TaskEvaluateActivity extends ActivityViewImplement<TaskEvaluateCont
         taskEvaluatePresenter.initialize();
 
         setBasePresenterImplement(taskEvaluatePresenter);
-        getSavedInstanceState(savedInstanceState);
+        super.initialize(savedInstanceState);
 
         vetEvaluate.setHint(getString(R.string.evaluate_prompt1));
         vetEvaluate.setTextCount(0);
@@ -113,7 +117,27 @@ public class TaskEvaluateActivity extends ActivityViewImplement<TaskEvaluateCont
         switch (view.getId()) {
             case R.id.btnSubmit:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    taskEvaluatePresenter.checkPermission(this, this);
+                    taskEvaluatePresenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            if (evaluateInfo != null) {
+                                if (rbEvaluate.getSelectedCount() > 0) {
+                                    if (editTextValidator.validate(TaskEvaluateActivity.this)) {
+                                        taskEvaluatePresenter.scoreTaskInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                                    }
+                                } else {
+                                    ToastUtil.getInstance().showToast(TaskEvaluateActivity.this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
+                                }
+                            } else {
+                                showPromptDialog(R.string.dialog_prompt_score_task_info_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR);
+                            }
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+
+                        }
+                    });
                 } else {
                     if (evaluateInfo != null) {
                         if (rbEvaluate.getSelectedCount() > 0) {
@@ -140,18 +164,46 @@ public class TaskEvaluateActivity extends ActivityViewImplement<TaskEvaluateCont
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    taskEvaluatePresenter.checkPermission(this, this);
+                    taskEvaluatePresenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            if(hasLocation) {
+                                if (evaluateInfo != null) {
+                                    if (rbEvaluate.getSelectedCount() > 0) {
+                                        if (editTextValidator.validate(TaskEvaluateActivity.this)) {
+                                            taskEvaluatePresenter.scoreTaskInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                                        }
+                                    } else {
+                                        ToastUtil.getInstance().showToast(TaskEvaluateActivity.this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
+                                    }
+                                } else {
+                                    showPromptDialog(R.string.dialog_prompt_score_task_info_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR);
+                                }
+                            }else{
+                                taskEvaluatePresenter.startLocation();
+                            }
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 } else {
-                    if (evaluateInfo != null) {
-                        if (rbEvaluate.getSelectedCount() > 0) {
-                            if (editTextValidator.validate(this)) {
-                                taskEvaluatePresenter.scoreTaskInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                    if(hasLocation) {
+                        if (evaluateInfo != null) {
+                            if (rbEvaluate.getSelectedCount() > 0) {
+                                if (editTextValidator.validate(this)) {
+                                    taskEvaluatePresenter.scoreTaskInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
+                                }
+                            } else {
+                                ToastUtil.getInstance().showToast(this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
                             }
                         } else {
-                            ToastUtil.getInstance().showToast(this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
+                            showPromptDialog(R.string.dialog_prompt_score_task_info_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR);
                         }
-                    } else {
-                        showPromptDialog(R.string.dialog_prompt_score_task_info_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR);
+                    }else{
+                        taskEvaluatePresenter.startLocation();
                     }
                 }
                 break;
@@ -226,26 +278,6 @@ public class TaskEvaluateActivity extends ActivityViewImplement<TaskEvaluateCont
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        if (evaluateInfo != null) {
-            if (rbEvaluate.getSelectedCount() > 0) {
-                if (editTextValidator.validate(this)) {
-                    taskEvaluatePresenter.scoreTaskInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
-                }
-            } else {
-                ToastUtil.getInstance().showToast(this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
-            }
-        } else {
-            showPromptDialog(R.string.dialog_prompt_score_task_info_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_TASK_INFO_ERROR);
-        }
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
-    }
-
-    @Override
     public boolean isActive() {
         return false;
     }
@@ -269,5 +301,23 @@ public class TaskEvaluateActivity extends ActivityViewImplement<TaskEvaluateCont
         } else {
             showPromptDialog(R.string.tts_intialized_error_prompt, Constant.RequestCode.DIALOG_PROMPT_TTS_INTIALIZED_ERROR);
         }
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        taskEvaluatePresenter.stopLocation();
+        switch (aMapLocation.getErrorCode()) {
+            case AMapLocation.LOCATION_SUCCESS:
+                LogUtil.getInstance().print("经度:" + aMapLocation.getLongitude());
+                LogUtil.getInstance().print("纬度:" + aMapLocation.getLatitude());
+                LogUtil.getInstance().print("精度:" + aMapLocation.getAccuracy());
+                LogUtil.getInstance().print("地址:" + aMapLocation.getAddress());
+                taskEvaluatePresenter.saveAddressInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), aMapLocation.getAddress());
+                break;
+            default:
+                LogUtil.getInstance().print(aMapLocation.getErrorInfo());
+                break;
+        }
+        hasLocation = true;
     }
 }

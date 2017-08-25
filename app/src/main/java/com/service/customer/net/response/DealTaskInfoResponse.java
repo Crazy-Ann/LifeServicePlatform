@@ -7,15 +7,15 @@ import com.service.customer.components.utils.LogUtil;
 import okhttp3.Headers;
 import okhttp3.Response;
 
-public class ModifyPasswordResponse extends JSONObjectResponse {
+public class DealTaskInfoResponse extends JSONObjectResponse {
 
-    public ModifyPasswordResponse() {
+
+    public DealTaskInfoResponse() {
         super();
     }
 
     @Override
     public void onParseData(JSONObject object) {
-
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ModifyPasswordResponse extends JSONObjectResponse {
 
     @Override
     public void onProgress(int progress, long speed, boolean isDone) {
-        LogUtil.getInstance().print("ModifyPasswordResponse's progress:" + progress + ",speed:" + speed + ",isDone:" + isDone);
+        LogUtil.getInstance().print("DealTaskInfoResponse's progress:" + progress + ",speed:" + speed + ",isDone:" + isDone);
     }
 
     @Override

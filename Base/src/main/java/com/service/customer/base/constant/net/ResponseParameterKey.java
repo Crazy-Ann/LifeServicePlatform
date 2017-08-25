@@ -31,7 +31,7 @@ public class ResponseParameterKey {
     public static final String INDEX_URL = "indexurl";
     public static final String TASK_URL = "taskurl";
     public static final String USER_INFO = "userInfo";
-    public static final String ACCOUNT_ID = "accountID";
+    public static final String ACCOUNT_ID = "accountid";
     public static final String MEMBER_TYPE = "membertype";
     public static final String ACCOUNT_AVATAR = "accountavatar";
     public static final String PHONE = "phone";

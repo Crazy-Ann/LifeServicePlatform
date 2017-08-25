@@ -12,15 +12,16 @@ import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
 import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.net.listener.ApiListener;
-import com.service.customer.ui.contract.HelperEvaluateContract;
+import com.service.customer.ui.contract.VolunteerEvaluateContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
-public class HelperEvaluatePresenter extends BasePresenterImplement implements HelperEvaluateContract.Presenter {
+public class VolunteerEvaluatePresenter extends BasePresenterImplement implements VolunteerEvaluateContract.Presenter {
 
     private Context context;
-    private HelperEvaluateContract.View view;
+    private VolunteerEvaluateContract.View view;
 
-    public HelperEvaluatePresenter(Context context, HelperEvaluateContract.View view) {
+    public VolunteerEvaluatePresenter(Context context, VolunteerEvaluateContract.View view) {
+        super(context, view);
         this.context = context;
         this.view = view;
     }
@@ -46,7 +47,7 @@ public class HelperEvaluatePresenter extends BasePresenterImplement implements H
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-                        view.showPromptDialog(R.string.dialog_prompt_score_helper_info_success, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_SUCCESS);
+                        view.showPromptDialog(R.string.dialog_prompt_score_volunteer_info_success, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_SUCCESS);
                     }
 
                     @Override

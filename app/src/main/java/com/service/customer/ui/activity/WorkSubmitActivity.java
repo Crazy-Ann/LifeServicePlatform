@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
 import com.iflytek.cloud.ErrorCode;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
@@ -25,6 +26,7 @@ import com.service.customer.base.sticky.adapter.FixedStickyViewAdapter;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.http.model.FileWrapper;
+import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.tts.listener.OnDictationListener;
 import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.tts.listener.OnIntializeListener;
@@ -71,16 +73,11 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
 
     private List<TaskImageInfo> taskImageInfos;
 
-    private TaskHandler taskHandler;
+    private WorkSubmitHandler workSubmitHandler;
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+    private static class WorkSubmitHandler extends ActivityHandler<WorkSubmitActivity> {
 
-    }
-
-    private static class TaskHandler extends ActivityHandler<WorkSubmitActivity> {
-
-        public TaskHandler(WorkSubmitActivity activity) {
+        public WorkSubmitHandler(WorkSubmitActivity activity) {
             super(activity);
         }
 
@@ -125,7 +122,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
 
         vetWorkNote.setHint(getString(R.string.text_descreption_prompt));
         vetWorkNote.setTextCount(0);
-        taskHandler = new TaskHandler(this);
+        workSubmitHandler = new WorkSubmitHandler(this);
         workSubmitPresenter = new WorkSubmitPresenter(this, this);
         workSubmitPresenter.initialize();
 
@@ -171,7 +168,24 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
             case R.id.btnSubmit:
                 if (editTextValidator.validate(this)) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        workSubmitPresenter.checkPermission(this, this);
+                        workSubmitPresenter.checkPermission(this, new PermissionCallback() {
+                            @Override
+                            public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                List<FileWrapper> fileWrappers = new ArrayList<>();
+                                for (TaskImageInfo taskImageInfo : taskImageInfos) {
+                                    File file = taskImageInfo.getFile();
+                                    if (file != null) {
+                                        fileWrappers.add(new FileWrapper(file));
+                                    }
+                                }
+                                workSubmitPresenter.saveWrokInfo(1, vetWorkNote.getText().trim(), fileWrappers);
+                            }
+
+                            @Override
+                            public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                                showPermissionPromptDialog();
+                            }
+                        });
                     } else {
                         List<FileWrapper> fileWrappers = new ArrayList<>();
                         for (TaskImageInfo taskImageInfo : taskImageInfos) {
@@ -196,7 +210,24 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
             case Constant.RequestCode.NET_WORK_SETTING:
             case Constant.RequestCode.PREMISSION_SETTING:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    workSubmitPresenter.checkPermission(this, this);
+                    workSubmitPresenter.checkPermission(this, new PermissionCallback() {
+                        @Override
+                        public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                            List<FileWrapper> fileWrappers = new ArrayList<>();
+                            for (TaskImageInfo taskImageInfo : taskImageInfos) {
+                                File file = taskImageInfo.getFile();
+                                if (file != null) {
+                                    fileWrappers.add(new FileWrapper(file));
+                                }
+                            }
+                            workSubmitPresenter.saveWrokInfo(1, vetWorkNote.getText().trim(), fileWrappers);
+                        }
+
+                        @Override
+                        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                            showPermissionPromptDialog();
+                        }
+                    });
                 } else {
                     List<FileWrapper> fileWrappers = new ArrayList<>();
                     for (TaskImageInfo taskImageInfo : taskImageInfos) {
@@ -218,13 +249,13 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
                             if (file != null && BitmapUtil.getInstance().saveBitmap(ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), IOUtil.getInstance().getFileUri(BaseApplication.getInstance(), true, file), 0.25f), file.getAbsolutePath())) {
                                 TaskImageInfo taskImageInfo = new TaskImageInfo();
                                 taskImageInfo.setFile(file);
-                                taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
+                                workSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
                             } else {
-                                taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
+                                workSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                             }
                         } catch (IOException | InterruptedException | ExecutionException e) {
                             e.printStackTrace();
-                            taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
+                            workSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                         }
                     }
                 });
@@ -242,13 +273,13 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
                                 if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
                                     TaskImageInfo taskImageInfo = new TaskImageInfo();
                                     taskImageInfo.setFile(file);
-                                    taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
+                                    workSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_SUCCESS, taskImageInfo));
                                 } else {
-                                    taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
+                                    workSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                                 }
                             } catch (InterruptedException | ExecutionException | IOException e) {
                                 e.printStackTrace();
-                                taskHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
+                                workSubmitHandler.sendMessage(MessageUtil.getMessage(Constant.Message.GET_IMAGE_FAILED));
                             }
                         }
                     });
@@ -348,23 +379,6 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
     }
 
     @Override
-    public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-        List<FileWrapper> fileWrappers = new ArrayList<>();
-        for (TaskImageInfo taskImageInfo : taskImageInfos) {
-            File file = taskImageInfo.getFile();
-            if (file != null) {
-                fileWrappers.add(new FileWrapper(file));
-            }
-        }
-        workSubmitPresenter.saveWrokInfo(1, vetWorkNote.getText().trim(), fileWrappers);
-    }
-
-    @Override
-    public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-        showPermissionPromptDialog();
-    }
-
-    @Override
     public boolean isActive() {
         return false;
     }
@@ -405,5 +419,10 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
         } else {
             showPromptDialog(R.string.tts_intialized_error_prompt, Constant.RequestCode.DIALOG_PROMPT_TTS_INTIALIZED_ERROR);
         }
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+
     }
 }

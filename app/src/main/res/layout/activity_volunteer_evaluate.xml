@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ratingbar="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/inToolbar"
+        layout="@layout/view_toolbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_220"
+        android:background="@color/color_383857"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ivHeadImage"
+            android:layout_width="@dimen/dp_64"
+            android:layout_height="@dimen/dp_64"
+            android:layout_gravity="center"
+            android:contentDescription="@null"/>
+
+        <TextView
+            android:id="@+id/tvRealName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_18"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:maxLines="1"
+            android:text="@string/evaluate"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_14"/>
+
+        <com.service.customer.ui.widget.ratingbar.RatingBar
+            android:id="@+id/rbEvaluate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_15"
+            ratingbar:rb_count="5"
+            ratingbar:rb_differentSize="false"
+            ratingbar:rb_divider="@dimen/dp_5"
+            ratingbar:rb_editable="true"
+            ratingbar:rb_size="@dimen/dp_20"
+            ratingbar:rb_stateDrawable="@drawable/selector_rating_star"/>
+    </LinearLayout>
+
+    <com.service.customer.ui.widget.edittext.VoiceEdittext
+        android:id="@+id/vetEvaluate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/dp_15"
+        android:background="@drawable/frame_fillet_015293"
+        android:gravity="center"
+        android:text="@string/submit"
+        android:textSize="@dimen/sp_16"/>
+
+</LinearLayout>

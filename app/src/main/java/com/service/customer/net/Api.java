@@ -16,12 +16,17 @@ import com.service.customer.components.utils.NetworkUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.net.listener.ApiListener;
 import com.service.customer.net.response.ConfigResponse;
+import com.service.customer.net.response.DealTaskInfoResponse;
 import com.service.customer.net.response.LoginResponse;
+import com.service.customer.net.response.MemberListResponse;
 import com.service.customer.net.response.ModifyPasswordResponse;
 import com.service.customer.net.response.ModifyRealNameResponse;
+import com.service.customer.net.response.SaveAddressInfoResponse;
 import com.service.customer.net.response.SaveHeadImageResponse;
+import com.service.customer.net.response.SaveTaskInfoResponse;
+import com.service.customer.net.response.SaveWorkInfoResponse;
 import com.service.customer.net.response.ScoreTaskInfoResponse;
-import com.service.customer.net.response.TaskInfosResponse;
+import com.service.customer.net.response.TaskListResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -376,13 +381,15 @@ public class Api {
             parameters.put(RequestParameterKey.ADDRESS, address);
             parameters.put(RequestParameterKey.TASK_NOTE, taskNote);
             HashMap<String, FileWrapper> fileParameters = new HashMap<>();
-            for (FileWrapper fileWrapper : fileWrappers) {
-                fileParameters.put(fileWrapper.getFileName(), fileWrapper);
+            if (fileWrappers != null) {
+                for (FileWrapper fileWrapper : fileWrappers) {
+                    fileParameters.put(fileWrapper.getFileName(), fileWrapper);
+                }
             }
             RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_INFO, parameters, fileParameters, token, false);
             if (requestParameter != null) {
                 requestParameter.setMultipart(true);
-                HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveHeadImageResponse() {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveTaskInfoResponse() {
 
                     @Override
                     public void onStart() {
@@ -395,11 +402,7 @@ public class Api {
                     public void onResponseSuccess(JSONObject object) {
                         super.onResponseSuccess(object);
                         LogUtil.getInstance().print("提交任务成功:" + object.toString());
-                        if (headImageInfo != null) {
-                            apiListener.success(headImageInfo);
-                        } else {
-                            view.showPromptDialog(R.string.dialog_prompt_save_task_info_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_TASK_INFO_ERROR);
-                        }
+                        apiListener.success(null);
                     }
 
                     @Override
@@ -446,13 +449,15 @@ public class Api {
             parameters.put(RequestParameterKey.WORK_TYPE, String.valueOf(workType));
             parameters.put(RequestParameterKey.WORK_NOTE, workNote);
             HashMap<String, FileWrapper> fileParameters = new HashMap<>();
-            for (FileWrapper fileWrapper : fileWrappers) {
-                fileParameters.put(fileWrapper.getFileName(), fileWrapper);
+            if (fileWrappers != null) {
+                for (FileWrapper fileWrapper : fileWrappers) {
+                    fileParameters.put(fileWrapper.getFileName(), fileWrapper);
+                }
             }
             RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.WROK_INFO, parameters, fileParameters, token, false);
             if (requestParameter != null) {
                 requestParameter.setMultipart(true);
-                HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveHeadImageResponse() {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveWorkInfoResponse() {
 
                     @Override
                     public void onStart() {
@@ -465,11 +470,7 @@ public class Api {
                     public void onResponseSuccess(JSONObject object) {
                         super.onResponseSuccess(object);
                         LogUtil.getInstance().print("提交工作日志成功:" + object.toString());
-                        if (headImageInfo != null) {
-                            apiListener.success(headImageInfo);
-                        } else {
-                            view.showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_WORK_INFO_ERROR);
-                        }
+                        apiListener.success(null);
                     }
 
                     @Override
@@ -516,7 +517,7 @@ public class Api {
             parameters.put(RequestParameterKey.BILL_NO, billNo);
             parameters.put(RequestParameterKey.SCORE_NUM, String.valueOf(score));
             parameters.put(RequestParameterKey.NOTE, note);
-            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SCORE_INFO, parameters, null, token, false);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SCORE_INFO, parameters, token, false);
             if (requestParameter != null) {
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new ScoreTaskInfoResponse() {
 
@@ -578,9 +579,9 @@ public class Api {
             parameters.put(RequestParameterKey.BILL_NO, billNo);
             parameters.put(RequestParameterKey.DEAL_STATUS, String.valueOf(dealStatus));
             parameters.put(RequestParameterKey.DEAL_NOTE, dealNote);
-            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.DEAL_TASK_INFO, parameters, null, token, false);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.DEAL_TASK_INFO, parameters, token, false);
             if (requestParameter != null) {
-                HttpRequest.getInstance().doPost(context, url, requestParameter, new TaskInfosResponse() {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new DealTaskInfoResponse() {
 
                     @Override
                     public void onStart() {
@@ -594,7 +595,6 @@ public class Api {
                         super.onResponseSuccess(object);
                         LogUtil.getInstance().print("提交任务处理信息成功:" + object.toString());
                         apiListener.success(null);
-//                        view.showPromptDialog(R.string.dialog_prompt_deal_task_info_error, Constant.RequestCode.DIALOG_PROMPT_DEAL_TASK_INFO_ERROR);
                     }
 
                     @Override
@@ -641,7 +641,7 @@ public class Api {
             parameters.put(RequestParameterKey.BILL_NO, billNo);
             parameters.put(RequestParameterKey.SCORE_NUM, String.valueOf(score));
             parameters.put(RequestParameterKey.NOTE, note);
-            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SCORE_ASSIST, parameters, null, token, false);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.SCORE_ASSIST, parameters, token, false);
             if (requestParameter != null) {
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new ScoreTaskInfoResponse() {
 
@@ -649,7 +649,7 @@ public class Api {
                     public void onStart() {
                         super.onStart();
                         LogUtil.getInstance().print("提交志愿者评价信息开始");
-                        view.showLoadingPromptDialog(R.string.score_helper_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SCORE_HELPER_INFO);
+                        view.showLoadingPromptDialog(R.string.score_volunteer_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SCORE_VOLUNTEER_INFO);
                     }
 
                     @Override
@@ -663,7 +663,7 @@ public class Api {
                     public void onResponseFailed(String code, String message) {
                         super.onResponseFailed(code, message);
                         LogUtil.getInstance().print("提交志愿者评价信息失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR);
                         apiListener.failed(null, code, message);
                     }
 
@@ -671,7 +671,7 @@ public class Api {
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
                         LogUtil.getInstance().print("提交志愿者评价信息失败,code:" + code + ",message:" + message);
-                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR, object);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR, object);
                     }
 
                     @Override
@@ -685,11 +685,74 @@ public class Api {
                     public void onFailed(int code, String message) {
                         super.onFailed(code, message);
                         LogUtil.getInstance().print("提交志愿者评价信息失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR);
                     }
                 });
             } else {
-                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_HELPER_INFO_ERROR);
+                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR);
+            }
+        } else {
+            view.showNetWorkPromptDialog();
+        }
+    }
+
+    public void saveAddressInfo(final Context context, final BaseView view, String url, String token, String longitude, String latitude, String address, final ApiListener apiListener) {
+        LogUtil.getInstance().print("saveAddressInfo");
+        if (NetworkUtil.getInstance().isInternetConnecting(context)) {
+            HashMap<String, String> parameters = new HashMap<>();
+            parameters.put(RequestParameterKey.LONGITUDE, longitude);
+            parameters.put(RequestParameterKey.LATITUDE, latitude);
+            parameters.put(RequestParameterKey.ADDRESS, address);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.ADDRESS_INFO, parameters, null, token, false);
+            if (requestParameter != null) {
+                requestParameter.setMultipart(true);
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveAddressInfoResponse() {
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        LogUtil.getInstance().print("提交定位开始");
+//                        view.showLoadingPromptDialog(R.string.save_address_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SAVE_ADDRESS_INFO);
+                    }
+
+                    @Override
+                    public void onResponseSuccess(JSONObject object) {
+                        super.onResponseSuccess(object);
+                        LogUtil.getInstance().print("提交定位成功:" + object.toString());
+                        apiListener.success(null);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message) {
+                        super.onResponseFailed(code, message);
+                        LogUtil.getInstance().print("提交定位失败,code:" + code + ",message:" + message);
+//                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SAVE_ADDRESS_INFO_ERROR);
+                        apiListener.failed(null, code, message);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message, JSONObject object) {
+                        super.onResponseFailed(code, message, object);
+                        LogUtil.getInstance().print("提交定位失败,code:" + code + ",message:" + message);
+//                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_SAVE_ADDRESS_INFO_ERROR, object);
+                    }
+
+                    @Override
+                    public void onEnd() {
+                        super.onEnd();
+                        LogUtil.getInstance().print("提交定位结束");
+//                        view.hideLoadingPromptDialog();
+                    }
+
+                    @Override
+                    public void onFailed(int code, String message) {
+                        super.onFailed(code, message);
+                        LogUtil.getInstance().print("提交定位失败,code:" + code + ",message:" + message);
+//                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_SAVE_ADDRESS_INFO_ERROR);
+                    }
+                });
+            } else {
+                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_SAVE_ADDRESS_INFO_ERROR);
             }
         } else {
             view.showNetWorkPromptDialog();
@@ -697,63 +760,127 @@ public class Api {
     }
 
     public void taskList(final Context context, final BaseView view, String url, String token, int pageindex, final ApiListener apiListener) {
-        LogUtil.getInstance().print("scoreAssistInfo");
+        LogUtil.getInstance().print("taskList");
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.PAGE_INDEX, String.valueOf(pageindex));
             RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.TASK_LIST, parameters, null, token, false);
             if (requestParameter != null) {
-                HttpRequest.getInstance().doPost(context, url, requestParameter, new TaskInfosResponse() {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new TaskListResponse() {
 
                     @Override
                     public void onStart() {
                         super.onStart();
-                        LogUtil.getInstance().print("获取任务开始");
-                        view.showLoadingPromptDialog(R.string.task_infos_prompt, Constant.RequestCode.DIALOG_PROGRESS_TASK_INFOS);
+                        LogUtil.getInstance().print("获取任务列表开始");
+                        view.showLoadingPromptDialog(R.string.task_list_prompt, Constant.RequestCode.DIALOG_PROGRESS_TASK_LIST);
                     }
 
                     @Override
                     public void onResponseSuccess(JSONObject object) {
                         super.onResponseSuccess(object);
-                        LogUtil.getInstance().print("获取任务成功:" + object.toString());
+                        LogUtil.getInstance().print("获取任务列表成功:" + object.toString());
                         if (taskInfos != null) {
                             apiListener.success(taskInfos);
                         } else {
-                            view.showPromptDialog(R.string.dialog_prompt_task_infos_error, Constant.RequestCode.DIALOG_PROMPT_TASK_INFOS_ERROR);
+                            view.showPromptDialog(R.string.dialog_prompt_task_list_error, Constant.RequestCode.DIALOG_PROMPT_TASK_LIST_ERROR);
                         }
                     }
 
                     @Override
                     public void onResponseFailed(String code, String message) {
                         super.onResponseFailed(code, message);
-                        LogUtil.getInstance().print("获取任务失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_TASK_INFOS_ERROR);
+                        LogUtil.getInstance().print("获取任务列表失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_TASK_LIST_ERROR);
                         apiListener.failed(null, code, message);
                     }
 
                     @Override
                     public void onResponseFailed(String code, String message, JSONObject object) {
                         super.onResponseFailed(code, message, object);
-                        LogUtil.getInstance().print("获取任务失败,code:" + code + ",message:" + message);
-                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_TASK_INFOS_ERROR, object);
+                        LogUtil.getInstance().print("获取任务列表失败,code:" + code + ",message:" + message);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_TASK_LIST_ERROR, object);
                     }
 
                     @Override
                     public void onEnd() {
                         super.onEnd();
-                        LogUtil.getInstance().print("获取任务结束");
+                        LogUtil.getInstance().print("获取任务列表结束");
                         view.hideLoadingPromptDialog();
                     }
 
                     @Override
                     public void onFailed(int code, String message) {
                         super.onFailed(code, message);
-                        LogUtil.getInstance().print("获取任务失败,code:" + code + ",message:" + message);
-                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_TASK_INFOS_ERROR);
+                        LogUtil.getInstance().print("获取任务列表失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_TASK_LIST_ERROR);
                     }
                 });
             } else {
-                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_TASK_INFOS_ERROR);
+                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_TASK_LIST_ERROR);
+            }
+        } else {
+            view.showNetWorkPromptDialog();
+        }
+    }
+
+    public void memberList(final Context context, final BaseView view, String url, String token, int pageindex, final ApiListener apiListener) {
+        LogUtil.getInstance().print("memberList");
+        if (NetworkUtil.getInstance().isInternetConnecting(context)) {
+            HashMap<String, String> parameters = new HashMap<>();
+            parameters.put(RequestParameterKey.PAGE_INDEX, String.valueOf(pageindex));
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.MEMBER_LIST, parameters, null, token, false);
+            if (requestParameter != null) {
+                HttpRequest.getInstance().doPost(context, url, requestParameter, new MemberListResponse() {
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        LogUtil.getInstance().print("获取目标人群列表开始");
+                        view.showLoadingPromptDialog(R.string.member_list_prompt, Constant.RequestCode.DIALOG_PROGRESS_MEMBER_LIST);
+                    }
+
+                    @Override
+                    public void onResponseSuccess(JSONObject object) {
+                        super.onResponseSuccess(object);
+                        LogUtil.getInstance().print("获取目标人群列表成功:" + object.toString());
+                        if (memberInfos != null) {
+                            apiListener.success(memberInfos);
+                        } else {
+                            view.showPromptDialog(R.string.dialog_prompt_member_list_error, Constant.RequestCode.DIALOG_PROMPT_TASK_MEMBER_ERROR);
+                        }
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message) {
+                        super.onResponseFailed(code, message);
+                        LogUtil.getInstance().print("获取目标人群列表失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_TASK_MEMBER_ERROR);
+                        apiListener.failed(null, code, message);
+                    }
+
+                    @Override
+                    public void onResponseFailed(String code, String message, JSONObject object) {
+                        super.onResponseFailed(code, message, object);
+                        LogUtil.getInstance().print("获取目标人群列表失败,code:" + code + ",message:" + message);
+                        handleFailedResponse(view, Constant.RequestCode.DIALOG_PROMPT_TASK_MEMBER_ERROR, object);
+                    }
+
+                    @Override
+                    public void onEnd() {
+                        super.onEnd();
+                        LogUtil.getInstance().print("获取目标人群列表结束");
+                        view.hideLoadingPromptDialog();
+                    }
+
+                    @Override
+                    public void onFailed(int code, String message) {
+                        super.onFailed(code, message);
+                        LogUtil.getInstance().print("获取目标人群列表失败,code:" + code + ",message:" + message);
+                        view.showPromptDialog(message, Constant.RequestCode.DIALOG_PROMPT_TASK_MEMBER_ERROR);
+                    }
+                });
+            } else {
+                view.showPromptDialog(R.string.request_data_error, Constant.RequestCode.DIALOG_PROMPT_TASK_MEMBER_ERROR);
             }
         } else {
             view.showNetWorkPromptDialog();

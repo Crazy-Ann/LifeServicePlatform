@@ -14,6 +14,8 @@ public final class ServiceMethod {
     public final static String SCORE_TASK_INFO = "/ScoreTaskInfo";
     public final static String SCORE_ASSIST_INFO = "/ScoreAssistInfo";
     public final static String SAVE_HEAD_IMAGE = "/SaveHeadImage";
+    public final static String SAVE_ADDRESS_INFO = "/SaveAddressInfo";
     public final static String TASK_LIST  = "/TaskList";
+    public final static String MEMBER_LIST  = "/MemberList";
     public final static String WORK_LIST  = "/WorkList";
 }
