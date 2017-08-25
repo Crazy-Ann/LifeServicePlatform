@@ -703,15 +703,15 @@ public class Api {
             parameters.put(RequestParameterKey.LONGITUDE, longitude);
             parameters.put(RequestParameterKey.LATITUDE, latitude);
             parameters.put(RequestParameterKey.ADDRESS, address);
-            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.ADDRESS_INFO, parameters, null, token, false);
+            RequestParameter requestParameter = Request.getInstance().generateRequestParameters(null, parameters, null, token, false);
             if (requestParameter != null) {
-                requestParameter.setMultipart(true);
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new SaveAddressInfoResponse() {
 
                     @Override
                     public void onStart() {
                         super.onStart();
                         LogUtil.getInstance().print("提交定位开始");
+                        LogUtil.getInstance().print(context.getString(R.string.save_address_info_prompt));
 //                        view.showLoadingPromptDialog(R.string.save_address_info_prompt, Constant.RequestCode.DIALOG_PROGRESS_SAVE_ADDRESS_INFO);
                     }
 
