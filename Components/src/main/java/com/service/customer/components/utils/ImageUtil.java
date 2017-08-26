@@ -67,7 +67,7 @@ public class ImageUtil {
                 String[] split = docId.split(":");
                 String type = split[0];
                 if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + Regex.LEFT_SLASH.getRegext() + split[1];
+                    return Environment.getExternalStorageDirectory() + Regex.LEFT_SINGLE_SLASH.getRegext() + split[1];
                 }
             } else if (isDownloadsDocument(imageUri)) {
                 String id = DocumentsContract.getDocumentId(imageUri);

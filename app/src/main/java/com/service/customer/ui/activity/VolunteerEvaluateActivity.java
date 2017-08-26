@@ -87,6 +87,7 @@ public class VolunteerEvaluateActivity extends ActivityViewImplement<VolunteerEv
 
         vetEvaluate.setHint(getString(R.string.evaluate_prompt1));
         vetEvaluate.setTextCount(0);
+        rbEvaluate.setSelectedCount(5);
 
         editTextValidator = new EditTextValidator();
         editTextValidator.add(new Validation(null, vetEvaluate.getEtContent(), true, null, new EvaluateValidation()));

@@ -153,6 +153,7 @@ public final class Constant {
         public static final String TASK_EVALUATION = "task_evaluation";
         public static final String HELPER_EVALUATION = "helper_evaluation";
         public static final String MAP_QUERY = "map_query";
+        public static final String LOCATION_MAP = "location_map";
         public static final String WORK_LOG = "work_log";
 
         public static final String NEW_WAP_PAGE = "new_wap_page";
@@ -163,7 +164,9 @@ public final class Constant {
 
     public static class DealStatus {
         public static final int PROCESSING_COMPLETED = 2;
-        public static final int CAN_NOT_HANDLE = 4;
+        public static final int CAN_NOT_HANDLE_VOLUNTEER = 4;
+        public static final int CAN_NOT_HANDLE_JI_SHENG_BAN = 5;
+        public static final int CANCEL_TASK = -1;
     }
 
     public static class AccountRole {

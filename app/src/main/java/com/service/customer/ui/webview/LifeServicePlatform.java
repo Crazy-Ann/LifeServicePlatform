@@ -16,6 +16,7 @@ import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.EvaluateInfo;
 import com.service.customer.net.entity.LoginInfo;
+import com.service.customer.ui.activity.LocationMapActivity;
 import com.service.customer.ui.activity.TaskEvaluateActivity;
 import com.service.customer.ui.activity.TaskMapActivity;
 import com.service.customer.ui.activity.TaskProcessingActivity;
@@ -48,6 +49,9 @@ public class LifeServicePlatform {
                     break;
                 case Constant.JavaScript.MAP_QUERY:
                     activityViewImplement.startActivity(TaskMapActivity.class);
+                    break;
+                case Constant.JavaScript.LOCATION_MAP:
+                    activityViewImplement.startActivity(LocationMapActivity.class);
                     break;
                 case Constant.JavaScript.WORK_LOG:
                     bundle = new Bundle();

@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.service.customer.BuildConfig;
 import com.service.customer.base.constant.net.ResponseParameterKey;
 import com.service.customer.base.net.model.BaseEntity;
+import com.service.customer.components.constant.Regex;
 
 
 public class HeadImageInfo extends BaseEntity {
@@ -21,7 +22,7 @@ public class HeadImageInfo extends BaseEntity {
 
     public HeadImageInfo parse(JSONObject object) {
         if (object != null) {
-            this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR);
+            this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR).replaceAll(Regex.RIGHT_DOUBLE_SLASH.getRegext(), Regex.LEFT_SINGLE_SLASH.getRegext());
             return this;
         } else {
             return null;

@@ -52,11 +52,11 @@ public class MinePresenter extends BasePresenterImplement implements MineContrac
                     public void success(BaseEntity baseEntity) {
                         HeadImageInfo headImageInfo = (HeadImageInfo) baseEntity;
                         if (headImageInfo != null) {
-                            LoginInfo loginInfo = (LoginInfo) IOUtil.getInstance().readObject(context.getCacheDir().getAbsolutePath() + Constant.Cache.LOGIN_INFO_CACHE_PATH + Regex.LEFT_SLASH.getRegext() + LoginInfo.class.getSimpleName());
+                            LoginInfo loginInfo = (LoginInfo) IOUtil.getInstance().readObject(context.getCacheDir().getAbsolutePath() + Constant.Cache.LOGIN_INFO_CACHE_PATH + Regex.LEFT_SINGLE_SLASH.getRegext() + LoginInfo.class.getSimpleName());
                             if (loginInfo != null) {
                                 view.setHeadImage(headImageInfo.getAccountAvatar());
                                 loginInfo.setAccountAvatar(headImageInfo.getAccountAvatar());
-                                loginInfo.write(loginInfo, BaseApplication.getInstance().getCacheDir().getAbsolutePath() + Constant.Cache.LOGIN_INFO_CACHE_PATH + Regex.LEFT_SLASH.getRegext() + LoginInfo.class.getSimpleName());
+                                loginInfo.write(loginInfo, BaseApplication.getInstance().getCacheDir().getAbsolutePath() + Constant.Cache.LOGIN_INFO_CACHE_PATH + Regex.LEFT_SINGLE_SLASH.getRegext() + LoginInfo.class.getSimpleName());
                                 BaseApplication.getInstance().setLoginInfo(loginInfo);
                             }
                             deleteFile();

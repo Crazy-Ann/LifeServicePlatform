@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.BuildConfig;
 import com.service.customer.base.constant.net.ResponseParameterKey;
+import com.service.customer.components.constant.Regex;
 import com.service.customer.components.widget.sticky.listener.OnGroupListener;
 
 import java.io.Serializable;
@@ -52,7 +53,7 @@ public class MemberInfo implements Serializable, Parcelable, OnGroupListener {
         if (object != null) {
             this.accountId = object.getString(ResponseParameterKey.ACCOUNT_ID);
             this.realName = object.getString(ResponseParameterKey.REAL_NAME);
-            this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR);
+            this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR).replaceAll(Regex.RIGHT_DOUBLE_SLASH.getRegext(), Regex.LEFT_SINGLE_SLASH.getRegext());
             this.latitude = object.getDoubleValue(ResponseParameterKey.LATITUDE);
             this.longitude = object.getDoubleValue(ResponseParameterKey.LONGITUDE);
             this.address = object.getString(ResponseParameterKey.ADDRESS);

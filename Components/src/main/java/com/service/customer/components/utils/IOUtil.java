@@ -429,13 +429,13 @@ public class IOUtil {
     public File getExternalFilesDir(Context context, String directoryName, String fileName) throws IOException {
         if (isSDCardExsist()) {
             if (!TextUtils.isEmpty(fileName)) {
-                return new File(forceMkdir(Environment.getExternalStoragePublicDirectory(directoryName)).getAbsolutePath() + Regex.LEFT_SLASH.getRegext() + fileName);
+                return new File(forceMkdir(Environment.getExternalStoragePublicDirectory(directoryName)).getAbsolutePath() + Regex.LEFT_SINGLE_SLASH.getRegext() + fileName);
             } else {
                 return Environment.getExternalStoragePublicDirectory(directoryName);
             }
         } else {
             if (!TextUtils.isEmpty(fileName)) {
-                return new File(context.getExternalFilesDir(directoryName).getAbsolutePath() + Regex.LEFT_SLASH.getRegext() + fileName);
+                return new File(context.getExternalFilesDir(directoryName).getAbsolutePath() + Regex.LEFT_SINGLE_SLASH.getRegext() + fileName);
             } else {
                 return context.getExternalFilesDir(directoryName);
             }

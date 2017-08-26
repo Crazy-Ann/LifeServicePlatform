@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.amap.api.location.AMapLocation;
 import com.iflytek.cloud.ErrorCode;
 import com.service.customer.R;
+import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.permission.listener.PermissionCallback;
@@ -25,6 +26,7 @@ import com.service.customer.components.validation.EditTextValidator;
 import com.service.customer.components.validation.Validation;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
+import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.net.entity.validation.TaskValidation;
 import com.service.customer.ui.contract.TaskProcessingContract;
 import com.service.customer.ui.contract.implement.ActivityViewImplement;
@@ -40,6 +42,7 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
     private VoiceEdittext vetDealNote;
     private Button btnProcessingCompleted;
     private Button btnCannotHandle;
+    private Button btnCancelTask;
     private EditTextValidator editTextValidator;
     private int dealStatus;
 
@@ -58,6 +61,7 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
         vetDealNote = ViewUtil.getInstance().findView(this, R.id.vetWorkNote);
         btnProcessingCompleted = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.btnProcessingCompleted, this);
         btnCannotHandle = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.btnCannotHandle, this);
+        btnCancelTask = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.btnCancelTask, this);
     }
 
     @Override
@@ -71,6 +75,24 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
 
         setBasePresenterImplement(taskProcessingPresenter);
         getSavedInstanceState(savedInstanceState);
+
+        switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
+            case Constant.AccountRole.WEI_JI_WEI:
+                ViewUtil.getInstance().setViewVisible(btnProcessingCompleted);
+                ViewUtil.getInstance().setViewVisible(btnCancelTask);
+                ViewUtil.getInstance().setViewGone(btnCannotHandle);
+            case Constant.AccountRole.JI_SHENG_BAN:
+                ViewUtil.getInstance().setViewVisible(btnProcessingCompleted);
+                ViewUtil.getInstance().setViewVisible(btnCannotHandle);
+                ViewUtil.getInstance().setViewGone(btnCancelTask);
+            case Constant.AccountRole.VOLUNTEER:
+                ViewUtil.getInstance().setViewVisible(btnProcessingCompleted);
+                ViewUtil.getInstance().setViewVisible(btnCannotHandle);
+                ViewUtil.getInstance().setViewGone(btnCancelTask);
+                break;
+            default:
+                break;
+        }
 
         editTextValidator = new EditTextValidator();
         editTextValidator.add(new Validation(null, vetDealNote.getEtContent(), true, null, new TaskValidation()));
@@ -119,7 +141,36 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
                 break;
             case R.id.btnCannotHandle:
                 if (editTextValidator.validate(this)) {
-                    dealStatus = Constant.DealStatus.CAN_NOT_HANDLE;
+                    switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
+                        case Constant.AccountRole.VOLUNTEER:
+                            dealStatus = Constant.DealStatus.CAN_NOT_HANDLE_VOLUNTEER;
+                            break;
+                        case Constant.AccountRole.JI_SHENG_BAN:
+                            dealStatus = Constant.DealStatus.CAN_NOT_HANDLE_JI_SHENG_BAN;
+                            break;
+                        default:
+                            break;
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        taskProcessingPresenter.checkPermission(this, new PermissionCallback() {
+                            @Override
+                            public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                taskProcessingPresenter.dealTaskInfo(BundleUtil.getInstance().getStringData(TaskProcessingActivity.this, Temp.BILL_NO.getContent()), dealStatus, vetDealNote.getText().trim());
+                            }
+
+                            @Override
+                            public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                                showPermissionPromptDialog();
+                            }
+                        });
+                    } else {
+                        taskProcessingPresenter.dealTaskInfo(BundleUtil.getInstance().getStringData(this, Temp.BILL_NO.getContent()), dealStatus, vetDealNote.getText().trim());
+                    }
+                }
+                break;
+            case R.id.btnCancelTask:
+                if (editTextValidator.validate(this)) {
+                    dealStatus = Constant.DealStatus.CANCEL_TASK;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         taskProcessingPresenter.checkPermission(this, new PermissionCallback() {
                             @Override
@@ -264,6 +315,6 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        
+
     }
 }

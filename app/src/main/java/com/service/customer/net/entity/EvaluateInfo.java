@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.BuildConfig;
 import com.service.customer.base.constant.net.ResponseParameterKey;
+import com.service.customer.components.constant.Regex;
 import com.service.customer.components.widget.sticky.listener.OnGroupListener;
 
 
@@ -34,7 +35,7 @@ public class EvaluateInfo implements Parcelable, OnGroupListener {
     public EvaluateInfo parse(JSONObject object) {
         if (object != null) {
            this.realName = object.getString(ResponseParameterKey.REAL_NAME);
-           this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR);
+           this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR).replaceAll(Regex.RIGHT_DOUBLE_SLASH.getRegext(), Regex.LEFT_SINGLE_SLASH.getRegext());
            this.billNo = object.getString(ResponseParameterKey.BILL_NO);
             return this;
         } else {

@@ -6,5 +6,5 @@ package com.service.customer.ui.presenter.listener;
 
 public interface OnSaveTaskInfoListener {
     
-    void onSaveTaskInfo(String phoneNumber);
+    void onSaveTaskInfo(String data);
 }

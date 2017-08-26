@@ -11,42 +11,70 @@
         android:id="@+id/inToolbar"
         layout="@layout/view_toolbar"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_15"
-        android:layout_marginTop="@dimen/dp_8"
-        android:text="@string/related_description"
-        android:textColor="@color/color_7a7a7a"
-        android:textSize="@dimen/sp_15"/>
-
-    <com.service.customer.ui.widget.edittext.VoiceEdittext
-        android:id="@+id/vetWorkNote"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
-    <include layout="@layout/view_line"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnProcessingCompleted"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_48"
-        android:layout_margin="@dimen/dp_15"
-        android:background="@drawable/frame_fillet_015293"
-        android:gravity="center"
-        android:text="@string/processing_completed"
-        android:textSize="@dimen/sp_16"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_8"
+                android:text="@string/related_description"
+                android:textColor="@color/color_7a7a7a"
+                android:textSize="@dimen/sp_15"/>
 
-    <Button
-        android:id="@+id/btnCannotHandle"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_48"
-        android:layout_marginBottom="@dimen/dp_15"
-        android:layout_marginEnd="@dimen/dp_15"
-        android:layout_marginStart="@dimen/dp_15"
-        android:background="@drawable/frame_fillet_015293"
-        android:gravity="center"
-        android:text="@string/cannot_handle"
-        android:textSize="@dimen/sp_16"/>
+            <com.service.customer.ui.widget.edittext.VoiceEdittext
+                android:id="@+id/vetWorkNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <include layout="@layout/view_line"/>
+
+            <Button
+                android:id="@+id/btnProcessingCompleted"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_15"
+                android:background="@drawable/frame_fillet_015293"
+                android:gravity="center"
+                android:text="@string/processing_completed"
+                android:textSize="@dimen/sp_16"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/btnCannotHandle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:layout_margin="@dimen/dp_15"
+                android:layout_marginBottom="@dimen/dp_15"
+                android:background="@drawable/frame_fillet_015293"
+                android:gravity="center"
+                android:text="@string/cannot_handle"
+                android:textSize="@dimen/sp_16"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/btnCancelTask"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:layout_marginBottom="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:layout_marginStart="@dimen/dp_15"
+                android:background="@drawable/frame_fillet_015293"
+                android:gravity="center"
+                android:text="@string/cancel_task"
+                android:textSize="@dimen/sp_16"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.BuildConfig;
 import com.service.customer.base.constant.net.ResponseParameterKey;
+import com.service.customer.components.constant.Regex;
 import com.service.customer.components.widget.sticky.listener.OnGroupListener;
 
 import java.io.Serializable;
@@ -65,7 +66,7 @@ public class TaskInfo implements Serializable, Parcelable, OnGroupListener {
             this.latitude = object.getDoubleValue(ResponseParameterKey.LATITUDE);
             this.longitude = object.getDoubleValue(ResponseParameterKey.LONGITUDE);
             this.address = object.getString(ResponseParameterKey.ADDRESS);
-            this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR);
+            this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR).replaceAll(Regex.RIGHT_DOUBLE_SLASH.getRegext(), Regex.LEFT_SINGLE_SLASH.getRegext());
             this.billNo = object.getString(ResponseParameterKey.BILL_NO);
             this.status = object.getIntValue(ResponseParameterKey.STATUS);
             //this.realName = "卫计委2号";

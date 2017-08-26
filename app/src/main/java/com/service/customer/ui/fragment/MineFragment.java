@@ -115,6 +115,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
         mineHandler = new MineHandler(this);
         minePresenter = new MinePresenter(getActivity(), this);
         minePresenter.initialize();
+        
         setBasePresenterImplement(minePresenter);
         getSavedInstanceState(savedInstanceState);
 
@@ -317,7 +318,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                 LogUtil.getInstance().print("onNegativeButtonClicked_DIALOG_PROMPT_SELECT_IMAGE");
                 try {
                     HashMap<String, Parcelable> map = new HashMap<>();
-                    map.put(MediaStore.EXTRA_OUTPUT, IOUtil.getInstance().getFileUri(getActivity(), true, IOUtil.getInstance().getExternalFilesDir(getActivity(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext()).getAbsolutePath()));
+                    map.put(MediaStore.EXTRA_OUTPUT, IOUtil.getInstance().getFileUri(getActivity(), true, IOUtil.getInstance().getExternalFilesDir(getActivity(), Constant.FILE_NAME, Regex.LEFT_SINGLE_SLASH.getRegext() + RequestParameterKey.SAVE_HEAD_IMAGE + Regex.IMAGE_JPG.getRegext()).getAbsolutePath()));
                     startActivityForResultWithParcelable(MediaStore.ACTION_IMAGE_CAPTURE, Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? Intent.FLAG_GRANT_READ_URI_PERMISSION : com.service.customer.components.constant.Constant.FileProvider.DEFAULT_FLAG, map, Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -346,6 +347,6 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-
+        
     }
 }

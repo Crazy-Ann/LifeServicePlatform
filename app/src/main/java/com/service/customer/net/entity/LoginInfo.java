@@ -101,14 +101,14 @@ public final class LoginInfo extends BaseEntity {
                     JSONObject userInfo = object.getJSONObject(ResponseParameterKey.USER_INFO);
                     this.accountId = userInfo.getString(ResponseParameterKey.ACCOUNT_ID);
                     this.memberType = userInfo.getString(ResponseParameterKey.MEMBER_TYPE);
-                    this.accountAvatar = userInfo.getString(ResponseParameterKey.ACCOUNT_AVATAR);
+                    this.accountAvatar = userInfo.getString(ResponseParameterKey.ACCOUNT_AVATAR).replaceAll(Regex.RIGHT_DOUBLE_SLASH.getRegext(), Regex.LEFT_SINGLE_SLASH.getRegext());
                     this.phone = userInfo.getString(ResponseParameterKey.PHONE);
                     this.idCard = userInfo.getString(ResponseParameterKey.ID_CARD);
                     this.realName = userInfo.getString(ResponseParameterKey.REAL_NAME);
                     String directory = BaseApplication.getInstance().getCacheDir().getAbsolutePath() + Constant.Cache.LOGIN_INFO_CACHE_PATH;
                     delete(directory);
                     IOUtil.getInstance().forceMkdir(directory);
-                    write(this, directory + Regex.LEFT_SLASH.getRegext() + getClass().getSimpleName());
+                    write(this, directory + Regex.LEFT_SINGLE_SLASH.getRegext() + getClass().getSimpleName());
                 }
                 return this;
             } else {

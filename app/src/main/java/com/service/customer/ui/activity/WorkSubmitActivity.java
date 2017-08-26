@@ -268,7 +268,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
                         @Override
                         public void run() {
                             try {
-                                File file = IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
+                                File file = IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, Regex.LEFT_SINGLE_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext());
                                 Bitmap photo = ImageUtil.getNarrowBitmap(BaseApplication.getInstance(), uri, 0.25f);
                                 if (file != null && BitmapUtil.getInstance().saveBitmap(photo, file.getAbsolutePath())) {
                                     TaskImageInfo taskImageInfo = new TaskImageInfo();
@@ -367,7 +367,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
                 LogUtil.getInstance().print("onNeutralButtonClicked_DIALOG_PROMPT_SELECT_IMAGE");
                 try {
                     HashMap<String, Parcelable> map = new HashMap<>();
-                    map.put(MediaStore.EXTRA_OUTPUT, IOUtil.getInstance().getFileUri(this, true, IOUtil.getInstance().getExternalFilesDir(this, Constant.FILE_NAME, Regex.LEFT_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext()).getAbsolutePath()));
+                    map.put(MediaStore.EXTRA_OUTPUT, IOUtil.getInstance().getFileUri(this, true, IOUtil.getInstance().getExternalFilesDir(this, Constant.FILE_NAME, Regex.LEFT_SINGLE_SLASH.getRegext() + taskImageInfos.size() + Regex.IMAGE_JPG.getRegext()).getAbsolutePath()));
                     startActivityForResultWithParcelable(MediaStore.ACTION_IMAGE_CAPTURE, Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? Intent.FLAG_GRANT_READ_URI_PERMISSION : com.service.customer.components.constant.Constant.FileProvider.DEFAULT_FLAG, map, Constant.RequestCode.REQUEST_CODE_PHOTOGRAPH);
                 } catch (IOException e) {
                     e.printStackTrace();

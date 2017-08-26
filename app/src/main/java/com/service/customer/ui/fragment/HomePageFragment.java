@@ -14,6 +14,7 @@ import com.amap.api.location.AMapLocation;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.RequestParameterKey;
+import com.service.customer.components.constant.Regex;
 import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.HttpUtil;
 import com.service.customer.components.utils.LogUtil;
@@ -29,7 +30,10 @@ import com.service.customer.ui.webview.CustomChromeClient;
 import com.service.customer.ui.webview.CustomWebviewClient;
 import com.service.customer.ui.webview.LifeServicePlatform;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HomePageFragment extends FragmentViewImplement<HomePageContract.Presenter> implements HomePageContract.View, OnSaveTaskInfoListener {
 
@@ -178,10 +182,16 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
     }
 
     @Override
-    public void onSaveTaskInfo(String phoneNumber) {
-        LogUtil.getInstance().print("phoneNumber:" + phoneNumber);
+    public void onSaveTaskInfo(String data) {
+        LogUtil.getInstance().print("data:" + data);
         if (aMapLocation != null) {
-            homePagePresenter.saveTaskInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), aMapLocation.getAddress(), 6, phoneNumber, null);
+            homePagePresenter.saveTaskInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), aMapLocation.getAddress(), 6, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getRealName()
+                    + "于"
+                    + new SimpleDateFormat(Regex.DATE.getRegext(), Locale.getDefault()).format(new Date(System.currentTimeMillis()))
+                    + "拨打了"
+                    + data
+                    + ",请关注", null)
+            ;
         }
     }
 }
