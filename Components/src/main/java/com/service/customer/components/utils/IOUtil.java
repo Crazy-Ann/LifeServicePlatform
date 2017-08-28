@@ -103,8 +103,10 @@ public class IOUtil {
 
     public void deleteFile(File folder) {
         File[] files = folder.listFiles();
-        for (File file : files) {
-            file.delete();
+        if (files != null) {
+            for (File file : files) {
+                file.delete();
+            }
         }
     }
 
@@ -447,13 +449,13 @@ public class IOUtil {
     }
 
     public Uri getFileUri(Context context, boolean isProvider, File file) {
-        if(file!=null) {
+        if (file != null) {
             if (isProvider) {
                 return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ? FileProvider.getUriForFile(context, Constant.FileProvider.AUTHORITY, file) : Uri.fromFile(file);
             } else {
                 return Uri.fromFile(file);
             }
-        }else {
+        } else {
             return null;
         }
     }

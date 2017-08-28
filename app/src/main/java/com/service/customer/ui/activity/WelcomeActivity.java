@@ -288,12 +288,12 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
     }
 
     @Override
-    public void showDownloadPromptDialog(String url, File derectory) {
+    public void showDownloadPromptDialog(String url, File directory) {
         DownloadDialog.createBuilder(getSupportFragmentManager())
                 .setTitle(getString(R.string.dialog_prompt))
                 .setPrompt(getString(R.string.dialog_prompt_download))
                 .setUrl(url)
-                .setDerectory(derectory)
+                .setDerectory(directory)
                 .setNegativeButtonText(this, R.string.cancel)
                 .setCancelable(false)
                 .setCancelableOnTouchOutside(false)
@@ -317,6 +317,6 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        
+
     }
 }

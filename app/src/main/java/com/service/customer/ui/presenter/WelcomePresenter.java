@@ -21,7 +21,6 @@ import com.service.customer.net.listener.ApiListener;
 import com.service.customer.ui.contract.WelcomeContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
-import java.io.File;
 import java.io.IOException;
 
 
@@ -31,7 +30,7 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
     private WelcomeContract.View view;
     private boolean isForceUpdate;
     private String filePath;
-    
+
     public boolean isForceUpdate() {
         return isForceUpdate;
     }
@@ -94,12 +93,10 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
         if (NetworkUtil.getInstance().isInternetConnecting(context)) {
             ConfigInfo configInfo = (ConfigInfo) BaseApplication.getInstance().getConfigInfo();
             try {
-                File derectory = IOUtil.getInstance().getExternalFilesDir(context, Constant.FILE_NAME, null);
                 if (configInfo != null) {
                     String url = configInfo.getDownloadUrl();
                     if (!TextUtils.isEmpty(url)) {
-                        LogUtil.getInstance().print(derectory);
-                        view.showDownloadPromptDialog(url, derectory);
+                        view.showDownloadPromptDialog(url, IOUtil.getInstance().getExternalFilesDir(context, Constant.FILE_NAME, "miyun.apk"));
                     }
                 } else {
                     view.showPromptDialog(R.string.dialog_prompt_download_error, Constant.RequestCode.DIALOG_PROMPT_DOWNLOAD_ERROR);

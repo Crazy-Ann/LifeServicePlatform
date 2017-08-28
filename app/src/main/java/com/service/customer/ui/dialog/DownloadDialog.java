@@ -1,7 +1,6 @@
 package com.service.customer.ui.dialog;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,7 +25,7 @@ import java.io.File;
 public class DownloadDialog extends BaseDialogFragment implements OnDownloadListener, OnProgressUpdateListener, View.OnClickListener {
 
     private String url;
-    private File derectory;
+    private File file;
     private CharSequence positive;
     private CharSequence negative;
 
@@ -49,7 +48,7 @@ public class DownloadDialog extends BaseDialogFragment implements OnDownloadList
         CharSequence title = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_TITLE.getContent());
         CharSequence prompt = BundleUtil.getInstance().getStringData(getArguments(), Temp.DIALOG_PROMPT.getContent());
         url = BundleUtil.getInstance().getStringData(getArguments(), Temp.DIALOG_DOWNLOAD_URL.getContent());
-        derectory = BundleUtil.getInstance().getSerializableBundleData(getArguments(), Temp.DIALOG_DOWNLOAD_FILE.getContent());
+        file = BundleUtil.getInstance().getSerializableBundleData(getArguments(), Temp.DIALOG_DOWNLOAD_FILE.getContent());
         positive = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_POSITIVE.getContent());
         negative = BundleUtil.getInstance().getCharSequenceData(getArguments(), Temp.DIALOG_BUTTON_NEGATIVE.getContent());
         View view = builder.getLayoutInflater().inflate(R.layout.dialog_download, null);
@@ -62,8 +61,8 @@ public class DownloadDialog extends BaseDialogFragment implements OnDownloadList
         if (!TextUtils.isEmpty(prompt)) {
             builder.setMessage(prompt);
         }
-        if (!TextUtils.isEmpty(url) && derectory != null) {
-            downloadTask = new DownloadTask(url, derectory, this);
+        if (!TextUtils.isEmpty(url) && file != null) {
+            downloadTask = new DownloadTask(url, file, this);
             downloadTask.execute();
         } else {
             onDownloadFailed();
@@ -149,8 +148,16 @@ public class DownloadDialog extends BaseDialogFragment implements OnDownloadList
         LogUtil.getInstance().print("onAnimationEnded");
         dpbProgress.setEnabled(false);
         if (isSuccess) {
+            dpbProgress.setEnabled(false);
             dismissAllowingStateLoss();
-            onDialogInstallListner.onDialogInstall(derectory.getAbsolutePath());
+            onDialogInstallListner.onDialogInstall(file.getAbsolutePath());
+        } else {
+            if (downloadTask != null) {
+                downloadTask.cancel(true);
+                dpbProgress.abortDownload();
+                downloadTask = null;
+            }
+            dpbProgress.setEnabled(true);
         }
     }
 
@@ -163,7 +170,7 @@ public class DownloadDialog extends BaseDialogFragment implements OnDownloadList
     @Override
     public void onAnimationFailed() {
         LogUtil.getInstance().print("onAnimationFailed");
-        dpbProgress.setEnabled(true);
+        dpbProgress.setEnabled(false);
     }
 
     @Override
@@ -175,23 +182,20 @@ public class DownloadDialog extends BaseDialogFragment implements OnDownloadList
     @Override
     public void onManualProgressEnded() {
         LogUtil.getInstance().print("onManualProgressEnded");
-        dpbProgress.setEnabled(true);
+        dpbProgress.setEnabled(false);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.dpbProgress:
-                if (TextUtils.isEmpty(url) && derectory != null) {
+                LogUtil.getInstance().print(file.getAbsolutePath());
+                if (!TextUtils.isEmpty(url) && file != null) {
+                    file.delete();
                     if (downloadTask == null) {
-                        downloadTask = new DownloadTask(url, derectory, this);
+                        downloadTask = new DownloadTask(url, file, this);
                     }
-                    LogUtil.getInstance().print(downloadTask.getStatus());
-                    if (downloadTask.getStatus() == AsyncTask.Status.PENDING) {
-                        downloadTask.execute();
-                    } else {
-                        dpbProgress.setEnabled(false);
-                    }
+                    downloadTask.execute();
                 } else {
                     onDownloadFailed();
                 }

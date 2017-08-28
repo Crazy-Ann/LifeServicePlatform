@@ -35,6 +35,7 @@ public enum Regex {
     DATE_FORMAT_ALL("yyyy-MM-dd HH:mm:ss"),
     DATE_FORMAT_DAY("yyyy-MM-dd"),
     DATE_FORMAT1("yyyy-MM-dd"),
+    DATE_FORMAT2("yyyyMMddHHmmss"),
     CHMOD("chmod "),
     PERMISSION("777"),
     LOG("log"),
@@ -69,7 +70,6 @@ public enum Regex {
     AES("AES"),
     SHA_1("SHA-1"),
     UTF_8("UTF-8"),
-    DATE("yyyyMMddHHmmss"),
     ANDROID_SETTING("com.android.settings"),
     ANDROID_SETTING_MORE("com.android.settings.WirelessSettings");
 

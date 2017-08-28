@@ -78,14 +78,19 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
 
         switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
             case Constant.AccountRole.WEI_JI_WEI:
+                LogUtil.getInstance().print("WEI_JI_WEI");
                 ViewUtil.getInstance().setViewVisible(btnProcessingCompleted);
-                ViewUtil.getInstance().setViewVisible(btnCancelTask);
                 ViewUtil.getInstance().setViewGone(btnCannotHandle);
+                ViewUtil.getInstance().setViewVisible(btnCancelTask);
+                break;
             case Constant.AccountRole.JI_SHENG_BAN:
+                LogUtil.getInstance().print("JI_SHENG_BAN");
                 ViewUtil.getInstance().setViewVisible(btnProcessingCompleted);
                 ViewUtil.getInstance().setViewVisible(btnCannotHandle);
                 ViewUtil.getInstance().setViewGone(btnCancelTask);
+                break;
             case Constant.AccountRole.VOLUNTEER:
+                LogUtil.getInstance().print("VOLUNTEER");
                 ViewUtil.getInstance().setViewVisible(btnProcessingCompleted);
                 ViewUtil.getInstance().setViewVisible(btnCannotHandle);
                 ViewUtil.getInstance().setViewGone(btnCancelTask);
@@ -101,6 +106,10 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);
         editTextValidator.execute(this, btnCannotHandle, com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
+                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
+                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
+                                  com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);
+        editTextValidator.execute(this, btnCancelTask, com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE,
                                   com.service.customer.components.constant.Constant.View.DEFAULT_RESOURCE, null, null, true);

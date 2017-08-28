@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.http.CustomHttpClient;
 import com.service.customer.components.utils.ApplicationUtil;
-import com.service.customer.components.utils.IOUtil;
 import com.service.customer.components.utils.LogUtil;
 import com.service.customer.ui.dialog.listener.OnDownloadListener;
 
@@ -19,9 +18,6 @@ import okhttp3.Response;
 
 public class DownloadTask extends AsyncTask<String, Long, Boolean> {
 
-//    private NotificationManager notificationManager;
-//    private NotificationCompat.Builder builder;
-
     private OnDownloadListener listener;
     private String url;
     private File file;
@@ -31,14 +27,8 @@ public class DownloadTask extends AsyncTask<String, Long, Boolean> {
         this.url = url;
         this.file = file;
         this.listener = listener;
-        try {
-            IOUtil.getInstance().forceMkdir(file.getParentFile());
-            if (file.exists()) {
-                file.delete();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        LogUtil.getInstance().print("url:" + url);
+        LogUtil.getInstance().print("directory:" + file);
     }
 
     @Override
@@ -49,13 +39,6 @@ public class DownloadTask extends AsyncTask<String, Long, Boolean> {
         if (listener != null) {
             listener.onDownloadStart();
         }
-//        notificationManager = (NotificationManager) BaseApplication.getInstance().getSystemService(Context.NOTIFICATION_SERVICE);
-//        builder = new NotificationCompat.Builder(BaseApplication.getInstance());
-//        builder.setSmallIcon(R.mipmap.icon_logo);
-//        builder.setContentTitle("收吧版本更新");
-//        builder.setContentText("准备下载...");
-//        builder.setContentIntent(PendingIntent.getActivity(BaseApplication.getInstance(), 0, new Intent(), 0));
-//        notificationManager.notify(Constant.NOTIFICATION_ID, builder.build());
     }
 
 
@@ -75,7 +58,6 @@ public class DownloadTask extends AsyncTask<String, Long, Boolean> {
                 int length;
                 inputStream = response.body().byteStream();
                 long sum = 0;
-                IOUtil.getInstance().forceMkdir(file.getParentFile());
                 fileOutputStream = new FileOutputStream(file);
                 while ((length = inputStream.read(buffer)) != -1) {
                     sum += length;
@@ -124,8 +106,6 @@ public class DownloadTask extends AsyncTask<String, Long, Boolean> {
             }
             int progress = (int) (data * 100.0f / dataLength);
             listener.onDownloadProgress(progress, data / totalTime);
-//            builder.setContentText("当前进度：" + progress + Regex.PERCENT.getRegext());
-//            notificationManager.notify(Constant.NOTIFICATION_ID, builder.build());
         }
     }
 
@@ -135,19 +115,10 @@ public class DownloadTask extends AsyncTask<String, Long, Boolean> {
         LogUtil.getInstance().print("onPostExecute");
         if (result) {
             ApplicationUtil.getInstance().chmod(Regex.PERMISSION.getRegext(), file.getAbsolutePath());
-//            builder.setContentIntent(PendingIntent.getActivity(BaseApplication.getInstance()
-//                    , 0
-//                    , new Intent(Intent.ACTION_VIEW).setDataAndType(Uri.parse(Regex.FILE_HEAD.getRegext() + file.getAbsolutePath()), Regex.FILE_TYPE.getRegext())
-//                    , PendingIntent.FLAG_UPDATE_CURRENT));
-//            builder.setContentText("下载完成,点击安装...");
-//            builder.setDefaults(Notification.DEFAULT_ALL);
-//            notificationManager.notify(Constant.NOTIFICATION_ID, builder.build());
             if (listener != null) {
                 listener.onDownloadSuccess();
             }
         } else {
-//            builder.setContentText("下载失败,稍后请重试...");
-//            notificationManager.notify(Constant.NOTIFICATION_ID, builder.build());
             if (listener != null) {
                 listener.onDownloadFailed();
             }

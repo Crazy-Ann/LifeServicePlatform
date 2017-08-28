@@ -96,7 +96,7 @@ public class TaskSubmitPresenter extends BasePresenterImplement implements TaskS
     }
 
     @Override
-    public void deleteFile() {//todo 返回存在問題，直接退出
+    public void deleteFile() {
         LogUtil.getInstance().print("deleteFile");
         try {
             IOUtil.getInstance().deleteFile(IOUtil.getInstance().getExternalFilesDir(BaseApplication.getInstance(), Constant.FILE_NAME, null));

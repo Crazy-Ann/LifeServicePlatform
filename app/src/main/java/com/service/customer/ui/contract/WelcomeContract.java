@@ -15,7 +15,7 @@ public interface WelcomeContract {
 
         void showVersionUpdatePromptDialog(String prompt);
 
-        void showDownloadPromptDialog(String url, File derectory);
+        void showDownloadPromptDialog(String url, File directory);
     }
 
     interface Presenter extends BasePresenter {

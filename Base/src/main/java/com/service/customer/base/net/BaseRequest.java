@@ -35,7 +35,7 @@ public class BaseRequest {
             parameters.put(RequestParameterKey.TOKEN, String.valueOf(token));
         }
         parameters.put(RequestParameterKey.CLIENT_INFO, DeviceUtil.getInstance().getDeviceInfo(BaseApplication.getInstance(), false, BuildConfig.VERSION_CODE));
-        parameters.put(RequestParameterKey.TIMESTAMP, new SimpleDateFormat(Regex.DATE.getRegext(), Locale.getDefault()).format(new Date(System.currentTimeMillis())));
+        parameters.put(RequestParameterKey.TIMESTAMP, new SimpleDateFormat(Regex.DATE_FORMAT2.getRegext(), Locale.getDefault()).format(new Date(System.currentTimeMillis())));
         parameters.put(RequestParameterKey.CODE, SecurityUtil.getInstance().encryptMD5("type=" + type
                                                                                                + "&token=" + token
                                                                                                + "&encryptData=" + bizContent
