@@ -44,7 +44,7 @@ public class LifeServicePlatform {
                         bundle = new Bundle();
                         bundle.putString(Temp.TITLE.getContent(), JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE));
                         bundle.putString(Temp.URL.getContent(), JSONObject.parseObject(parameter).getString(Constant.JavaScript.URL));
-                        activityViewImplement.startActivity(WapActivity.class, bundle);
+                        activityViewImplement.startActivity(WapActivity.class, Intent.FLAG_ACTIVITY_NEW_TASK, bundle);
                     }
                     break;
                 case Constant.JavaScript.MAP_QUERY:
@@ -57,7 +57,7 @@ public class LifeServicePlatform {
                     bundle = new Bundle();
                     bundle.putString(Temp.TITLE.getContent(), JSONObject.parseObject(parameter).getString(Constant.JavaScript.TITLE));
                     bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl());
-                    activityViewImplement.startActivity(WapActivity.class, bundle);
+                    activityViewImplement.startActivity(WapActivity.class, Intent.FLAG_ACTIVITY_NEW_TASK, bundle);
                     break;
                 case Constant.JavaScript.TASK_PROCESSING:
                     bundle = new Bundle();

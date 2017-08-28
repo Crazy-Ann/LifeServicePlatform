@@ -183,15 +183,13 @@ public class HomePageFragment extends FragmentViewImplement<HomePageContract.Pre
 
     @Override
     public void onSaveTaskInfo(String data) {
-        LogUtil.getInstance().print("data:" + data);
         if (aMapLocation != null) {
             homePagePresenter.saveTaskInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), aMapLocation.getAddress(), 6, ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getRealName()
                     + "于"
                     + new SimpleDateFormat(Regex.DATE_FORMAT_ALL.getRegext(), Locale.getDefault()).format(new Date(System.currentTimeMillis()))
                     + "拨打了"
                     + data
-                    + ",请关注!", null)
-            ;
+                    + ",请关注!", null);
         }
     }
 }

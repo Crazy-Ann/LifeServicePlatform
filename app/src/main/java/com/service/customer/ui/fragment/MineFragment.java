@@ -115,7 +115,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
         mineHandler = new MineHandler(this);
         minePresenter = new MinePresenter(getActivity(), this);
         minePresenter.initialize();
-        
+
         setBasePresenterImplement(minePresenter);
         getSavedInstanceState(savedInstanceState);
 
@@ -183,7 +183,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
 //            case R.id.rlWorkLog:
 //                bundle = new Bundle();
 //                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl());
-//                startActivity(WapActivity.class, bundle);
+//                startActivity(WapActivity.class, Intent.FLAG_ACTIVITY_REORDER_TO_FRONT, bundle);
 //                break;
             case R.id.rlAddCondolenceRecord:
                 startActivity(WorkSubmitActivity.class);
@@ -195,19 +195,19 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                 bundle = new Bundle();
                 bundle.putString(Temp.TITLE.getContent(), getString(R.string.help_seeker_list));
                 bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getHelpSeekerUrl());
-                startActivity(WapActivity.class, bundle);
+                startActivity(WapActivity.class, Intent.FLAG_ACTIVITY_NEW_TASK, bundle);
                 break;
             case R.id.rlGreetingCard:
                 bundle = new Bundle();
                 bundle.putString(Temp.TITLE.getContent(), getString(R.string.greeting_card));
                 bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getCardUrl());
-                startActivity(WapActivity.class, bundle);
+                startActivity(WapActivity.class, Intent.FLAG_ACTIVITY_NEW_TASK, bundle);
                 break;
             case R.id.rlVolunteerInfo:
                 bundle = new Bundle();
                 bundle.putString(Temp.TITLE.getContent(), getString(R.string.volunteer_list));
                 bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getVolunteerUrl());
-                startActivity(WapActivity.class, bundle);
+                startActivity(WapActivity.class, Intent.FLAG_ACTIVITY_NEW_TASK, bundle);
                 break;
             case R.id.rlSetting:
                 startActivity(SettingActivity.class);
@@ -347,6 +347,6 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        
+
     }
 }

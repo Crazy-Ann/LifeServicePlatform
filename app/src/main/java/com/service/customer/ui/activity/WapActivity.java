@@ -95,8 +95,7 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
     protected void setListener() {
 
     }
-
-
+    
     @Override
     public boolean isActive() {
         return false;

@@ -341,15 +341,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void startActivity(Class<?> cls, int flag) {
-        startActivity(cls, flag, null, null);
+        startActivity(cls, flag, null, null, null);
     }
 
-    protected void startActivity(Class<?> cls, int flag, Uri uri, String type) {
+    public void startActivity(Class<?> cls, int flag, Bundle bundle) {
+        startActivity(cls, flag, null, null, bundle);
+    }
+
+    protected void startActivity(Class<?> cls, int flag, Uri uri, String type, Bundle bundle) {
         Intent intent = new Intent();
         intent.setClass(this, cls);
         intent.addFlags(flag);
         if (uri != null && !TextUtils.isEmpty(type)) {
             intent.setDataAndType(uri, type);
+        }
+        if (bundle != null) {
+            intent.putExtras(bundle);
         }
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);

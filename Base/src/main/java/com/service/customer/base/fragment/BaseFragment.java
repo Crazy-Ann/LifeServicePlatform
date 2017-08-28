@@ -301,9 +301,16 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void startActivity(Class<?> cls, int flag) {
+        startActivity(cls, flag, null);
+    }
+
+    protected void startActivity(Class<?> cls, int flag, Bundle bundle) {
         Intent intent = new Intent();
-        intent.setClass(BaseApplication.getInstance(), cls);
+        intent.setClass(getActivity(), cls);
         intent.setFlags(flag);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
@@ -320,7 +327,7 @@ public abstract class BaseFragment extends Fragment {
 
     protected void startActivity(Class<?> cls, Bundle bundle) {
         Intent intent = new Intent();
-        intent.setClass(BaseApplication.getInstance(), cls);
+        intent.setClass(getActivity(), cls);
         if (bundle != null) {
             intent.putExtras(bundle);
         }
