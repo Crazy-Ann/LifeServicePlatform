@@ -175,6 +175,5 @@ public class BaseApplication extends MultiDexApplication implements Application.
     public void onActivityDestroyed(Activity activity) {
         LogUtil.getInstance().print(activity.getClass().getSimpleName() + " onActivityDestroyed() invoked!!");
         Glide.get(this).clearMemory();
-        ActivityUtil.remove(activity);
     }
 }
