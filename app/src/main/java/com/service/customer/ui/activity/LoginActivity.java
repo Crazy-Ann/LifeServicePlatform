@@ -247,6 +247,7 @@ public class LoginActivity extends ActivityViewImplement<LoginContract.Presenter
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+        super.onLocationChanged(aMapLocation);
 
     }
 }

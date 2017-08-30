@@ -2,8 +2,6 @@ package com.service.customer.ui.presenter;
 
 import android.content.Context;
 
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
 import com.service.customer.R;
 import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
@@ -28,8 +26,6 @@ public class TaskSubmitPresenter extends BasePresenterImplement implements TaskS
 
     private Context context;
     private TaskSubmitContract.View view;
-    private AMapLocationClient aMapLocationClient;
-    private AMapLocationClientOption aMapLocationClientOption;
 
     public TaskSubmitPresenter(Context context, TaskSubmitContract.View view) {
         super(context, view);

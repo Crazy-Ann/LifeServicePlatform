@@ -245,5 +245,6 @@ public class ModifyPasswordActivity extends ActivityViewImplement<ModifyPassword
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+        super.onLocationChanged(aMapLocation);
     }
 }

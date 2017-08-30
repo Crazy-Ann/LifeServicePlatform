@@ -296,6 +296,7 @@ public class VolunteerEvaluateActivity extends ActivityViewImplement<VolunteerEv
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+        super.onLocationChanged(aMapLocation);
         
     }
 }

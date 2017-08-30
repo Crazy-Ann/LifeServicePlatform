@@ -317,6 +317,7 @@ public class WelcomeActivity extends ActivityViewImplement<WelcomeContract.Prese
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+        super.onLocationChanged(aMapLocation);
 
     }
 }

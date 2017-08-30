@@ -180,6 +180,7 @@ public class SettingActivity extends ActivityViewImplement<SettingContract.Prese
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+        super.onLocationChanged(aMapLocation);
         
     }
 }

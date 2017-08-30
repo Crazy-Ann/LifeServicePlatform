@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
+import com.amap.api.location.AMapLocation;
 import com.service.customer.R;
 import com.service.customer.base.activity.BaseActivity;
 import com.service.customer.base.application.BaseApplication;
@@ -209,5 +210,10 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
     public void onDestroy() {
         super.onDestroy();
         basePresenterImplement.destroyLocation();
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        basePresenterImplement.stopLocation();
     }
 }

@@ -296,6 +296,7 @@ public class TaskEvaluateActivity extends ActivityViewImplement<TaskEvaluateCont
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+        super.onLocationChanged(aMapLocation);
 
     }
 }

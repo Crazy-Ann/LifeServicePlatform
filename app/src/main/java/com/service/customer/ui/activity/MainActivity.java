@@ -59,7 +59,7 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
 
         setBasePresenterImplement(mainPresenter);
         getSavedInstanceState(savedInstanceState);
-        
+
         tlMenu.setTabMode(TabLayout.MODE_FIXED);
         tlMenu.setBackgroundColor(Color.WHITE);
         tlMenu.setSelectedTabIndicatorHeight(0);
@@ -246,7 +246,7 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        mainPresenter.stopLocation();
+        super.onLocationChanged(aMapLocation);
         switch (aMapLocation.getErrorCode()) {
             case AMapLocation.LOCATION_SUCCESS:
                 LogUtil.getInstance().print("经度:" + aMapLocation.getLongitude());

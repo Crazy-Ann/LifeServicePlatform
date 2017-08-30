@@ -423,6 +423,7 @@ public class WorkSubmitActivity extends ActivityViewImplement<WorkSubmitContract
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+        super.onLocationChanged(aMapLocation);
 
     }
 }

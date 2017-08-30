@@ -353,6 +353,7 @@ public class TaskMapActivity extends ActivityViewImplement<TaskMapContract.Prese
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+        super.onLocationChanged(aMapLocation);
 
     }
 }
