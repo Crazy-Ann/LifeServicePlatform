@@ -60,18 +60,6 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
         setBasePresenterImplement(mainPresenter);
         getSavedInstanceState(savedInstanceState);
         
-        switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
-            case Constant.AccountRole.WEI_JI_WEI:
-            case Constant.AccountRole.JI_SHENG_BAN:
-            case Constant.AccountRole.VOLUNTEER:
-                break;
-            case Constant.AccountRole.HELP_SEEKER:
-                super.initialize(savedInstanceState);
-                break;
-            default:
-                break;
-        }
-
         tlMenu.setTabMode(TabLayout.MODE_FIXED);
         tlMenu.setBackgroundColor(Color.WHITE);
         tlMenu.setSelectedTabIndicatorHeight(0);

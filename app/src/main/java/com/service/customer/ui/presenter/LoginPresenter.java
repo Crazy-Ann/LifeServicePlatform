@@ -38,7 +38,7 @@ public class LoginPresenter extends BasePresenterImplement implements LoginContr
 
     @Override
     public void initialize() {
-        super.initialize();
+//        super.initialize();
     }
 
     @Override

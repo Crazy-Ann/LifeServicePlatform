@@ -35,7 +35,7 @@ public class WorkSubmitPresenter extends BasePresenterImplement implements WorkS
 
     @Override
     public void initialize() {
-        super.initialize();
+//        super.initialize();
         TTSUtil.getInstance().initializeSpeechRecognizer(context);
     }
 

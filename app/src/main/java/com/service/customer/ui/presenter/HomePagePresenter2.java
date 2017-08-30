@@ -26,7 +26,7 @@ public class HomePagePresenter2 extends BasePresenterImplement implements HomePa
 
     @Override
     public void initialize() {
-        super.initialize();
+//        super.initialize();
     }
 
     @Override

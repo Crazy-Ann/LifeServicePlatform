@@ -34,7 +34,7 @@ public class MinePresenter extends BasePresenterImplement implements MineContrac
 
     @Override
     public void initialize() {
-        super.initialize();
+//        super.initialize();
     }
 
     @Override

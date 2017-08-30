@@ -18,7 +18,7 @@ public class TaskManagementPresenter extends BasePresenterImplement implements T
 
     @Override
     public void initialize() {
-        super.initialize();
+//        super.initialize();
     }
 
 }

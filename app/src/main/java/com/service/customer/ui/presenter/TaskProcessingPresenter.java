@@ -29,7 +29,7 @@ public class TaskProcessingPresenter extends BasePresenterImplement implements T
 
     @Override
     public void initialize() {
-        super.initialize();
+//        super.initialize();
         TTSUtil.getInstance().initializeSpeechRecognizer(context);
     }
 

@@ -27,7 +27,7 @@ public class ModifyPasswordPresenter extends BasePresenterImplement implements M
 
     @Override
     public void initialize() {
-        super.initialize();
+//        super.initialize();
     }
 
     @Override

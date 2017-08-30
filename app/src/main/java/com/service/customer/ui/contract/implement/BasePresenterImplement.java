@@ -36,8 +36,12 @@ public abstract class BasePresenterImplement implements BasePresenter {
 
     @Override
     public void initialize() {
-        aMapLocationClient = new AMapLocationClient(context);
-        aMapLocationClientOption = new AMapLocationClientOption();
+        if (aMapLocationClient == null) {
+            aMapLocationClient = new AMapLocationClient(context);
+        }
+        if (aMapLocationClientOption == null) {
+            aMapLocationClientOption = new AMapLocationClientOption();
+        }
         aMapLocationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         AMapLocationClientOption.setLocationProtocol(AMapLocationClientOption.AMapLocationProtocol.HTTP);
         aMapLocationClientOption.setHttpTimeOut(Constant.Map.LOCATION_TIME_OUT);
@@ -76,13 +80,15 @@ public abstract class BasePresenterImplement implements BasePresenter {
     @Override
     public void startLocation() {
         if (aMapLocationClient != null) {
+            LogUtil.getInstance().print("startLocation!!!!!!!!!!!!");
             aMapLocationClient.startLocation();
         }
     }
 
     @Override
     public void stopLocation() {
-        if (aMapLocationClient != null) {
+        if (aMapLocationClient != null && aMapLocationClient.isStarted()) {
+            LogUtil.getInstance().print("stopLocation!!!!!!!!!!!!");
             aMapLocationClient.stopLocation();
         }
     }

@@ -18,7 +18,7 @@ public class SettingPresenter extends BasePresenterImplement implements SettingC
 
     @Override
     public void initialize() {
-        super.initialize();
+//        super.initialize();
     }
 
     @Override

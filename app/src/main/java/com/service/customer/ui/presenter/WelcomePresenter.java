@@ -51,7 +51,7 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
 
     @Override
     public void initialize() {
-        super.initialize();
+//        super.initialize();
     }
 
     @Override

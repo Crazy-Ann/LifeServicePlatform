@@ -133,7 +133,7 @@ public class TaskSubmitActivity extends ActivityViewImplement<TaskSubmitContract
         taskSubmitPresenter.initialize();
 
         setBasePresenterImplement(taskSubmitPresenter);
-        super.initialize(savedInstanceState);
+        getSavedInstanceState(savedInstanceState);
 
         editTextValidator = new EditTextValidator();
         editTextValidator.add(new Validation(null, vetTaskNote.getEtContent(), true, null, new TaskValidation()));

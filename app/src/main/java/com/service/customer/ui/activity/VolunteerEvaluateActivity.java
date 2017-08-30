@@ -53,8 +53,6 @@ public class VolunteerEvaluateActivity extends ActivityViewImplement<VolunteerEv
     private EditTextValidator editTextValidator;
     private EvaluateInfo evaluateInfo;
 
-    private boolean hasLocation;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +81,7 @@ public class VolunteerEvaluateActivity extends ActivityViewImplement<VolunteerEv
         volunteerEvaluatePresenter.initialize();
 
         setBasePresenterImplement(volunteerEvaluatePresenter);
-        super.initialize(savedInstanceState);
+        getSavedInstanceState(savedInstanceState);
 
         vetEvaluate.setHint(getString(R.string.evaluate_prompt1));
         vetEvaluate.setTextCount(0);
@@ -98,7 +96,7 @@ public class VolunteerEvaluateActivity extends ActivityViewImplement<VolunteerEv
 
         evaluateInfo = BundleUtil.getInstance().getParcelableIntentData(this, Temp.EVALUATE_INFO.getContent());
         if (evaluateInfo != null) {
-            GlideUtil.getInstance().with(this, evaluateInfo.getAccountAvatar(), null, getResources().getDrawable(R.mipmap.ic_launcher_round), DiskCacheStrategy.NONE, ivHeadImage);
+            GlideUtil.getInstance().with(this, evaluateInfo.getAccountAvatar(), null, getResources().getDrawable(R.mipmap.icon_default_head_image), DiskCacheStrategy.NONE, ivHeadImage);
             tvRealName.setText(evaluateInfo.getRealName());
         }
     }
@@ -168,20 +166,16 @@ public class VolunteerEvaluateActivity extends ActivityViewImplement<VolunteerEv
                     volunteerEvaluatePresenter.checkPermission(this, new PermissionCallback() {
                         @Override
                         public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-                            if (hasLocation) {
-                                if (evaluateInfo != null) {
-                                    if (rbEvaluate.getSelectedCount() > 0) {
-                                        if (editTextValidator.validate(VolunteerEvaluateActivity.this)) {
-                                            volunteerEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
-                                        }
-                                    } else {
-                                        ToastUtil.getInstance().showToast(VolunteerEvaluateActivity.this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
+                            if (evaluateInfo != null) {
+                                if (rbEvaluate.getSelectedCount() > 0) {
+                                    if (editTextValidator.validate(VolunteerEvaluateActivity.this)) {
+                                        volunteerEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
                                     }
                                 } else {
-                                    showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR);
+                                    ToastUtil.getInstance().showToast(VolunteerEvaluateActivity.this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
                                 }
                             } else {
-                                volunteerEvaluatePresenter.startLocation();
+                                showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR);
                             }
                         }
 
@@ -191,20 +185,16 @@ public class VolunteerEvaluateActivity extends ActivityViewImplement<VolunteerEv
                         }
                     });
                 } else {
-                    if (hasLocation) {
-                        if (evaluateInfo != null) {
-                            if (rbEvaluate.getSelectedCount() > 0) {
-                                if (editTextValidator.validate(VolunteerEvaluateActivity.this)) {
-                                    volunteerEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
-                                }
-                            } else {
-                                ToastUtil.getInstance().showToast(VolunteerEvaluateActivity.this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
+                    if (evaluateInfo != null) {
+                        if (rbEvaluate.getSelectedCount() > 0) {
+                            if (editTextValidator.validate(VolunteerEvaluateActivity.this)) {
+                                volunteerEvaluatePresenter.scoreAssistInfo(evaluateInfo.getBillNo(), rbEvaluate.getSelectedCount(), vetEvaluate.getText());
                             }
                         } else {
-                            showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR);
+                            ToastUtil.getInstance().showToast(VolunteerEvaluateActivity.this, R.string.evaluate_prompt2, Toast.LENGTH_SHORT);
                         }
                     } else {
-                        volunteerEvaluatePresenter.startLocation();
+                        showPromptDialog(R.string.dialog_prompt_save_condolence_record_error, Constant.RequestCode.DIALOG_PROMPT_SCORE_VOLUNTEER_INFO_ERROR);
                     }
                 }
                 break;
@@ -306,19 +296,6 @@ public class VolunteerEvaluateActivity extends ActivityViewImplement<VolunteerEv
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        volunteerEvaluatePresenter.stopLocation();
-        switch (aMapLocation.getErrorCode()) {
-            case AMapLocation.LOCATION_SUCCESS:
-                LogUtil.getInstance().print("经度:" + aMapLocation.getLongitude());
-                LogUtil.getInstance().print("纬度:" + aMapLocation.getLatitude());
-                LogUtil.getInstance().print("精度:" + aMapLocation.getAccuracy());
-                LogUtil.getInstance().print("地址:" + aMapLocation.getAddress());
-                volunteerEvaluatePresenter.saveAddressInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), aMapLocation.getAddress());
-                break;
-            default:
-                LogUtil.getInstance().print(aMapLocation.getErrorInfo());
-                break;
-        }
-        hasLocation = true;
+        
     }
 }

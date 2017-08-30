@@ -28,7 +28,7 @@ public class TaskEvaluatePresenter extends BasePresenterImplement implements Tas
 
     @Override
     public void initialize() {
-        super.initialize();
+//        super.initialize();
         TTSUtil.getInstance().initializeSpeechRecognizer(context);
     }
 

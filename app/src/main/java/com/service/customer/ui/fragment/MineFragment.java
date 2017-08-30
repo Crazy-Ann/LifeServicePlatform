@@ -337,7 +337,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     @Override
     public void setHeadImage(String url) {
         LogUtil.getInstance().print("headimage url:" + url);
-        GlideUtil.getInstance().with(getActivity(), url, null, getResources().getDrawable(R.mipmap.ic_launcher_round), DiskCacheStrategy.NONE, ivHeadImage);
+        GlideUtil.getInstance().with(getActivity(), url, null, getResources().getDrawable(R.mipmap.icon_default_head_image), DiskCacheStrategy.NONE, ivHeadImage);
     }
 
     @Override

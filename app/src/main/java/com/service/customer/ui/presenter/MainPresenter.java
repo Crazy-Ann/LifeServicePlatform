@@ -1,6 +1,5 @@
 package com.service.customer.ui.presenter;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 
 import com.service.customer.ui.contract.MainContract;
@@ -10,7 +9,6 @@ public class MainPresenter extends BasePresenterImplement implements MainContrac
 
     private Context context;
     private MainContract.View view;
-    private BroadcastReceiver broadcastReceiver;
 
     public MainPresenter(Context context, MainContract.View view) {
         super(context, view);

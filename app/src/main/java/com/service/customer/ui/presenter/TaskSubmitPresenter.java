@@ -40,22 +40,6 @@ public class TaskSubmitPresenter extends BasePresenterImplement implements TaskS
     @Override
     public void initialize() {
         super.initialize();
-        aMapLocationClient = new AMapLocationClient(context);
-        aMapLocationClientOption = new AMapLocationClientOption();
-        aMapLocationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        AMapLocationClientOption.setLocationProtocol(AMapLocationClientOption.AMapLocationProtocol.HTTP);
-        aMapLocationClientOption.setHttpTimeOut(Constant.Map.LOCATION_TIME_OUT);
-        aMapLocationClientOption.setInterval(Constant.Map.LOCATION_INTERVAL);
-        aMapLocationClientOption.setWifiScan(true);
-        aMapLocationClientOption.setGpsFirst(false);
-        aMapLocationClientOption.setNeedAddress(true);
-        aMapLocationClientOption.setOnceLocation(true);
-        aMapLocationClientOption.setOnceLocationLatest(true);
-        aMapLocationClientOption.setSensorEnable(false);
-        aMapLocationClientOption.setLocationCacheEnable(false);
-        aMapLocationClientOption.setMockEnable(false);
-        aMapLocationClient.setLocationOption(aMapLocationClientOption);
-        aMapLocationClient.setLocationListener(view);
         TTSUtil.getInstance().initializeSpeechRecognizer(context);
     }
 

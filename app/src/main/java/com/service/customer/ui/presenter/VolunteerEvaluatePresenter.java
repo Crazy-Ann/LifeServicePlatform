@@ -28,7 +28,7 @@ public class VolunteerEvaluatePresenter extends BasePresenterImplement implement
 
     @Override
     public void initialize() {
-        super.initialize();
+//        super.initialize();
         TTSUtil.getInstance().initializeSpeechRecognizer(context);
     }
 

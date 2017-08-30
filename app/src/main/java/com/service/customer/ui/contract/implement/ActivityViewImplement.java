@@ -168,22 +168,41 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
     }
 
     @Override
-    protected void initialize(Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            basePresenterImplement.checkPermission(this, new PermissionCallback() {
-                @Override
-                public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-                    basePresenterImplement.startLocation();
-                }
+    protected void onResume() {
+        super.onResume();
+        if (BaseApplication.getInstance().getLoginInfo() != null) {
+            switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
+                case Constant.AccountRole.WEI_JI_WEI:
+                case Constant.AccountRole.JI_SHENG_BAN:
+                case Constant.AccountRole.VOLUNTEER:
+                    break;
+                case Constant.AccountRole.HELP_SEEKER:
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        basePresenterImplement.checkPermission(this, new PermissionCallback() {
+                            @Override
+                            public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
+                                basePresenterImplement.startLocation();
+                            }
 
-                @Override
-                public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
-                    showPermissionPromptDialog();
-                }
-            });
-        } else {
-            basePresenterImplement.startLocation();
+                            @Override
+                            public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+                                showPermissionPromptDialog();
+                            }
+                        });
+                    } else {
+                        basePresenterImplement.startLocation();
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        basePresenterImplement.stopLocation();
     }
 
     @Override
