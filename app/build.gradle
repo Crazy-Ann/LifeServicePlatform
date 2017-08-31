@@ -58,11 +58,9 @@ android {
             ndk {
                 abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
             }
-            minifyEnabled false
-            zipAlignEnabled false
-			 minifyEnabled true
-            //zipAlignEnabled true
-            //shrinkResources false
+            zipAlignEnabled true
+			minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationVariants.all { variant ->

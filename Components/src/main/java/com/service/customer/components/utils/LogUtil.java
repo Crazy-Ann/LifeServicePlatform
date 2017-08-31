@@ -29,8 +29,8 @@ public class LogUtil {
     }
 
     public void v(String tag, String msg) {
-//        if (BuildConfig.DEBUG)
-        android.util.Log.v(tag, "----->" + msg);
+        if (BuildConfig.DEBUG)
+            android.util.Log.v(tag, msg);
     }
 
     public void v(String tag, String msg, Throwable t) {
@@ -39,8 +39,8 @@ public class LogUtil {
     }
 
     public void d(String tag, String msg) {
-//        if (BuildConfig.DEBUG)
-        android.util.Log.d(tag, "----->" + msg);
+        if (BuildConfig.DEBUG)
+            android.util.Log.d(tag, msg);
     }
 
     public void d(String tag, String msg, Throwable t) {
@@ -49,8 +49,8 @@ public class LogUtil {
     }
 
     public void i(String tag, String msg) {
-//        if (BuildConfig.DEBUG)
-        android.util.Log.i(tag, "----->" + msg);
+        if (BuildConfig.DEBUG)
+            android.util.Log.i(tag, msg);
     }
 
     public void i(String tag, String msg, Throwable t) {
@@ -69,8 +69,8 @@ public class LogUtil {
     }
 
     public void e(String tag, String msg) {
-//        if (BuildConfig.DEBUG)
-        android.util.Log.e(tag, "----->" + msg);
+        if (BuildConfig.DEBUG)
+            android.util.Log.e(tag, msg);
     }
 
     public void e(String tag, String msg, Throwable t) {
@@ -80,9 +80,9 @@ public class LogUtil {
 
     public void print(Object object) {
 //        if (BuildConfig.DEBUG) {
-        if (object != null) {
-            System.out.println("----->" + object.toString());
-        }
+            if (object != null) {
+                System.out.println("----->" + object.toString());
+            }
 //        }
     }
 }
