@@ -271,6 +271,10 @@ public class TaskMapActivity extends ActivityViewImplement<TaskMapContract.Prese
                     if (taskInfos != null) {
                         for (TaskInfo taskInfo : taskInfos.getTaskInfos()) {
                             taskMapPresenter.getAMap().addMarker(new MarkerOptions()
+                                                                         .title(taskInfo.getRealName())
+                                                                         .snippet(null)
+                                                                         .visible(true)
+                                                                         .infoWindowEnable(true)
                                                                          .position(new LatLng(taskInfo.getLatitude(), taskInfo.getLongitude()))
                                                                          .icon(BitmapDescriptorFactory.fromBitmap(GlideUtil.getInstance().get(BaseApplication.getInstance(), R.mipmap.icon_mark, ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24), ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24))))
                                                                          .draggable(false)).setObject(taskInfo);

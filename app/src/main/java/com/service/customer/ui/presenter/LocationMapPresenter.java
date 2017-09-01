@@ -84,8 +84,10 @@ public class LocationMapPresenter extends BasePresenterImplement implements Loca
 
                     @Override
                     public void success(BaseEntity baseEntity) {
-                        view.setEventMarker((MemberInfos) baseEntity);
                         getBoundary(context.getString(R.string.miyun_district));
+                        if (baseEntity != null) {
+                            view.setEventMarker((MemberInfos) baseEntity);
+                        }
                     }
 
                     @Override

@@ -83,9 +83,11 @@ public class TaskMapPresenter extends BasePresenterImplement implements TaskMapC
                 new ApiListener() {
 
                     @Override
-                    public void success(BaseEntity baseEntity) {
-                        view.setEventMarker((TaskInfos) baseEntity);
+                    public void success(final BaseEntity baseEntity) {
                         getBoundary(context.getString(R.string.miyun_district));
+                        if (baseEntity != null) {
+                            view.setEventMarker((TaskInfos) baseEntity);
+                        }
                     }
 
                     @Override

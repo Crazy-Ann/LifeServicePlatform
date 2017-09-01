@@ -84,7 +84,7 @@ public class LocationMapActivity extends ActivityViewImplement<LocationMapContra
 
         locationMapPresenter = new LocationMapPresenter(this, this);
         locationMapPresenter.initialize();
-       
+
         setBasePresenterImplement(locationMapPresenter);
         getSavedInstanceState(savedInstanceState);
 
@@ -268,13 +268,15 @@ public class LocationMapActivity extends ActivityViewImplement<LocationMapContra
             @Override
             public void run() {
                 try {
-                    if (memberInfos != null) {
-                        for (MemberInfo memberInfo : memberInfos.getMemberInfos()) {
-                            locationMapPresenter.getAMap().addMarker(new MarkerOptions()
-                                                                     .position(new LatLng(memberInfo.getLatitude(), memberInfo.getLongitude()))
-                                                                     .icon(BitmapDescriptorFactory.fromBitmap(GlideUtil.getInstance().get(BaseApplication.getInstance(), R.mipmap.icon_mark, ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24), ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24))))
-                                                                     .draggable(false)).setObject(memberInfo);
-                        }
+                    for (MemberInfo memberInfo : memberInfos.getMemberInfos()) {
+                        locationMapPresenter.getAMap().addMarker(new MarkerOptions()
+                                                                         .title(memberInfo.getRealName())
+                                                                         .snippet(null)
+                                                                         .visible(true)
+                                                                         .infoWindowEnable(true)
+                                                                         .position(new LatLng(memberInfo.getLatitude(), memberInfo.getLongitude()))
+                                                                         .icon(BitmapDescriptorFactory.fromBitmap(GlideUtil.getInstance().get(BaseApplication.getInstance(), R.mipmap.icon_mark, ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24), ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24))))
+                                                                         .draggable(false)).setObject(memberInfos);
                     }
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
@@ -357,6 +359,6 @@ public class LocationMapActivity extends ActivityViewImplement<LocationMapContra
         super.onLocationChanged(aMapLocation);
 
     }
-   
+
 }
 
