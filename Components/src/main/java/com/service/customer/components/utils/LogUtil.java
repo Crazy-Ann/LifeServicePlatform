@@ -79,10 +79,10 @@ public class LogUtil {
     }
 
     public void print(Object object) {
-//        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             if (object != null) {
                 System.out.println("----->" + object.toString());
             }
-//        }
+        }
     }
 }

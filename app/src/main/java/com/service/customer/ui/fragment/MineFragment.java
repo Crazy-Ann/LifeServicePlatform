@@ -36,7 +36,6 @@ import com.service.customer.components.utils.ViewUtil;
 import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.LoginInfo;
-import com.service.customer.ui.activity.LocationMapActivity;
 import com.service.customer.ui.activity.SettingActivity;
 import com.service.customer.ui.activity.WapActivity;
 import com.service.customer.ui.activity.WorkSubmitActivity;
@@ -57,8 +56,6 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     private ImageView ivHeadImage;
     private TextView tvRealName;
     private RelativeLayout rlAddCondolenceRecord;
-    private RelativeLayout rlHelpSeekerManagement;
-    private RelativeLayout rlHelpSeekerLocation;
     private RelativeLayout rlGreetingCard;
     private RelativeLayout rlVolunteerInfo;
     private RelativeLayout rlSetting;
@@ -101,8 +98,6 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
     protected void findViewById() {
         ivHeadImage = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.ivHeadImage, this);
         rlAddCondolenceRecord = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlAddCondolenceRecord, this);
-        rlHelpSeekerManagement = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlHelpSeekerManagement, this);
-        rlHelpSeekerLocation = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlHelpSeekerLocation, this);
         rlGreetingCard = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlGreetingCard, this);
         rlVolunteerInfo = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlVolunteerInfo, this);
         rlSetting = ViewUtil.getInstance().findViewAttachOnclick(rootView, R.id.rlSetting, this);
@@ -127,28 +122,21 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
         switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
             case Constant.AccountRole.WEI_JI_WEI:
                 ViewUtil.getInstance().setViewGone(rlAddCondolenceRecord);
-                ViewUtil.getInstance().setViewGone(rlHelpSeekerManagement);
-                ViewUtil.getInstance().setViewGone(rlHelpSeekerLocation);
                 ViewUtil.getInstance().setViewGone(rlGreetingCard);
                 ViewUtil.getInstance().setViewGone(rlVolunteerInfo);
                 break;
             case Constant.AccountRole.JI_SHENG_BAN:
                 ViewUtil.getInstance().setViewVisible(rlAddCondolenceRecord);
-                ViewUtil.getInstance().setViewGone(rlHelpSeekerManagement);
-                ViewUtil.getInstance().setViewGone(rlHelpSeekerLocation);
                 ViewUtil.getInstance().setViewGone(rlGreetingCard);
                 ViewUtil.getInstance().setViewGone(rlVolunteerInfo);
                 break;
             case Constant.AccountRole.VOLUNTEER:
                 ViewUtil.getInstance().setViewVisible(rlAddCondolenceRecord);
-                ViewUtil.getInstance().setViewVisible(rlHelpSeekerManagement);
-                ViewUtil.getInstance().setViewVisible(rlHelpSeekerLocation);
                 ViewUtil.getInstance().setViewGone(rlGreetingCard);
                 ViewUtil.getInstance().setViewGone(rlVolunteerInfo);
                 break;
             case Constant.AccountRole.HELP_SEEKER:
                 ViewUtil.getInstance().setViewGone(rlAddCondolenceRecord);
-                ViewUtil.getInstance().setViewGone(rlHelpSeekerManagement);
                 ViewUtil.getInstance().setViewVisible(rlGreetingCard);
                 ViewUtil.getInstance().setViewVisible(rlVolunteerInfo);
                 break;
@@ -180,22 +168,8 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
                         .setCancelable(true)
                         .showAllowingStateLoss(getActivity());
                 break;
-//            case R.id.rlWorkLog:
-//                bundle = new Bundle();
-//                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getWorkUrl());
-//                startActivity(WapActivity.class, Intent.FLAG_ACTIVITY_REORDER_TO_FRONT, bundle);
-//                break;
             case R.id.rlAddCondolenceRecord:
                 startActivity(WorkSubmitActivity.class);
-                break;
-            case R.id.rlHelpSeekerLocation:
-                startActivity(LocationMapActivity.class);
-                break;
-            case R.id.rlHelpSeekerManagement:
-                bundle = new Bundle();
-                bundle.putString(Temp.TITLE.getContent(), getString(R.string.help_seeker_list));
-                bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getHelpSeekerUrl());
-                startActivity(WapActivity.class, Intent.FLAG_ACTIVITY_NEW_TASK, bundle);
                 break;
             case R.id.rlGreetingCard:
                 bundle = new Bundle();

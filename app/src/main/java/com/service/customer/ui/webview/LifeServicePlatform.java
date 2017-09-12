@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.webkit.WebView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.components.permission.listener.PermissionCallback;
 import com.service.customer.components.utils.LogUtil;
@@ -16,7 +17,6 @@ import com.service.customer.constant.Constant;
 import com.service.customer.constant.Temp;
 import com.service.customer.net.entity.EvaluateInfo;
 import com.service.customer.net.entity.LoginInfo;
-import com.service.customer.ui.activity.LocationMapActivity;
 import com.service.customer.ui.activity.TaskEvaluateActivity;
 import com.service.customer.ui.activity.TaskMapActivity;
 import com.service.customer.ui.activity.TaskProcessingActivity;
@@ -50,8 +50,11 @@ public class LifeServicePlatform {
                 case Constant.JavaScript.MAP_QUERY:
                     activityViewImplement.startActivity(TaskMapActivity.class);
                     break;
-                case Constant.JavaScript.LOCATION_MAP:
-                    activityViewImplement.startActivity(LocationMapActivity.class);
+                case Constant.JavaScript.HELPER_SEEKER_LIST:
+                    bundle = new Bundle();
+                    bundle.putString(Temp.TITLE.getContent(), activityViewImplement.getString(R.string.help_seeker_list));
+                    bundle.putString(Temp.URL.getContent(), ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getHelpSeekerUrl());
+                    activityViewImplement.startActivity(WapActivity.class, Intent.FLAG_ACTIVITY_NEW_TASK, bundle);
                     break;
                 case Constant.JavaScript.WORK_LOG:
                     bundle = new Bundle();

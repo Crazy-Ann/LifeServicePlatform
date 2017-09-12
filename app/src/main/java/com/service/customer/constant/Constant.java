@@ -154,6 +154,7 @@ public final class Constant {
         public static final String HELPER_EVALUATION = "helper_evaluation";
         public static final String MAP_QUERY = "map_query";
         public static final String LOCATION_MAP = "location_map";
+        public static final String HELPER_SEEKER_LIST = "helper_seeker_list";
         public static final String WORK_LOG = "work_log";
 
         public static final String NEW_WAP_PAGE = "new_wap_page";
