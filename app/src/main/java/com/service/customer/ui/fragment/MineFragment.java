@@ -115,10 +115,7 @@ public class MineFragment extends FragmentViewImplement<MineContract.Presenter> 
         getSavedInstanceState(savedInstanceState);
 
         setHeadImage(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getAccountAvatar());
-        tvRealName.setText(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getRealName()
-                                   + Regex.LEFT_PARENTHESIS.getRegext()
-                                   + ((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getAccountId()
-                                   + Regex.RIGHT_PARENTHESIS.getRegext());
+        tvRealName.setText(((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getRealName());
         switch (((LoginInfo) BaseApplication.getInstance().getLoginInfo()).getMemberType()) {
             case Constant.AccountRole.WEI_JI_WEI:
                 ViewUtil.getInstance().setViewGone(rlAddCondolenceRecord);

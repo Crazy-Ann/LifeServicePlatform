@@ -12,12 +12,14 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField 'String', 'SERVICE_URL', '"http://api.jujiamao.com/Member"'
+//            buildConfigField 'String', 'SERVICE_URL', '"http://api.jujiamao.com/Member"'
+            buildConfigField 'String', 'SERVICE_URL', '"http://api.miyun.jingzhunbangfu.cn/Member"'
             buildConfigField 'String', 'DECRYPT_KEY', '"1234567890"'
         }
         release {
             minifyEnabled false
-            buildConfigField 'String', 'SERVICE_URL', '"http://api.jujiamao.com/Member"'
+//            buildConfigField 'String', 'SERVICE_URL', '"http://api.jujiamao.com/Member"'
+            buildConfigField 'String', 'SERVICE_URL', '"http://api.miyun.jingzhunbangfu.cn/Member"'
             buildConfigField 'String', 'DECRYPT_KEY', '"1234567890"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -47,6 +49,7 @@ android {
 //        abortOnError true
         abortOnError false
     }
+    buildToolsVersion '26.0.2'
 }
 
 dependencies {

@@ -64,11 +64,9 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        def fileName = "密云区困难家庭生活服务平台" + "_v${defaultConfig.versionName}_${new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))}" + '_release.apk'
-                        output.outputFile = new File(outputFile.parent, fileName)
+				variant.outputs.all {
+                    if (outputFileName != null && outputFileName.endsWith('.apk')) {
+                        outputFileName ="密云区困难家庭生活服务平台" + "_v${defaultConfig.versionName}_${new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))}" + '_release.apk'
                     }
                 }
             }
@@ -96,6 +94,7 @@ android {
 //        abortOnError true
         abortOnError false
     }
+    buildToolsVersion '26.0.2'
 }
 
 dependencies {
@@ -107,4 +106,8 @@ dependencies {
 	compile deps.appcompat_v7
     compile deps.constraint_layout
     compile project(':Base')
+}
+
+configurations.all {
+    resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
 }

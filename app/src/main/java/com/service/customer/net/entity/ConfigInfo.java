@@ -44,9 +44,6 @@ public class ConfigInfo extends BaseEntity {
             this.version = object.getIntValue(ResponseParameterKey.VERSION);
             this.lowestVersion = object.getIntValue(ResponseParameterKey.LOWEST_VERSION);
             this.downloadUrl = object.getString(ResponseParameterKey.DOWNLOAD_URL);
-//            this.version = 2;
-//            this.lowestVersion = 2;
-//            this.downloadUrl = "http://images.jujiamao.com/miyun.apk";
             this.updateMessage = object.getString(ResponseParameterKey.UPDATE_MESSAGE);
             if (object.containsKey(ResponseParameterKey.INTERFACE_URL)) {
                 this.serverUrl = object.getJSONObject(ResponseParameterKey.INTERFACE_URL).getString(ResponseParameterKey.SERVER_URL);
