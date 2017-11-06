@@ -2,6 +2,7 @@ package com.service.customer.ui.presenter;
 
 import android.content.Context;
 
+import com.igexin.sdk.PushManager;
 import com.service.customer.ui.contract.SettingContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
@@ -23,6 +24,9 @@ public class SettingPresenter extends BasePresenterImplement implements SettingC
 
     @Override
     public void logout() {
+        if (PushManager.getInstance().isPushTurnedOn(context)) {
+            PushManager.getInstance().turnOffPush(context);
+        }
         view.startLoginActivity(true);
     }
 }

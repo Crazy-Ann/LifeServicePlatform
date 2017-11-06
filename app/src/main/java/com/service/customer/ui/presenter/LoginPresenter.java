@@ -2,6 +2,8 @@ package com.service.customer.ui.presenter;
 
 import android.content.Context;
 
+import com.igexin.sdk.PushManager;
+import com.igexin.sdk.PushService;
 import com.service.customer.R;
 import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
@@ -13,6 +15,7 @@ import com.service.customer.constant.ServiceMethod;
 import com.service.customer.net.Api;
 import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.net.listener.ApiListener;
+import com.service.customer.service.PushIntentService;
 import com.service.customer.ui.contract.LoginContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
@@ -39,6 +42,9 @@ public class LoginPresenter extends BasePresenterImplement implements LoginContr
     @Override
     public void initialize() {
 //        super.initialize();
+        PushManager.getInstance().initialize(BaseApplication.getInstance(), PushService.class);
+        PushManager.getInstance().registerPushIntentService(BaseApplication.getInstance(), PushIntentService.class);
+        PushManager.getInstance().turnOnPush(context);
     }
 
     @Override

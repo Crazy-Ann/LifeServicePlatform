@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.alibaba.fastjson.JSONObject;
 import com.service.customer.R;
+import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.constant.net.RequestParameterKey;
 import com.service.customer.base.constant.net.ResponseCode;
 import com.service.customer.base.constant.net.ResponseParameterKey;
@@ -127,6 +128,7 @@ public class Api {
             HashMap<String, String> parameters = new HashMap<>();
             parameters.put(RequestParameterKey.ACCOUNT, account);
             parameters.put(RequestParameterKey.PASSWORD, password);
+            parameters.put(RequestParameterKey.DEVICE_ID, BaseApplication.getInstance().getClientId());
             RequestParameter requestParameter = Request.getInstance().generateRequestParameters(RequestParameterKey.LOGIN, parameters, null, false);
             if (requestParameter != null) {
                 HttpRequest.getInstance().doPost(context, url, requestParameter, new LoginResponse() {

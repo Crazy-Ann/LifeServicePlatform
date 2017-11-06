@@ -28,6 +28,7 @@ public class RequestParameterKey {
     public static final String VERSION = "version";
     public static final String ACCOUNT = "phone";
     public static final String PASSWORD = "password";
+    public static final String DEVICE_ID = "deviceid";
     public static final String REAL_NAME = "realname";
     public static final String UPLOAD_IMAGE = "uploadimg";
 

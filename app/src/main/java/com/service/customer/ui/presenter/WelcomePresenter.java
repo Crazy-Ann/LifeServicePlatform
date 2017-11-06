@@ -3,6 +3,7 @@ package com.service.customer.ui.presenter;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.igexin.sdk.PushManager;
 import com.service.customer.R;
 import com.service.customer.base.BuildConfig;
 import com.service.customer.base.application.BaseApplication;
@@ -18,6 +19,8 @@ import com.service.customer.net.Api;
 import com.service.customer.net.entity.ConfigInfo;
 import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.net.listener.ApiListener;
+import com.service.customer.service.PushIntentService;
+import com.service.customer.service.PushService;
 import com.service.customer.ui.contract.WelcomeContract;
 import com.service.customer.ui.contract.implement.BasePresenterImplement;
 
@@ -60,8 +63,14 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
 
             @Override
             public void success(BaseEntity entity) {
+                PushManager.getInstance().initialize(context, PushService.class);
+                PushManager.getInstance().registerPushIntentService(context, PushIntentService.class);
+                if (!PushManager.getInstance().isPushTurnedOn(context)) {
+                    PushManager.getInstance().turnOnPush(context);
+                }
                 ConfigInfo configInfo = (ConfigInfo) entity;
                 if (configInfo != null) {
+                   
                     BaseApplication.getInstance().setConfigInfo(configInfo);
                     if (ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getVersion()) {
                         isForceUpdate = ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getLowestVersion();

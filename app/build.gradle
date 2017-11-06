@@ -25,7 +25,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
-		applicationId "com.service.customer"
+        applicationId "com.service.customer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
@@ -33,7 +33,11 @@ android {
         resConfigs "zh"
         versionCode 1
         versionName "1.0.0"
-        multiDexEnabled true
+        manifestPlaceholders = [
+                GETUI_APP_ID    : "7lrQ66t1qpAXiGcCvHNfGA",
+                GETUI_APP_KEY   : "R2BHMuryiu6yXyBnCfSBY",
+                GETUI_APP_SECRET: "cc1pEceBtk7xF7ag3Pa1G6"
+        ]
     }
     signingConfigs {
         debug {}
@@ -47,7 +51,7 @@ android {
     buildTypes {
         debug {
             ndk {
-                abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+                abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
             }
             minifyEnabled false
             zipAlignEnabled false
@@ -56,17 +60,17 @@ android {
         }
         release {
             ndk {
-                abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+                abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
             }
             zipAlignEnabled true
-			minifyEnabled true
+            minifyEnabled true
             shrinkResources true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationVariants.all { variant ->
-				variant.outputs.all {
+                variant.outputs.all {
                     if (outputFileName != null && outputFileName.endsWith('.apk')) {
-                        outputFileName ="密云区困难家庭生活服务平台" + "_v${defaultConfig.versionName}_${new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))}" + '_release.apk'
+                        outputFileName = "密云区困难家庭生活服务平台" + "_v${defaultConfig.versionName}_${new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))}" + '_release.apk'
                     }
                 }
             }
@@ -94,7 +98,6 @@ android {
 //        abortOnError true
         abortOnError false
     }
-    buildToolsVersion '26.0.2'
 }
 
 dependencies {
@@ -103,9 +106,10 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile deps.junit
-	compile deps.appcompat_v7
+    compile deps.appcompat_v7
     compile deps.constraint_layout
     compile project(':Base')
+	compile deps.getui
 }
 
 configurations.all {

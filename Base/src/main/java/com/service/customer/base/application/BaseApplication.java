@@ -6,15 +6,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
+import android.text.TextUtils;
 
 import com.bumptech.glide.Glide;
 import com.google.common.collect.Lists;
 import com.iflytek.cloud.SpeechUtility;
+import com.service.customer.base.BuildConfig;
 import com.service.customer.base.net.model.BaseEntity;
 import com.service.customer.components.constant.Constant;
 import com.service.customer.components.http.Configuration;
 import com.service.customer.components.http.CustomHttpClient;
 import com.service.customer.components.http.model.Parameter;
+import com.service.customer.components.mta.MTACrashModule;
+import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.ActivityUtil;
 import com.service.customer.components.utils.AnimationUtil;
 import com.service.customer.components.utils.ApplicationUtil;
@@ -28,10 +32,15 @@ import com.service.customer.components.utils.SecurityUtil;
 import com.service.customer.components.utils.SharedPreferenceUtil;
 import com.service.customer.components.utils.SnackBarUtil;
 import com.service.customer.components.utils.StrictModeUtil;
-import com.service.customer.components.tts.TTSUtil;
 import com.service.customer.components.utils.ToastUtil;
 import com.service.customer.components.utils.TypefaceUtil;
 import com.service.customer.components.utils.ViewUtil;
+import com.tencent.mta.track.StatisticsDataAPI;
+import com.tencent.stat.StatConfig;
+import com.tencent.stat.StatCrashCallback;
+import com.tencent.stat.StatCrashReporter;
+import com.tencent.stat.StatReportStrategy;
+import com.tencent.stat.StatService;
 
 import okhttp3.Headers;
 import okhttp3.Interceptor;
@@ -39,9 +48,21 @@ import okhttp3.Interceptor;
 public class BaseApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
 
     private static BaseApplication application;
+    private String clientId;
     private BaseEntity configInfo;
     private BaseEntity loginInfo;
 
+    public String getClientId() {
+        if(TextUtils.isEmpty(clientId)){
+            return "000000";
+        }
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+    
     public BaseEntity getConfigInfo() {
         return configInfo;
     }
@@ -105,31 +126,46 @@ public class BaseApplication extends MultiDexApplication implements Application.
                                                           .setTimeout(Constant.HttpTask.REQUEST_TIME_OUT_PERIOD)
                                                           .setInterceptors(Lists.<Interceptor>newArrayList())
                                                           .setDebug(true).build());
-//        StatService.setContext(this);
-//        if (BuildConfig.DEBUG) {
-//            // 查看MTA日志及上报数据内容
-//            StatConfig.setDebugEnable(true);
-//            // 禁用MTA对app未处理异常的捕获，方便开发者调试时，及时获知详细错误信息。
-//            StatConfig.setAutoExceptionCaught(false);
-//        } else { // 发布时，建议设置的开关状态，请确保以下开关是否设置合理
-//            // 禁止MTA打印日志
-//            StatConfig.setDebugEnable(false);
-//            // 根据情况，决定是否开启MTA对app未处理异常的捕获
-//            StatConfig.setAutoExceptionCaught(true);
-//            // 选择默认的上报策略
-//            StatConfig.setStatSendStrategy(StatReportStrategy.PERIOD);
-//            // 10分钟上报一次的周期
-//            StatConfig.setSendPeriodMinutes(10);
-//        }
-//        // 注册Activity生命周期监控，自动统计时长
-//        StatService.registerActivityLifecycleCallbacks(this);
-//        // 初始化MTA的Crash模块，可监控java、native的Crash，以及Crash后的回调
-//        MTACrashModule.initMtaCrashModule(this);
+        StatConfig.setAppKey(this, "A4DY1MVHH29F");
+        StatConfig.setInstallChannel("");
+        StatisticsDataAPI.instance(this);
+        StatService.setContext(this);
+        StatConfig.setTLinkStatus(true);
+        if (BuildConfig.DEBUG) {
+            StatConfig.setDebugEnable(true);
+            StatConfig.setEnableSmartReporting(false);
+            StatConfig.setAutoExceptionCaught(false);
+        } else {
+            StatConfig.setDebugEnable(false);
+            StatConfig.initNativeCrashReport(this, null);
+            StatConfig.setAutoExceptionCaught(true);
+            StatConfig.setEnableSmartReporting(true);
+//            StatConfig.setStatSendStrategy(StatReportStrategy.BATCH);
+            StatConfig.setStatSendStrategy(StatReportStrategy.PERIOD);
+            StatConfig.setSendPeriodMinutes(10);
+        }
+        StatCrashReporter.getStatCrashReporter(getApplicationContext()).setJavaCrashHandlerStatus(true);
+        StatCrashReporter.getStatCrashReporter(getApplicationContext()).setJniNativeCrashStatus(true);
+        StatCrashReporter.getStatCrashReporter(getApplicationContext()).addCrashCallback(new StatCrashCallback() {
+
+            @Override
+            public void onJniNativeCrash(String tombstoneMsg) {
+                LogUtil.getInstance().print("Native crash happened, tombstone message:" + tombstoneMsg);
+            }
+
+            @Override
+            public void onJavaCrash(Thread thread, Throwable throwable) {
+                LogUtil.getInstance().print("Java crash happened, thread: " + thread + ",Throwable:" + throwable.toString());
+            }
+        });
+        StatService.registerActivityLifecycleCallbacks(this);
+        MTACrashModule.initMtaCrashModule(this);
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
+        StatService.onLowMemory(this);
         LogUtil.getInstance().print(this.getClass().getSimpleName() + " onLowMemory() invoked!!");
     }
 
@@ -153,16 +189,19 @@ public class BaseApplication extends MultiDexApplication implements Application.
 
     @Override
     public void onActivityResumed(Activity activity) {
+        StatService.onResume(activity);
         LogUtil.getInstance().print(activity.getClass().getSimpleName() + " onActivityResumed() invoked!!");
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
+        StatService.onPause(activity);
         LogUtil.getInstance().print(activity.getClass().getSimpleName() + " onActivityPaused() invoked!!");
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
+        StatService.onStop(activity);
         LogUtil.getInstance().print(activity.getClass().getSimpleName() + " onActivityStopped() invoked!!");
     }
 
