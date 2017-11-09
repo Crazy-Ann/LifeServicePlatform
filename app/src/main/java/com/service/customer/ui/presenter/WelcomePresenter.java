@@ -70,7 +70,6 @@ public class WelcomePresenter extends BasePresenterImplement implements WelcomeC
                 }
                 ConfigInfo configInfo = (ConfigInfo) entity;
                 if (configInfo != null) {
-                   
                     BaseApplication.getInstance().setConfigInfo(configInfo);
                     if (ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getVersion()) {
                         isForceUpdate = ApplicationUtil.getInstance().getVersionCode(context) < configInfo.getLowestVersion();

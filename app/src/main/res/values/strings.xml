@@ -96,7 +96,7 @@
     <string name="piture_description_prompt">请提供相关描述的截图或照片</string>
     <string name="work_log">工作日志</string>
     <string name="add_condolence_record">添加慰问记录</string>
-    <string name="map_event">地图事件</string>
+    <string name="map_event">事件地图</string>
     <string name="greeting_card">慰问贺卡</string>
     <string name="volunteer_info">志愿者信息查看</string>
     <string name="volunteer_list">志愿者列表</string>
