@@ -276,7 +276,7 @@ public class LocationMapActivity extends ActivityViewImplement<LocationMapContra
                                                                          .infoWindowEnable(true)
                                                                          .position(new LatLng(memberInfo.getLatitude(), memberInfo.getLongitude()))
                                                                          .icon(BitmapDescriptorFactory.fromBitmap(GlideUtil.getInstance().get(BaseApplication.getInstance(), R.mipmap.icon_mark, ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24), ViewUtil.getInstance().dp2px(BaseApplication.getInstance(), 24))))
-                                                                         .draggable(false)).setObject(memberInfos);
+                                                                         .draggable(false)).setObject(memberInfo);
                     }
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
