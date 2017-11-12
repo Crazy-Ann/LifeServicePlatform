@@ -16,6 +16,8 @@ public class MemberInfo implements Serializable, Parcelable, OnGroupListener {
 
     private String accountId;
     private String realName;
+    private String phone;
+    private String townsname;
     private String accountAvatar;
     private double latitude;
     private double longitude;
@@ -27,6 +29,14 @@ public class MemberInfo implements Serializable, Parcelable, OnGroupListener {
 
     public String getRealName() {
         return realName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getTownsname() {
+        return townsname;
     }
 
     public String getAccountAvatar() {
@@ -53,6 +63,8 @@ public class MemberInfo implements Serializable, Parcelable, OnGroupListener {
         if (object != null) {
             this.accountId = object.getString(ResponseParameterKey.ACCOUNT_ID);
             this.realName = object.getString(ResponseParameterKey.REAL_NAME);
+            this.phone = object.getString(ResponseParameterKey.PHONE);
+            this.townsname = object.getString(ResponseParameterKey.TOWNS_NAME);
             this.accountAvatar = object.getString(ResponseParameterKey.ACCOUNT_AVATAR).replaceAll(Regex.RIGHT_DOUBLE_SLASH.getRegext(), Regex.LEFT_SINGLE_SLASH.getRegext());
             this.latitude = object.getDoubleValue(ResponseParameterKey.LATITUDE);
             this.longitude = object.getDoubleValue(ResponseParameterKey.LONGITUDE);
@@ -69,6 +81,8 @@ public class MemberInfo implements Serializable, Parcelable, OnGroupListener {
             return "TaskInfo{" +
                     "accountId:" + accountId + '\'' +
                     ", realName:" + realName + '\'' +
+                    ", phone:" + phone + '\'' +
+                    ", townsname:" + townsname + '\'' +
                     ", accountAvatar:" + accountAvatar + '\'' +
                     ", latitude:" + latitude + '\'' +
                     ", longitude:" + longitude + '\'' +

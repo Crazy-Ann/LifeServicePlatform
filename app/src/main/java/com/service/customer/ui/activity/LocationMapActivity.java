@@ -50,12 +50,14 @@ import java.util.concurrent.ExecutionException;
 public class LocationMapActivity extends ActivityViewImplement<LocationMapContract.Presenter> implements LocationMapContract.View, View.OnClickListener, OnLeftIconEventListener, AMap.OnMarkerClickListener, DistrictSearch.OnDistrictSearchListener {
 
     private LocationMapPresenter locationMapPresenter;
-    private MapView mapView;
-    private LinearLayout llTaskInfo;
-    private ImageView ivHeadImage;
-    private TextView tvRealName;
-    private ImageView ivClose;
-    private TextView tvAddress;
+    private MapView              mapView;
+    private LinearLayout         llTaskInfo;
+    private ImageView            ivHeadImage;
+    private TextView             tvRealName;
+    private ImageView            ivClose;
+    private TextView             tvPhone;
+    private TextView             tvTownName;
+    private TextView             tvAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,8 @@ public class LocationMapActivity extends ActivityViewImplement<LocationMapContra
         ivHeadImage = ViewUtil.getInstance().findView(this, R.id.ivHeadImage);
         tvRealName = ViewUtil.getInstance().findView(this, R.id.tvRealName);
         ivClose = ViewUtil.getInstance().findViewAttachOnclick(this, R.id.ivClose, this);
+        tvPhone = ViewUtil.getInstance().findView(this, R.id.tvPhone);
+        tvTownName = ViewUtil.getInstance().findView(this, R.id.tvTownName);
         tvAddress = ViewUtil.getInstance().findView(this, R.id.tvAddress);
     }
 
@@ -291,8 +295,10 @@ public class LocationMapActivity extends ActivityViewImplement<LocationMapContra
             MemberInfo memberInfo = (MemberInfo) marker.getObject();
             AnimationUtil.getInstance().fadeInByAlphaAnimation(llTaskInfo, 100, 100);
             GlideUtil.getInstance().with(this, memberInfo.getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
-            tvRealName.setText(memberInfo.getRealName());
-            tvAddress.setText(memberInfo.getAddress());
+            tvRealName.setText(String.format("姓名:%s", memberInfo.getRealName()));
+            tvPhone.setText(String.format("电话:%s", memberInfo.getPhone()));
+            tvTownName.setText(String.format("乡镇:%s", memberInfo.getTownsname()));
+            tvAddress.setText(String.format("地址:%s", memberInfo.getAddress()));
             llTaskInfo.setTag(memberInfo);
         }
         return true;
@@ -318,9 +324,9 @@ public class LocationMapActivity extends ActivityViewImplement<LocationMapContra
                             String[] districtBoundaries = districtItem.districtBoundary();
                             if (districtBoundaries != null) {
                                 for (String districtBoundary : districtBoundaries) {
-                                    PolylineOptions polylineOption = new PolylineOptions();
-                                    boolean isStartPoint = true;
-                                    LatLng startPointLatLng = null;
+                                    PolylineOptions polylineOption   = new PolylineOptions();
+                                    boolean         isStartPoint     = true;
+                                    LatLng          startPointLatLng = null;
                                     for (String latstr : districtBoundary.split(Regex.SEMICOLON.getRegext())) {
                                         String[] latLngs = latstr.split(Regex.COMMA.getRegext());
                                         if (isStartPoint) {
