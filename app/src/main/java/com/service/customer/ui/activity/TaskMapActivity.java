@@ -30,7 +30,6 @@ import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.permission.listener.PermissionCallback;
-import com.service.customer.components.utils.AnimationUtil;
 import com.service.customer.components.utils.GlideUtil;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
@@ -151,7 +150,8 @@ public class TaskMapActivity extends ActivityViewImplement<TaskMapContract.Prese
                 //}
                 break;
             case R.id.ivClose:
-                AnimationUtil.getInstance().fadeOutByAlphaAnimation(llTaskInfo, 100, 100);
+                ViewUtil.getInstance().setViewGone(llTaskInfo);
+//                AnimationUtil.getInstance().fadeOutByAlphaAnimation(llTaskInfo, 100, 100);
                 break;
             default:
                 break;
@@ -291,7 +291,8 @@ public class TaskMapActivity extends ActivityViewImplement<TaskMapContract.Prese
     public boolean onMarkerClick(Marker marker) {
         if (marker != null) {
             TaskInfo taskInfo = (TaskInfo) marker.getObject();
-            AnimationUtil.getInstance().fadeInByAlphaAnimation(llTaskInfo, 100, 100);
+//            AnimationUtil.getInstance().fadeInByAlphaAnimation(llTaskInfo, 100, 100);
+            ViewUtil.getInstance().setViewVisible(llTaskInfo);
             GlideUtil.getInstance().with(this, taskInfo.getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
             tvRealName.setText(taskInfo.getRealName());
             tvDescreption.setText(taskInfo.getTasNote());

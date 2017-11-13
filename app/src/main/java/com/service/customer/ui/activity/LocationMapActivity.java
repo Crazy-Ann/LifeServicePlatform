@@ -30,7 +30,6 @@ import com.service.customer.base.application.BaseApplication;
 import com.service.customer.base.toolbar.listener.OnLeftIconEventListener;
 import com.service.customer.components.constant.Regex;
 import com.service.customer.components.permission.listener.PermissionCallback;
-import com.service.customer.components.utils.AnimationUtil;
 import com.service.customer.components.utils.GlideUtil;
 import com.service.customer.components.utils.InputUtil;
 import com.service.customer.components.utils.LogUtil;
@@ -155,7 +154,8 @@ public class LocationMapActivity extends ActivityViewImplement<LocationMapContra
                 //}
                 break;
             case R.id.ivClose:
-                AnimationUtil.getInstance().fadeOutByAlphaAnimation(llTaskInfo, 100, 100);
+                ViewUtil.getInstance().setViewGone(llTaskInfo);
+//                AnimationUtil.getInstance().fadeOutByAlphaAnimation(llTaskInfo, 100, 100);
                 break;
             default:
                 break;
@@ -293,7 +293,8 @@ public class LocationMapActivity extends ActivityViewImplement<LocationMapContra
     public boolean onMarkerClick(Marker marker) {
         if (marker != null) {
             MemberInfo memberInfo = (MemberInfo) marker.getObject();
-            AnimationUtil.getInstance().fadeInByAlphaAnimation(llTaskInfo, 100, 100);
+//            AnimationUtil.getInstance().fadeInByAlphaAnimation(llTaskInfo, 100, 100);
+            ViewUtil.getInstance().setViewVisible(llTaskInfo);
             GlideUtil.getInstance().with(this, memberInfo.getAccountAvatar(), null, null, DiskCacheStrategy.NONE, ivHeadImage);
             tvRealName.setText(String.format("姓名:%s", memberInfo.getRealName()));
             tvPhone.setText(String.format("电话:%s", memberInfo.getPhone()));
