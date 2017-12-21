@@ -184,7 +184,7 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
                             @Override
                             public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
 //                                basePresenterImplement.startLocation();
-                                basePresenterImplement.startTimedRefresh(0, 10000);
+                                basePresenterImplement.startTimedRefresh(0, AlarmManager.INTERVAL_FIFTEEN_MINUTES);
                             }
 
                             @Override
