@@ -206,7 +206,6 @@ public class WapActivity extends ActivityViewImplement<WapContract.Presenter> im
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        super.onLocationChanged(aMapLocation);
 
     }
 }

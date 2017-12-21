@@ -363,7 +363,7 @@ public class LocationMapActivity extends ActivityViewImplement<LocationMapContra
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        super.onLocationChanged(aMapLocation);
+        
     }
 
 } 

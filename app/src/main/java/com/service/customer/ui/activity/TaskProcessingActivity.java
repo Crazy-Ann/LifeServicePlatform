@@ -324,7 +324,6 @@ public class TaskProcessingActivity extends ActivityViewImplement<TaskProcessing
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        super.onLocationChanged(aMapLocation);
-
+        
     }
 }

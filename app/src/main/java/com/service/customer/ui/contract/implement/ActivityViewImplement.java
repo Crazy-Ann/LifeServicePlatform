@@ -1,5 +1,6 @@
 package com.service.customer.ui.contract.implement;
 
+import android.app.AlarmManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -182,7 +183,8 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
                         basePresenterImplement.checkPermission(this, new PermissionCallback() {
                             @Override
                             public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-                                basePresenterImplement.startLocation();
+//                                basePresenterImplement.startLocation();
+                                basePresenterImplement.startTimedRefresh(0, 10000);
                             }
 
                             @Override
@@ -191,7 +193,8 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
                             }
                         });
                     } else {
-                        basePresenterImplement.startLocation();
+//                        basePresenterImplement.startLocation();
+                        basePresenterImplement.startTimedRefresh(0, AlarmManager.INTERVAL_FIFTEEN_MINUTES);
                     }
                     break;
                 default:
@@ -215,5 +218,17 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
         basePresenterImplement.stopLocation();
+        switch (aMapLocation.getErrorCode()) {
+            case AMapLocation.LOCATION_SUCCESS:
+                LogUtil.getInstance().print("经度:" + aMapLocation.getLongitude());
+                LogUtil.getInstance().print("纬度:" + aMapLocation.getLatitude());
+                LogUtil.getInstance().print("精度:" + aMapLocation.getAccuracy());
+                LogUtil.getInstance().print("地址:" + aMapLocation.getAddress());
+                basePresenterImplement.saveAddressInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), aMapLocation.getAddress());
+                break;
+            default:
+                LogUtil.getInstance().print(aMapLocation.getErrorInfo());
+                break;
+        }
     }
 }

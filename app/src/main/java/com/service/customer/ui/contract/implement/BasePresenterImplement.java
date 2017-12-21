@@ -20,6 +20,8 @@ import com.service.customer.net.entity.LoginInfo;
 import com.service.customer.net.listener.ApiListener;
 
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public abstract class BasePresenterImplement implements BasePresenter {
 
@@ -29,6 +31,8 @@ public abstract class BasePresenterImplement implements BasePresenter {
     private AMapLocationClient aMapLocationClient;
     private AMapLocationClientOption aMapLocationClientOption;
 
+    private Timer timer;
+
     public BasePresenterImplement(Context context, BaseView baseView) {
         this.context = context;
         this.baseView = baseView;
@@ -36,6 +40,7 @@ public abstract class BasePresenterImplement implements BasePresenter {
 
     @Override
     public void initialize() {
+        timer = new Timer();
         if (aMapLocationClient == null) {
             aMapLocationClient = new AMapLocationClient(context);
         }
@@ -51,6 +56,8 @@ public abstract class BasePresenterImplement implements BasePresenter {
         aMapLocationClientOption.setNeedAddress(true);
         aMapLocationClientOption.setOnceLocation(true);
         aMapLocationClientOption.setOnceLocationLatest(true);
+//        aMapLocationClientOption.setOnceLocation(false);
+//        aMapLocationClientOption.setOnceLocationLatest(false);
         aMapLocationClientOption.setSensorEnable(false);
         aMapLocationClientOption.setLocationCacheEnable(false);
         aMapLocationClientOption.setMockEnable(false);
@@ -100,6 +107,29 @@ public abstract class BasePresenterImplement implements BasePresenter {
             aMapLocationClient = null;
             aMapLocationClientOption = null;
         }
+    }
+
+    @Override
+    public void startTimedRefresh(long delay, long period) {
+        LogUtil.getInstance().print("startTimedRefresh");
+        if (timer != null) {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    startLocation();
+                }
+            }, delay, period);
+        }
+    }
+
+    @Override
+    public void cancelTimedRefresh() {
+        LogUtil.getInstance().print("cancelTimedRefresh");
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        stopLocation();
     }
 
     @Override

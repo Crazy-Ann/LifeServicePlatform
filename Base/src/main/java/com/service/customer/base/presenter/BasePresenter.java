@@ -14,6 +14,10 @@ public interface BasePresenter {
 
     void stopLocation();
 
+    void startTimedRefresh(long delay, long period);
+
+    void cancelTimedRefresh();
+
     void destroyLocation();
     
     void saveAddressInfo(String longitude, String latitude, String address);

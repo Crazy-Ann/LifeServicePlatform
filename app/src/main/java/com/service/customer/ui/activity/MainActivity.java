@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.view.View;
 
-import com.amap.api.location.AMapLocation;
 import com.service.customer.R;
 import com.service.customer.base.application.BaseApplication;
 import com.service.customer.components.constant.Regex;
@@ -110,7 +109,7 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
                             mainPresenter.checkPermission(this, new PermissionCallback() {
                                 @Override
                                 public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
-                                    mainPresenter.startLocation();
+                                    
                                 }
 
                                 @Override
@@ -118,6 +117,8 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
                                     showPermissionPromptDialog();
                                 }
                             });
+                        } else {
+                            
                         }
                         break;
                     default:
@@ -163,6 +164,7 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
             case Constant.RequestCode.DIALOG_PROMPT_QUIT:
                 LogUtil.getInstance().print("onPositiveButtonClicked_DIALOG_PROMPT_QUIT");
                 BaseApplication.getInstance().releaseInstance();
+                mainPresenter.cancelTimedRefresh();
                 ActivityUtil.removeAll();
                 break;
             case Constant.RequestCode.DIALOG_PROMPT_TOKEN_ERROR:
@@ -242,22 +244,5 @@ public class MainActivity extends ActivityViewImplement<MainContract.Presenter> 
     @Override
     public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
         LogUtil.getInstance().print("onLayoutChange");
-    }
-
-    @Override
-    public void onLocationChanged(AMapLocation aMapLocation) {
-        super.onLocationChanged(aMapLocation);
-        switch (aMapLocation.getErrorCode()) {
-            case AMapLocation.LOCATION_SUCCESS:
-                LogUtil.getInstance().print("经度:" + aMapLocation.getLongitude());
-                LogUtil.getInstance().print("纬度:" + aMapLocation.getLatitude());
-                LogUtil.getInstance().print("精度:" + aMapLocation.getAccuracy());
-                LogUtil.getInstance().print("地址:" + aMapLocation.getAddress());
-                mainPresenter.saveAddressInfo(String.valueOf(aMapLocation.getLongitude()), String.valueOf(aMapLocation.getLatitude()), aMapLocation.getAddress());
-                break;
-            default:
-                LogUtil.getInstance().print(aMapLocation.getErrorInfo());
-                break;
-        }
     }
 }
