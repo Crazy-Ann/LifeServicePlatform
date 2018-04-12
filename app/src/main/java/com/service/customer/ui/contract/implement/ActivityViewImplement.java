@@ -33,7 +33,7 @@ import java.util.List;
 
 public abstract class ActivityViewImplement<T> extends BaseActivity implements BaseView<T> {
 
-    private DialogFragment dialogFragment;
+    private DialogFragment         dialogFragment;
     private BasePresenterImplement basePresenterImplement;
 
     public BasePresenterImplement getBasePresenterImplement() {
@@ -184,7 +184,8 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
                             @Override
                             public void onSuccess(int requestCode, @NonNull List<String> grantPermissions) {
 //                                basePresenterImplement.startLocation();
-                                basePresenterImplement.startTimedRefresh(0, AlarmManager.INTERVAL_FIFTEEN_MINUTES);
+                                basePresenterImplement.startTimedRefresh(0, 5);
+//                                basePresenterImplement.startTimedRefresh(0, 10000);
                             }
 
                             @Override
@@ -194,7 +195,7 @@ public abstract class ActivityViewImplement<T> extends BaseActivity implements B
                         });
                     } else {
 //                        basePresenterImplement.startLocation();
-                        basePresenterImplement.startTimedRefresh(0, AlarmManager.INTERVAL_FIFTEEN_MINUTES);
+                        basePresenterImplement.startTimedRefresh(0, 5);
                     }
                     break;
                 default:

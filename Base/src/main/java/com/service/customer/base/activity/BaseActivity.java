@@ -31,10 +31,10 @@ import java.util.HashMap;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected Toolbar inToolbar;
+    protected Toolbar   inToolbar;
     protected ImageView ivLeftIconEvent;
-    protected TextView tvTitle;
-    protected TextView tvRightTextEvent;
+    protected TextView  tvTitle;
+    protected TextView  tvRightTextEvent;
     protected ImageView ivRightIconEvent;
 
     /**
@@ -207,6 +207,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtil.getInstance().print(this.getClass().getSimpleName() + " onResume() invoked!!");
     }
 
     @Override

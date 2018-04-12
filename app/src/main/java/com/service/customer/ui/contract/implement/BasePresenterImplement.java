@@ -22,16 +22,21 @@ import com.service.customer.net.listener.ApiListener;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public abstract class BasePresenterImplement implements BasePresenter {
 
-    private Context context;
+    private Context  context;
     private BaseView baseView;
 
-    private AMapLocationClient aMapLocationClient;
+    private AMapLocationClient       aMapLocationClient;
     private AMapLocationClientOption aMapLocationClientOption;
 
-    private Timer timer;
+    private static ScheduledExecutorService scheduledExecutorService;
+    private static ScheduledFuture<?>       scheduledFuture;
 
     public BasePresenterImplement(Context context, BaseView baseView) {
         this.context = context;
@@ -40,7 +45,9 @@ public abstract class BasePresenterImplement implements BasePresenter {
 
     @Override
     public void initialize() {
-        timer = new Timer();
+        if (scheduledExecutorService == null) {
+            scheduledExecutorService = Executors.newScheduledThreadPool(2);
+        }
         if (aMapLocationClient == null) {
             aMapLocationClient = new AMapLocationClient(context);
         }
@@ -112,23 +119,41 @@ public abstract class BasePresenterImplement implements BasePresenter {
     @Override
     public void startTimedRefresh(long delay, long period) {
         LogUtil.getInstance().print("startTimedRefresh");
-        if (timer != null) {
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    startLocation();
-                }
-            }, delay, period);
+        if (scheduledExecutorService != null) {
+            if (scheduledFuture == null) {
+                scheduledFuture = scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+                    @Override
+                    public void run() {
+                        startLocation();
+                    }
+                }, delay, period, TimeUnit.MINUTES);
+            }
         }
+//        if (timer != null) {
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    startLocation();
+//                }
+//            }, delay, period);
+//        }
     }
 
     @Override
     public void cancelTimedRefresh() {
         LogUtil.getInstance().print("cancelTimedRefresh");
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
+        if (scheduledExecutorService != null) {
+            scheduledExecutorService.shutdown();
+            scheduledExecutorService = null;
         }
+        if (scheduledFuture != null) {
+            scheduledFuture.cancel(true);
+            scheduledFuture = null;
+        }
+//        if (timer != null) {
+//            timer.cancel();
+//            timer = null;
+//        }
         stopLocation();
     }
 
