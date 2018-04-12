@@ -31,7 +31,7 @@ android {
             res.srcDirs = ['src/main/res']
             assets.srcDirs = ['src/main/assets']
         }
-        instrumentTest.setRoot('androidTest')
+//        instrumentTest.setRoot('androidTest')
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
@@ -41,7 +41,7 @@ android {
 //        abortOnError true
         abortOnError false
     }
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
